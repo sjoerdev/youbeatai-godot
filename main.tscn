@@ -1,15 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://c78m8ijn10kwh"]
 
-[ext_resource type="Texture2D" uid="uid://cjtqe6v00jeu0" path="res://idk.png" id="1_5uivq"]
-[ext_resource type="Script" path="res://Testscript.cs" id="2_5h5wi"]
+[ext_resource type="PackedScene" uid="uid://c33uxie0rxurd" path="res://idk.tscn" id="1_6tefq"]
+[ext_resource type="PackedScene" uid="uid://dbjugh0agdtm0" path="res://rotatingsprite.tscn" id="2_gdqw5"]
 
 [node name="scene" type="Node2D"]
 
-[node name="object" type="Node" parent="."]
-
-[node name="Sprite" type="Sprite2D" parent="object"]
-texture = ExtResource("1_5uivq")
-script = ExtResource("2_5h5wi")
-
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
+
+[node name="Sprite" parent="." instance=ExtResource("1_6tefq")]
+prefab = ExtResource("2_gdqw5")
