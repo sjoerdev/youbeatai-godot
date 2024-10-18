@@ -8,6 +8,7 @@ public partial class Manager : Node
     [Export] Texture2D inactive;
     [Export] Texture2D current;
 
+	// audio
     [Export] AudioStreamPlayer2D firstAudioPlayer;
     [Export] AudioStreamPlayer2D secondAudioPlayer;
     [Export] AudioStreamPlayer2D thirdAudioPlayer;
@@ -19,35 +20,31 @@ public partial class Manager : Node
     int currentBeat = 0;
     float beatTimer = 0;
 
-	// rings
-    Sprite2D[][] ringSprites;
-    bool[][] rings;
+    // rings
+    Sprite2D[,] sprites;
+    bool[,] rings;
 
     public override void _Ready()
     {
-		// init rings
-        var random = new Random();
-        float chance = 0.4f;
-		rings = new bool[4][];
-        for (int ringIndex = 0; ringIndex < 4; ringIndex++)
+        // init rings
+        rings = new bool[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
         {
-            rings[ringIndex] = new bool[beatsAmount];
-            for (int i = 0; i < beatsAmount; i++)
+            for (int beat = 0; beat < beatsAmount; beat++)
             {
-                rings[ringIndex][i] = random.NextSingle() < chance;
+                rings[ring, beat] = new Random().NextSingle() < 0.4f;
             }
         }
 
-		// init sprites
-		ringSprites = new Sprite2D[4][];
-        for (int ringIndex = 0; ringIndex < 4; ringIndex++)
+        // init sprites
+        sprites = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
         {
-            ringSprites[ringIndex] = new Sprite2D[beatsAmount];
-            for (int i = 0; i < beatsAmount; i++)
+            for (int beat = 0; beat < beatsAmount; beat++)
             {
-                var sprite = CreateSprite(i, ringIndex);
+                var sprite = CreateSprite(beat, ring);
                 AddChild(sprite);
-                ringSprites[ringIndex][i] = sprite;
+                sprites[ring, beat] = sprite;
             }
         }
     }
@@ -64,26 +61,26 @@ public partial class Manager : Node
         }
 
         // update sprites
-		for (int i = 0; i < beatsAmount; i++)
+        for (int beat = 0; beat < beatsAmount; beat++)
         {
-            for (int ringIndex = 0; ringIndex < 4; ringIndex++)
+            for (int ring = 0; ring < 4; ring++)
             {
-                ringSprites[ringIndex][i].Texture = inactive;
-                if (rings[ringIndex][i]) ringSprites[ringIndex][i].Texture = active;
-                if (currentBeat == i) ringSprites[ringIndex][i].Texture = current;
+                sprites[ring, beat].Texture = inactive;
+                if (rings[ring, beat]) sprites[ring, beat].Texture = active;
+                if (currentBeat == beat) sprites[ring, beat].Texture = current;
             }
         }
     }
 
     public void OnBeat()
     {
-		if (rings[0][currentBeat]) firstAudioPlayer.Play();
-		if (rings[1][currentBeat]) secondAudioPlayer.Play();
-		if (rings[2][currentBeat]) thirdAudioPlayer.Play();
-		if (rings[3][currentBeat]) fourthAudioPlayer.Play();
+        if (rings[0, currentBeat]) firstAudioPlayer.Play();
+        if (rings[1, currentBeat]) secondAudioPlayer.Play();
+        if (rings[2, currentBeat]) thirdAudioPlayer.Play();
+        if (rings[3, currentBeat]) fourthAudioPlayer.Play();
     }
 
-	private Sprite2D CreateSprite(int i, int ringIndex)
+    private Sprite2D CreateSprite(int i, int ringIndex)
     {
         var sprite = new Sprite2D();
         float angle = Mathf.Pi * 2 * i / beatsAmount - Mathf.Pi / 2;
