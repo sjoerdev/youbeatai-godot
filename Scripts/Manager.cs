@@ -13,6 +13,7 @@ public partial class Manager : Node
 	[Export] int beatsAmount = 32;
 	
 	int currentBeat = 0;
+	int? previousBeat = null;
 	float beatTimer = 0;
 
 	Sprite2D[] beatSprites;
@@ -27,7 +28,7 @@ public partial class Manager : Node
 			var sprite = beatPrefab.Instantiate<Sprite2D>();
 
 			float radius = 400;
-			float angle = Mathf.Pi * 2 * i / beatsAmount;
+			float angle = Mathf.Pi * 2 * i / beatsAmount - Mathf.Pi / 2;
 			float x = Mathf.Cos(angle) * radius;
 			float y = Mathf.Sin(angle) * radius;
 			sprite.Position = new(x, y);
@@ -44,17 +45,20 @@ public partial class Manager : Node
 		beatTimer += (float)delta;
 		if (beatTimer > 60 / bpm)
 		{
+			audioPlayer.Play();
+			var sprite = beatSprites[currentBeat];
+			sprite.Texture = orange;
+
+			if (previousBeat != null)
+			{
+				var previous = beatSprites[previousBeat.Value];
+				previous.Texture = white;
+			}
+
+			beatTimer = 0;
+			previousBeat = currentBeat;
 			currentBeat++;
 			if (currentBeat == beatsAmount) currentBeat = 0;
-			OnBeat(currentBeat);
-			beatTimer = 0;
 		}
-	}
-
-	private void OnBeat(int currentBeat)
-	{
-		audioPlayer.Play();
-		var sprite = beatSprites[currentBeat];
-		sprite.Texture = orange;
 	}
 }
