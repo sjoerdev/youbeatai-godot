@@ -1,62 +1,125 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Manager : Node
 {
+	// assets
 	[Export] Texture2D white;
 	[Export] Texture2D orange;
+	[Export] Texture2D blue;
 
-	[Export] PackedScene beatPrefab;
-	[Export] AudioStreamPlayer2D audioPlayer;
+	[Export] AudioStreamPlayer2D firstAudioPlayer;
+	[Export] AudioStreamPlayer2D secondAudioPlayer;
+	[Export] AudioStreamPlayer2D thirdAudioPlayer;
+	[Export] AudioStreamPlayer2D fourthAudioPlayer;
+
 	
+	// timing
 	[Export] int bpm = 120;
-	[Export] int beatsAmount = 32;
-	
+	[Export] int beatsAmount = 16;
 	int currentBeat = 0;
 	int? previousBeat = null;
 	float beatTimer = 0;
 
-	Sprite2D[] beatSprites;
+	Sprite2D[] firstRingSprites;
+	Sprite2D[] secondRingSprites;
+	Sprite2D[] thirdRingSprites;
+	Sprite2D[] fourthRingSprites;
+
+	bool[] firstRing;
+	bool[] secondRing;
+	bool[] thirdRing;
+	bool[] fourthRing;
 	
 	public override void _Ready()
 	{
-		// instantiate beat sprites
-		beatSprites = new Sprite2D[beatsAmount];
+		// setup beatplaces
+		firstRing = new bool[beatsAmount];
+		secondRing = new bool[beatsAmount];
+		thirdRing = new bool[beatsAmount];
+		fourthRing = new bool[beatsAmount];
+		for (int i = 0; i < beatsAmount; i++) firstRing[i] = false;
+		for (int i = 0; i < beatsAmount; i++) secondRing[i] = false;
+		for (int i = 0; i < beatsAmount; i++) thirdRing[i] = false;
+		for (int i = 0; i < beatsAmount; i++) fourthRing[i] = false;
+
+		// instantiate sprites
+		firstRingSprites = new Sprite2D[beatsAmount];
+		secondRingSprites = new Sprite2D[beatsAmount];
+		thirdRingSprites = new Sprite2D[beatsAmount];
+		fourthRingSprites = new Sprite2D[beatsAmount];
 		for (int i = 0; i < beatsAmount; i++)
 		{
-			var sprite = beatPrefab.Instantiate<Sprite2D>();
+			var firstSprite = new Sprite2D();
+			var secondSprite = new Sprite2D();
+			var thirdSprite = new Sprite2D();
+			var fourthSprite = new Sprite2D();
 
-			float radius = 400;
 			float angle = Mathf.Pi * 2 * i / beatsAmount - Mathf.Pi / 2;
-			float x = Mathf.Cos(angle) * radius;
-			float y = Mathf.Sin(angle) * radius;
-			sprite.Position = new(x, y);
+			firstSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 600;
+			secondSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 500;
+			thirdSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 400;
+			fourthSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 300;
 
-			sprite.Texture = white;
-			AddChild(sprite);
-			beatSprites[i] = sprite;
+			firstSprite.Texture = white;
+			secondSprite.Texture = white;
+			thirdSprite.Texture = white;
+			fourthSprite.Texture = white;
+
+			AddChild(firstSprite);
+			AddChild(secondSprite);
+			AddChild(thirdSprite);
+			AddChild(fourthSprite);
+
+			firstRingSprites[i] = firstSprite;
+			secondRingSprites[i] = secondSprite;
+			thirdRingSprites[i] = thirdSprite;
+			fourthRingSprites[i] = fourthSprite;
 		}
 	}
 
 	public override void _Process(double delta)
 	{
+		// keep time
 		beatTimer += (float)delta;
 		if (beatTimer > 60f / bpm)
 		{
-			audioPlayer.Play();
-			var sprite = beatSprites[currentBeat];
-			sprite.Texture = orange;
-
-			if (previousBeat != null)
-			{
-				var previous = beatSprites[previousBeat.Value];
-				previous.Texture = white;
-			}
-
+			OnBeat();
 			beatTimer = 0;
 			previousBeat = currentBeat;
 			currentBeat++;
 			if (currentBeat == beatsAmount) currentBeat = 0;
 		}
+
+		// update sprites
+		for (int i = 0; i < beatsAmount; i++)
+		{
+			firstRingSprites[i].Texture = white;
+			secondRingSprites[i].Texture = white;
+			thirdRingSprites[i].Texture = white;
+			fourthRingSprites[i].Texture = white;
+
+			if (firstRing[i]) firstRingSprites[i].Texture = orange;
+			if (secondRing[i]) secondRingSprites[i].Texture = orange;
+			if (thirdRing[i]) thirdRingSprites[i].Texture = orange;
+			if (fourthRing[i]) fourthRingSprites[i].Texture = orange;
+
+			if (currentBeat == i)
+			{
+				firstRingSprites[i].Texture = blue;
+				secondRingSprites[i].Texture = blue;
+				thirdRingSprites[i].Texture = blue;
+				fourthRingSprites[i].Texture = blue;
+			}
+		}
+	}
+
+	public void OnBeat()
+	{
+		if (firstRing[currentBeat]) firstAudioPlayer.Play();
+		if (secondRing[currentBeat]) secondAudioPlayer.Play();
+		if (thirdRing[currentBeat]) thirdAudioPlayer.Play();
+		if (fourthRing[currentBeat]) fourthAudioPlayer.Play();
 	}
 }

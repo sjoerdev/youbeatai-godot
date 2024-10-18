@@ -3,24 +3,36 @@
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="Texture2D" uid="uid://dlteab6232hoa" path="res://Assets/white.png" id="2_1ig4u"]
 [ext_resource type="AudioStream" uid="uid://dstmu6og4sxwo" path="res://Assets/sound.wav" id="2_a2516"]
-[ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_xci3e"]
 [ext_resource type="Texture2D" uid="uid://dou73h8ykwfdd" path="res://Assets/orange.png" id="3_kue4e"]
+[ext_resource type="Texture2D" uid="uid://dyesdvbhshjhb" path="res://Assets/blue.png" id="4_qmgel"]
 
 [node name="scene" type="Node2D"]
 
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.4, 0.4)
 
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("audioPlayer")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer")]
 script = ExtResource("1_rfd7i")
 white = ExtResource("2_1ig4u")
 orange = ExtResource("3_kue4e")
-beatPrefab = ExtResource("2_xci3e")
-audioPlayer = NodePath("AudioPlayer")
+blue = ExtResource("4_qmgel")
+firstAudioPlayer = NodePath("firstAudioPlayer")
+secondAudioPlayer = NodePath("secondAudioPlayer")
+thirdAudioPlayer = NodePath("thirdAudioPlayer")
+fourthAudioPlayer = NodePath("fourthAudioPlayer")
 
-[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
+[node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
+stream = ExtResource("2_a2516")
+
+[node name="secondAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
+stream = ExtResource("2_a2516")
+
+[node name="thirdAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
+stream = ExtResource("2_a2516")
+
+[node name="fourthAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("2_a2516")
