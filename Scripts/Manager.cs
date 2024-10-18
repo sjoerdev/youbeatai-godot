@@ -9,7 +9,7 @@ public partial class Manager : Node
 	[Export] PackedScene beatPrefab;
 	[Export] AudioStreamPlayer2D audioPlayer;
 	
-	[Export] int bpm = 60;
+	[Export] int bpm = 120;
 	[Export] int beatsAmount = 32;
 	
 	int currentBeat = 0;
@@ -20,9 +20,8 @@ public partial class Manager : Node
 	
 	public override void _Ready()
 	{
-		beatSprites = new Sprite2D[beatsAmount];
-
 		// instantiate beat sprites
+		beatSprites = new Sprite2D[beatsAmount];
 		for (int i = 0; i < beatsAmount; i++)
 		{
 			var sprite = beatPrefab.Instantiate<Sprite2D>();
@@ -35,7 +34,6 @@ public partial class Manager : Node
 
 			sprite.Texture = white;
 			AddChild(sprite);
-
 			beatSprites[i] = sprite;
 		}
 	}
@@ -43,7 +41,7 @@ public partial class Manager : Node
 	public override void _Process(double delta)
 	{
 		beatTimer += (float)delta;
-		if (beatTimer > 60 / bpm)
+		if (beatTimer > 60f / bpm)
 		{
 			audioPlayer.Play();
 			var sprite = beatSprites[currentBeat];
