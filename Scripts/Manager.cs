@@ -5,9 +5,9 @@ using System.Linq;
 public partial class Manager : Node
 {
 	// assets
-	[Export] Texture2D white;
-	[Export] Texture2D orange;
-	[Export] Texture2D blue;
+	[Export] Texture2D active;
+	[Export] Texture2D inactive;
+	[Export] Texture2D current;
 
 	[Export] AudioStreamPlayer2D firstAudioPlayer;
 	[Export] AudioStreamPlayer2D secondAudioPlayer;
@@ -40,11 +40,12 @@ public partial class Manager : Node
 		thirdRing = new bool[beatsAmount];
 		fourthRing = new bool[beatsAmount];
 
+		float chance = 0.4f;
 		var random = new Random();
-		for (int i = 0; i < beatsAmount; i++) firstRing[i] = random.NextSingle() > 0.7f;
-		for (int i = 0; i < beatsAmount; i++) secondRing[i] = random.NextSingle() > 0.7f;
-		for (int i = 0; i < beatsAmount; i++) thirdRing[i] = random.NextSingle() > 0.7f;
-		for (int i = 0; i < beatsAmount; i++) fourthRing[i] = random.NextSingle() > 0.7f;
+		for (int i = 0; i < beatsAmount; i++) firstRing[i] = random.NextSingle() < chance;
+		for (int i = 0; i < beatsAmount; i++) secondRing[i] = random.NextSingle() < chance;
+		for (int i = 0; i < beatsAmount; i++) thirdRing[i] = random.NextSingle() < chance;
+		for (int i = 0; i < beatsAmount; i++) fourthRing[i] = random.NextSingle() < chance;
 
 		// instantiate sprites
 		firstRingSprites = new Sprite2D[beatsAmount];
@@ -64,10 +65,10 @@ public partial class Manager : Node
 			thirdSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 400;
 			fourthSprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 300;
 
-			firstSprite.Texture = white;
-			secondSprite.Texture = white;
-			thirdSprite.Texture = white;
-			fourthSprite.Texture = white;
+			firstSprite.Texture = inactive;
+			secondSprite.Texture = inactive;
+			thirdSprite.Texture = inactive;
+			fourthSprite.Texture = inactive;
 
 			AddChild(firstSprite);
 			AddChild(secondSprite);
@@ -97,22 +98,22 @@ public partial class Manager : Node
 		// update sprites
 		for (int i = 0; i < beatsAmount; i++)
 		{
-			firstRingSprites[i].Texture = white;
-			secondRingSprites[i].Texture = white;
-			thirdRingSprites[i].Texture = white;
-			fourthRingSprites[i].Texture = white;
+			firstRingSprites[i].Texture = inactive;
+			secondRingSprites[i].Texture = inactive;
+			thirdRingSprites[i].Texture = inactive;
+			fourthRingSprites[i].Texture = inactive;
 
-			if (firstRing[i]) firstRingSprites[i].Texture = orange;
-			if (secondRing[i]) secondRingSprites[i].Texture = orange;
-			if (thirdRing[i]) thirdRingSprites[i].Texture = orange;
-			if (fourthRing[i]) fourthRingSprites[i].Texture = orange;
+			if (firstRing[i]) firstRingSprites[i].Texture = active;
+			if (secondRing[i]) secondRingSprites[i].Texture = active;
+			if (thirdRing[i]) thirdRingSprites[i].Texture = active;
+			if (fourthRing[i]) fourthRingSprites[i].Texture = active;
 
 			if (currentBeat == i)
 			{
-				firstRingSprites[i].Texture = blue;
-				secondRingSprites[i].Texture = blue;
-				thirdRingSprites[i].Texture = blue;
-				fourthRingSprites[i].Texture = blue;
+				firstRingSprites[i].Texture = current;
+				secondRingSprites[i].Texture = current;
+				thirdRingSprites[i].Texture = current;
+				fourthRingSprites[i].Texture = current;
 			}
 		}
 	}

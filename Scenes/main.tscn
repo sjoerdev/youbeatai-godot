@@ -10,6 +10,8 @@
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
 
 [node name="scene" type="Node2D"]
+metadata/_edit_vertical_guides_ = [-1840.0]
+metadata/_edit_horizontal_guides_ = [-1000.0]
 
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
@@ -20,15 +22,13 @@ current = true
 
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer")]
 script = ExtResource("1_rfd7i")
-white = ExtResource("2_1ig4u")
-orange = ExtResource("3_kue4e")
-blue = ExtResource("4_qmgel")
+active = ExtResource("3_kue4e")
+inactive = ExtResource("2_1ig4u")
+current = ExtResource("4_qmgel")
 firstAudioPlayer = NodePath("firstAudioPlayer")
 secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
-bpm = 80
-beatsAmount = 32
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
@@ -40,4 +40,5 @@ stream = ExtResource("6_v5052")
 stream = ExtResource("7_s71c0")
 
 [node name="fourthAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
+position = Vector2(363, 1965)
 stream = ExtResource("8_4xf5a")
