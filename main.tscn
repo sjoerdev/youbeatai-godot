@@ -1,3 +1,15 @@
-[gd_scene format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=3 format=3 uid="uid://c78m8ijn10kwh"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://cjtqe6v00jeu0" path="res://idk.png" id="1_5uivq"]
+[ext_resource type="Script" path="res://Testscript.cs" id="2_5h5wi"]
+
+[node name="scene" type="Node2D"]
+
+[node name="object" type="Node" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="object"]
+texture = ExtResource("1_5uivq")
+script = ExtResource("2_5h5wi")
+
+[node name="Camera" type="Camera2D" parent="."]
+scale = Vector2(4.12, 1)
