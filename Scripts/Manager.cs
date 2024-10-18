@@ -41,10 +41,10 @@ public partial class Manager : Node
 		fourthRing = new bool[beatsAmount];
 
 		var random = new Random();
-		for (int i = 0; i < beatsAmount; i++) firstRing[i] = random.NextSingle() > 0.8f;
-		for (int i = 0; i < beatsAmount; i++) secondRing[i] = random.NextSingle() > 0.8f;
-		for (int i = 0; i < beatsAmount; i++) thirdRing[i] = random.NextSingle() > 0.8f;
-		for (int i = 0; i < beatsAmount; i++) fourthRing[i] = random.NextSingle() > 0.8f;
+		for (int i = 0; i < beatsAmount; i++) firstRing[i] = random.NextSingle() > 0.7f;
+		for (int i = 0; i < beatsAmount; i++) secondRing[i] = random.NextSingle() > 0.7f;
+		for (int i = 0; i < beatsAmount; i++) thirdRing[i] = random.NextSingle() > 0.7f;
+		for (int i = 0; i < beatsAmount; i++) fourthRing[i] = random.NextSingle() > 0.7f;
 
 		// instantiate sprites
 		firstRingSprites = new Sprite2D[beatsAmount];
@@ -85,7 +85,7 @@ public partial class Manager : Node
 	{
 		// keep time
 		beatTimer += (float)delta;
-		if (beatTimer > 60f / bpm)
+		if (beatTimer > (60f / bpm) / 4)
 		{
 			beatTimer = 0;
 			previousBeat = currentBeat;
