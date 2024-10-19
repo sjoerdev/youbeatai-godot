@@ -43,5 +43,4 @@ stream = ExtResource("6_v5052")
 stream = ExtResource("7_s71c0")
 
 [node name="fourthAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
-position = Vector2(363, 1965)
 stream = ExtResource("8_4xf5a")
