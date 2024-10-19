@@ -3,10 +3,16 @@ using System;
 
 public partial class Manager : Node
 {
+    // singleton
+    public static Manager instance = null;
+
+    // prefabs
+    [Export] PackedScene spritePrefab;
+
     // textures
-    [Export] Texture2D active;
-    [Export] Texture2D inactive;
-    [Export] Texture2D current;
+    [Export] public Texture2D activeTexture;
+    [Export] public Texture2D inactiveTexture;
+    [Export] public Texture2D currentTexture;
 
 	// audio
     [Export] AudioStreamPlayer2D firstAudioPlayer;
@@ -21,30 +27,33 @@ public partial class Manager : Node
     float beatTimer = 0;
 
     // rings
-    Sprite2D[,] sprites;
-    bool[,] rings;
+    Sprite2D[,] beatSprites;
+    public bool[,] beatActives;
 
     public override void _Ready()
     {
-        // init rings
-        rings = new bool[4, beatsAmount];
+        // init singleton
+        instance ??= this;
+
+        // init actives
+        beatActives = new bool[4, beatsAmount];
         for (int ring = 0; ring < 4; ring++)
         {
             for (int beat = 0; beat < beatsAmount; beat++)
             {
-                rings[ring, beat] = new Random().NextSingle() < 0.4f;
+                beatActives[ring, beat] = new Random().NextSingle() < 0.4f;
             }
         }
 
         // init sprites
-        sprites = new Sprite2D[4, beatsAmount];
+        beatSprites = new Sprite2D[4, beatsAmount];
         for (int ring = 0; ring < 4; ring++)
         {
             for (int beat = 0; beat < beatsAmount; beat++)
             {
                 var sprite = CreateSprite(beat, ring);
                 AddChild(sprite);
-                sprites[ring, beat] = sprite;
+                beatSprites[ring, beat] = sprite;
             }
         }
     }
@@ -65,28 +74,33 @@ public partial class Manager : Node
         {
             for (int ring = 0; ring < 4; ring++)
             {
-                sprites[ring, beat].Texture = inactive;
-                if (rings[ring, beat]) sprites[ring, beat].Texture = active;
-                if (currentBeat == beat) sprites[ring, beat].Texture = current;
+                beatSprites[ring, beat].Texture = inactiveTexture;
+                if (beatActives[ring, beat]) beatSprites[ring, beat].Texture = activeTexture;
+                if (currentBeat == beat) beatSprites[ring, beat].Texture = currentTexture;
             }
         }
     }
 
     public void OnBeat()
     {
-        if (rings[0, currentBeat]) firstAudioPlayer.Play();
-        if (rings[1, currentBeat]) secondAudioPlayer.Play();
-        if (rings[2, currentBeat]) thirdAudioPlayer.Play();
-        if (rings[3, currentBeat]) fourthAudioPlayer.Play();
+        if (beatActives[0, currentBeat]) firstAudioPlayer.Play();
+        if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
+        if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
+        if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
     }
 
-    private Sprite2D CreateSprite(int i, int ringIndex)
+    private Sprite2D CreateSprite(int beat, int ring)
     {
-        var sprite = new Sprite2D();
-        float angle = Mathf.Pi * 2 * i / beatsAmount - Mathf.Pi / 2;
-        float distance = (4 - ringIndex) * 100 + 100;
+        var sprite = (Sprite2D)spritePrefab.Instantiate();
+        float angle = Mathf.Pi * 2 * beat / beatsAmount - Mathf.Pi / 2;
+        float distance = (4 - ring) * 100 + 100;
         sprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
-        sprite.Texture = inactive;
+        sprite.Texture = inactiveTexture;
+
+        BeatSprite beatSprite = sprite as BeatSprite;
+        beatSprite.spriteIndex = beat;
+        beatSprite.ringIndex = ring;
+
         return sprite;
     }
 }
