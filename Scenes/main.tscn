@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=11 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Assets/clap.wav" id="6_v5052"]
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
+[ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
 
 [node name="scene" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-1840.0]
@@ -44,3 +45,6 @@ stream = ExtResource("7_s71c0")
 
 [node name="fourthAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("8_4xf5a")
+
+[node name="MicrophoneCapture" type="Node" parent="."]
+script = ExtResource("10_4yy8e")
