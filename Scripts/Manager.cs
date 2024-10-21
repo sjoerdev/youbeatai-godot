@@ -26,8 +26,10 @@ public partial class Manager : Node
     public bool[,] beatActives;
 
     // other
-    [Export] public Texture2D texture;
-    [Export] public Sprite2D pointer;
+    [Export] ProgressBar progressBar;
+    float progressBarValue = 0;
+    [Export] Texture2D texture;
+    [Export] Sprite2D pointer;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
@@ -100,6 +102,10 @@ public partial class Manager : Node
         float factor = intergerFactor + currentbeatProgress - offset;
         pointer.RotationDegrees = factor * 360f;
 
+        // update progressbar
+        progressBar.Value = progressBarValue;
+        progressBarValue -= 0.25f * (float)delta;
+
         // check clap
         if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
         {
@@ -111,11 +117,13 @@ public partial class Manager : Node
     public void OnClap()
     {
         GD.Print("clap");
-        for (int ring = 0; ring < 4; ring++)
+        int ring = 1;
+        bool active = beatActives[ring, currentBeat];
+        var sprite = beatSprites[ring, currentBeat];
+        if (active)
         {
-            bool active = beatActives[ring, currentBeat];
-            var sprite = beatSprites[ring, currentBeat];
-            if (active) sprite.Scale += Vector2.One;
+            sprite.Scale += Vector2.One;
+            progressBarValue += 1f / beatsAmount * 100f;
         }
     }
 

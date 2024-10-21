@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=13 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -7,7 +7,9 @@
 [ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Assets/clap.wav" id="6_v5052"]
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
+[ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://background.tres" id="9_nnqde"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
+[ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
@@ -23,7 +25,7 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "pointer")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "progressBar", "pointer")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -32,6 +34,7 @@ thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
 beatsAmount = 32
+progressBar = NodePath("../ProgressBar")
 texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
 
@@ -81,3 +84,22 @@ modulate = Color(0, 0, 0, 1)
 rotation = -0.785398
 scale = Vector2(4, 600)
 texture = SubResource("CanvasTexture_b5jd4")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -563.0
+offset_top = -311.0
+offset_right = -222.0
+offset_bottom = -279.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_styles/background = ExtResource("9_nnqde")
+theme_override_styles/fill = ExtResource("10_t1q83")
+rounded = true
