@@ -132,7 +132,7 @@ public partial class Manager : Node
     {
         var sprite = (Sprite2D)spritePrefab.Instantiate();
         float angle = Mathf.Pi * 2 * beat / beatsAmount - Mathf.Pi / 2;
-        float distance = (4 - ring) * 32 + 132;
+        float distance = (4 - ring) * 34 + 136;
         sprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         sprite.Texture = texture;
 
