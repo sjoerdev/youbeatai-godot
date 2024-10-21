@@ -87,9 +87,15 @@ public partial class Manager : Node
         // check clap
         if (MicrophoneCapture.instance.volume > clapTreshold && clappedThisBeat == false)
         {
-            GD.Print("clap");
+            OnClap();
             clappedThisBeat = true;
         }
+    }
+
+    public void OnClap()
+    {
+        GD.Print("clap");
+        beatSprites[0, currentBeat].Scale += Vector2.One;
     }
 
     public void OnBeat()
@@ -98,7 +104,6 @@ public partial class Manager : Node
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
-
         clappedThisBeat = false;
     }
 

@@ -32,7 +32,7 @@ firstAudioPlayer = NodePath("firstAudioPlayer")
 secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
-bpm = 80
+bpm = 60
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
