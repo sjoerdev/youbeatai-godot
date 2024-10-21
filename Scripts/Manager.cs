@@ -27,6 +27,7 @@ public partial class Manager : Node
 
     // other
     [Export] public Texture2D texture;
+    [Export] public Sprite2D pointer;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
@@ -63,7 +64,8 @@ public partial class Manager : Node
     {
         // keep time
         beatTimer += (float)delta;
-        if (beatTimer > (60f / bpm) / 4)
+        var timePerBeat = (60f / bpm) / 4;
+        if (beatTimer > timePerBeat)
         {
             beatTimer = 0;
             currentBeat = (currentBeat + 1) % beatsAmount;
@@ -89,6 +91,14 @@ public partial class Manager : Node
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
         }
+
+        // update pointer
+        float intergerFactor = (float)currentBeat / (float)beatsAmount;
+        float currentBeatProgressFactor = beatTimer / timePerBeat;
+        float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
+        float offset = timePerBeat * 2 / beatsAmount;
+        float factor = intergerFactor + currentbeatProgress - offset;
+        pointer.RotationDegrees = factor * 360f;
 
         // check clap
         if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)

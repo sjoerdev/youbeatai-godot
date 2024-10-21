@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=10 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -8,6 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
 [node name="scene" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-1840.0]
@@ -19,7 +21,7 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "pointer")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -29,6 +31,7 @@ fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
 beatsAmount = 32
 texture = ExtResource("2_1ig4u")
+pointer = NodePath("../Pointer")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
@@ -44,3 +47,10 @@ stream = ExtResource("8_4xf5a")
 
 [node name="MicrophoneCapture" type="Node" parent="."]
 script = ExtResource("10_4yy8e")
+
+[node name="Pointer" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 1, 1)
+scale = Vector2(8, 128)
+texture = SubResource("CanvasTexture_bao2x")
+centered = false
+offset = Vector2(-0.5, -1)
