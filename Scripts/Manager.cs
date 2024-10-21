@@ -79,6 +79,8 @@ public partial class Manager : Node
                 beatSprites[ring, beat].Modulate = new(1, 1, 1);
                 if (beatActives[ring, beat]) beatSprites[ring, beat].Modulate = new(0.8f, 0.2f, 0f);
                 if (currentBeat == beat) beatSprites[ring, beat].Modulate = new(0, 0, 1f);
+
+                if (beatSprites[ring, beat].Scale.X > 1) beatSprites[ring, beat].Scale -= Vector2.One * (float)delta * 0.3f;
             }
         }
 
