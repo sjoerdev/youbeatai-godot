@@ -98,7 +98,7 @@ public partial class Manager : Node
         float intergerFactor = (float)currentBeat / (float)beatsAmount;
         float currentBeatProgressFactor = beatTimer / timePerBeat;
         float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
-        float offset = timePerBeat * 2 / beatsAmount;
+        float offset = 1f / beatsAmount / 2;
         float factor = intergerFactor + currentbeatProgress - offset;
         pointer.RotationDegrees = factor * 360f;
 
