@@ -30,6 +30,10 @@ public partial class Manager : Node
     Sprite2D[,] beatSprites;
     public bool[,] beatActives;
 
+    // other
+    [Export] float clapTreshold = 0.1f;
+    bool clappedThisBeat = false;
+
     public override void _Ready()
     {
         // init singleton
@@ -79,6 +83,13 @@ public partial class Manager : Node
                 if (currentBeat == beat) beatSprites[ring, beat].Texture = currentTexture;
             }
         }
+
+        // check clap
+        if (MicrophoneCapture.instance.volume > clapTreshold && clappedThisBeat == false)
+        {
+            GD.Print("clap");
+            clappedThisBeat = true;
+        }
     }
 
     public void OnBeat()
@@ -87,6 +98,8 @@ public partial class Manager : Node
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
+
+        clappedThisBeat = false;
     }
 
     private Sprite2D CreateSprite(int beat, int ring)

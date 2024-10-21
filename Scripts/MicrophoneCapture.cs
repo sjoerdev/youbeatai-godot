@@ -3,13 +3,19 @@ using System;
 
 public partial class MicrophoneCapture : Node
 {
+    public static MicrophoneCapture instance = null;
+
 	[Export] string busName = "Microphone";
 	
     private AudioEffectCapture audioEffectCapture;
     private AudioStreamPlayer audioStreamPlayer;
 
+    public float volume = 0;
+
     public override void _Ready()
     {
+        instance ??= this;
+        
         audioStreamPlayer = new AudioStreamPlayer();
         AddChild(audioStreamPlayer);
 
@@ -27,8 +33,7 @@ public partial class MicrophoneCapture : Node
 		if (frames > 0)
 		{
 			var audioData = audioEffectCapture.GetBuffer(frames);
-			var volume = GetVolumeFromAudioData(audioData);
-			GD.Print($"Microphone Volume: {volume}");
+			volume = GetVolumeFromAudioData(audioData);
 		}
     }
 
