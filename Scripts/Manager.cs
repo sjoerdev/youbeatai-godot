@@ -10,9 +10,7 @@ public partial class Manager : Node
     [Export] PackedScene spritePrefab;
 
     // textures
-    [Export] public Texture2D activeTexture;
-    [Export] public Texture2D inactiveTexture;
-    [Export] public Texture2D currentTexture;
+    [Export] public Texture2D texture;
 
 	// audio
     [Export] AudioStreamPlayer2D firstAudioPlayer;
@@ -32,7 +30,7 @@ public partial class Manager : Node
 
     // other
     [Export] float clapTreshold = 0.1f;
-    bool clappedThisBeat = false;
+    bool clapped = false;
 
     public override void _Ready()
     {
@@ -45,7 +43,7 @@ public partial class Manager : Node
         {
             for (int beat = 0; beat < beatsAmount; beat++)
             {
-                beatActives[ring, beat] = new Random().NextSingle() < 0.4f;
+                beatActives[ring, beat] = new Random().NextSingle() < 0.2f;
             }
         }
 
@@ -78,24 +76,31 @@ public partial class Manager : Node
         {
             for (int ring = 0; ring < 4; ring++)
             {
-                beatSprites[ring, beat].Texture = inactiveTexture;
-                if (beatActives[ring, beat]) beatSprites[ring, beat].Texture = activeTexture;
-                if (currentBeat == beat) beatSprites[ring, beat].Texture = currentTexture;
+                beatSprites[ring, beat].Modulate = new(1, 1, 1);
+                if (beatActives[ring, beat]) beatSprites[ring, beat].Modulate = new(0.8f, 0.2f, 0f);
+                if (currentBeat == beat) beatSprites[ring, beat].Modulate = new(0, 0, 1f);
             }
         }
 
         // check clap
-        if (MicrophoneCapture.instance.volume > clapTreshold && clappedThisBeat == false)
+        if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
         {
             OnClap();
-            clappedThisBeat = true;
+            clapped = true;
         }
     }
 
     public void OnClap()
     {
         GD.Print("clap");
-        beatSprites[0, currentBeat].Scale += Vector2.One;
+        for (int ring = 0; ring < 4; ring++)
+        {
+            bool active = beatActives[ring, currentBeat];
+            if (active)
+            {
+                beatSprites[ring, currentBeat].Scale += Vector2.One;
+            }
+        }
     }
 
     public void OnBeat()
@@ -104,16 +109,16 @@ public partial class Manager : Node
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
-        clappedThisBeat = false;
+        clapped = false;
     }
 
     private Sprite2D CreateSprite(int beat, int ring)
     {
         var sprite = (Sprite2D)spritePrefab.Instantiate();
         float angle = Mathf.Pi * 2 * beat / beatsAmount - Mathf.Pi / 2;
-        float distance = (4 - ring) * 100 + 100;
+        float distance = (4 - ring) * 40 + 90;
         sprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
-        sprite.Texture = inactiveTexture;
+        sprite.Texture = texture;
 
         BeatSprite beatSprite = sprite as BeatSprite;
         beatSprite.spriteIndex = beat;

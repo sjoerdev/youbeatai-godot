@@ -1,10 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=9 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
 [ext_resource type="Texture2D" uid="uid://dlteab6232hoa" path="res://Assets/white.png" id="2_1ig4u"]
-[ext_resource type="Texture2D" uid="uid://dou73h8ykwfdd" path="res://Assets/orange.png" id="3_kue4e"]
-[ext_resource type="Texture2D" uid="uid://dyesdvbhshjhb" path="res://Assets/blue.png" id="4_qmgel"]
 [ext_resource type="AudioStream" uid="uid://mfga1xf5g5ds" path="res://Assets/kick.wav" id="5_cl760"]
 [ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Assets/clap.wav" id="6_v5052"]
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
@@ -17,7 +15,6 @@ metadata/_edit_horizontal_guides_ = [-1000.0]
 
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
-zoom = Vector2(0.4, 0.4)
 
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
@@ -25,9 +22,7 @@ current = true
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
-activeTexture = ExtResource("3_kue4e")
-inactiveTexture = ExtResource("2_1ig4u")
-currentTexture = ExtResource("4_qmgel")
+texture = ExtResource("2_1ig4u")
 firstAudioPlayer = NodePath("firstAudioPlayer")
 secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
