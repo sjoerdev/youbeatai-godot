@@ -27,6 +27,7 @@ secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
+beatsAmount = 32
 texture = ExtResource("2_1ig4u")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
