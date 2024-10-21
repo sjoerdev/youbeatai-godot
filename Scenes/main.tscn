@@ -19,6 +19,38 @@
 metadata/_edit_vertical_guides_ = [-1840.0]
 metadata/_edit_horizontal_guides_ = [-1000.0]
 
+[node name="Pointer" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(4, 128)
+texture = SubResource("CanvasTexture_bao2x")
+centered = false
+offset = Vector2(-0.5, -1)
+
+[node name="Cross" type="Node" parent="."]
+
+[node name="Vertical" type="Sprite2D" parent="Cross"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(4, 256)
+texture = SubResource("CanvasTexture_b5jd4")
+
+[node name="Horizontal" type="Sprite2D" parent="Cross"]
+modulate = Color(0, 0, 0, 1)
+rotation = 1.5708
+scale = Vector2(4, 256)
+texture = SubResource("CanvasTexture_b5jd4")
+
+[node name="Vertical2" type="Sprite2D" parent="Cross"]
+modulate = Color(0, 0, 0, 1)
+rotation = 0.785398
+scale = Vector2(4, 256)
+texture = SubResource("CanvasTexture_b5jd4")
+
+[node name="Horizontal2" type="Sprite2D" parent="Cross"]
+modulate = Color(0, 0, 0, 1)
+rotation = -0.785398
+scale = Vector2(4, 256)
+texture = SubResource("CanvasTexture_b5jd4")
+
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
 
@@ -53,38 +85,6 @@ stream = ExtResource("8_4xf5a")
 [node name="MicrophoneCapture" type="Node" parent="."]
 script = ExtResource("10_4yy8e")
 
-[node name="Pointer" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 1, 1)
-scale = Vector2(4, 128)
-texture = SubResource("CanvasTexture_bao2x")
-centered = false
-offset = Vector2(-0.5, -1)
-
-[node name="Cross" type="Node" parent="."]
-
-[node name="Vertical" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-scale = Vector2(4, 600)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Horizontal" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = 1.5708
-scale = Vector2(4, 600)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Vertical2" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = 0.785398
-scale = Vector2(4, 600)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Horizontal2" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = -0.785398
-scale = Vector2(4, 600)
-texture = SubResource("CanvasTexture_b5jd4")
-
 [node name="ProgressBar" type="ProgressBar" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -92,9 +92,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -563.0
-offset_top = -311.0
-offset_right = -222.0
-offset_bottom = -279.0
+offset_top = -304.0
+offset_right = -435.0
+offset_bottom = -272.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -103,3 +103,59 @@ theme_override_constants/outline_size = 2
 theme_override_styles/background = ExtResource("9_nnqde")
 theme_override_styles/fill = ExtResource("10_t1q83")
 rounded = true
+
+[node name="SaveLayoutButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -563.0
+offset_top = -264.0
+offset_right = -435.0
+offset_bottom = -232.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Save Layout"
+
+[node name="ClearLayoutButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -563.0
+offset_top = -228.0
+offset_right = -435.0
+offset_bottom = -196.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Clear Layout"
+
+[node name="RecordButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -563.0
+offset_top = -192.0
+offset_right = -435.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Record"
+
+[node name="PlayPauseButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -563.0
+offset_top = -156.0
+offset_right = -435.0
+offset_bottom = -124.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play/Pause"
