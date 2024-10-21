@@ -9,9 +9,6 @@ public partial class Manager : Node
     // prefabs
     [Export] PackedScene spritePrefab;
 
-    // textures
-    [Export] public Texture2D texture;
-
 	// audio
     [Export] AudioStreamPlayer2D firstAudioPlayer;
     [Export] AudioStreamPlayer2D secondAudioPlayer;
@@ -24,11 +21,12 @@ public partial class Manager : Node
     int currentBeat = 0;
     float beatTimer = 0;
 
-    // rings
+    // beats
     Sprite2D[,] beatSprites;
     public bool[,] beatActives;
 
     // other
+    [Export] public Texture2D texture;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
@@ -37,17 +35,18 @@ public partial class Manager : Node
         // init singleton
         instance ??= this;
 
-        // init actives
+        // set default actives
         beatActives = new bool[4, beatsAmount];
         for (int ring = 0; ring < 4; ring++)
         {
             for (int beat = 0; beat < beatsAmount; beat++)
             {
-                beatActives[ring, beat] = new Random().NextSingle() < 0.2f;
+                bool active = new Random().NextSingle() < 0.2f;
+                beatActives[ring, beat] = active;
             }
         }
 
-        // init sprites
+        // spawn sprites
         beatSprites = new Sprite2D[4, beatsAmount];
         for (int ring = 0; ring < 4; ring++)
         {
@@ -76,11 +75,18 @@ public partial class Manager : Node
         {
             for (int ring = 0; ring < 4; ring++)
             {
-                beatSprites[ring, beat].Modulate = new(1, 1, 1);
-                if (beatActives[ring, beat]) beatSprites[ring, beat].Modulate = new(0.8f, 0.2f, 0f);
-                if (currentBeat == beat) beatSprites[ring, beat].Modulate = new(0, 0, 1f);
+                var sprite = beatSprites[ring, beat];
+                var active = beatActives[ring, beat];
+                
+                var white = new Color(1, 1, 1);
+                var orange = new Color(0.8f, 0.2f, 0f);
+                var blue = new Color(0, 0, 1f);
 
-                if (beatSprites[ring, beat].Scale.X > 1) beatSprites[ring, beat].Scale -= Vector2.One * (float)delta * 0.3f;
+                sprite.Modulate = white;
+                if (active) sprite.Modulate = orange;
+                if (beat == currentBeat) sprite.Modulate = blue;
+
+                if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
         }
 
@@ -98,10 +104,8 @@ public partial class Manager : Node
         for (int ring = 0; ring < 4; ring++)
         {
             bool active = beatActives[ring, currentBeat];
-            if (active)
-            {
-                beatSprites[ring, currentBeat].Scale += Vector2.One;
-            }
+            var sprite = beatSprites[ring, currentBeat];
+            if (active) sprite.Scale += Vector2.One;
         }
     }
 

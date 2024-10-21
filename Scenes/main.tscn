@@ -22,12 +22,12 @@ current = true
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
-texture = ExtResource("2_1ig4u")
 firstAudioPlayer = NodePath("firstAudioPlayer")
 secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
+texture = ExtResource("2_1ig4u")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
