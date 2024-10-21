@@ -57,7 +57,7 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "progressBar", "pointer")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "progressBar", "pointer")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -66,6 +66,10 @@ thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
 beatsAmount = 32
+SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
+ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
+RecordButton = NodePath("../Buttons/RecordButton")
+PlayPauseButton = NodePath("../Buttons/PlayPauseButton")
 progressBar = NodePath("../ProgressBar")
 texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
@@ -104,58 +108,60 @@ theme_override_styles/background = ExtResource("9_nnqde")
 theme_override_styles/fill = ExtResource("10_t1q83")
 rounded = true
 
-[node name="SaveLayoutButton" type="Button" parent="."]
+[node name="Buttons" type="Node" parent="."]
+
+[node name="SaveLayoutButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -563.0
-offset_top = -264.0
-offset_right = -435.0
-offset_bottom = -232.0
+offset_left = -1139.0
+offset_top = -588.0
+offset_right = -1011.0
+offset_bottom = -556.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Save Layout"
 
-[node name="ClearLayoutButton" type="Button" parent="."]
+[node name="ClearLayoutButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -563.0
-offset_top = -228.0
-offset_right = -435.0
-offset_bottom = -196.0
+offset_left = -1139.0
+offset_top = -552.0
+offset_right = -1011.0
+offset_bottom = -520.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Clear Layout"
 
-[node name="RecordButton" type="Button" parent="."]
+[node name="RecordButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -563.0
-offset_top = -192.0
-offset_right = -435.0
-offset_bottom = -160.0
+offset_left = -1139.0
+offset_top = -516.0
+offset_right = -1011.0
+offset_bottom = -484.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Record"
 
-[node name="PlayPauseButton" type="Button" parent="."]
+[node name="PlayPauseButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -563.0
-offset_top = -156.0
-offset_right = -435.0
-offset_bottom = -124.0
+offset_left = -1139.0
+offset_top = -480.0
+offset_right = -1011.0
+offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Play/Pause"

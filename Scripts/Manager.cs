@@ -26,6 +26,11 @@ public partial class Manager : Node
     public bool[,] beatActives;
 
     // other
+    [Export] Button SaveLayoutButton;
+    [Export] Button ClearLayoutButton;
+    [Export] Button RecordButton;
+    [Export] Button PlayPauseButton;
+
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
     [Export] Texture2D texture;
@@ -33,10 +38,21 @@ public partial class Manager : Node
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
+    public void OnSaveLayoutButton() => GD.Print("Save");
+    public void OnClearLayoutButton() => GD.Print("Clear");
+    public void OnRecordButton() => GD.Print("Record");
+    public void OnPlayPauseButton() => GD.Print("Play");
+
     public override void _Ready()
     {
         // init singleton
         instance ??= this;
+
+        // init buttons
+        SaveLayoutButton.Pressed += OnSaveLayoutButton;
+        ClearLayoutButton.Pressed += OnClearLayoutButton;
+        RecordButton.Pressed += OnRecordButton;
+        PlayPauseButton.Pressed += OnPlayPauseButton;
 
         // set default actives
         beatActives = new bool[4, beatsAmount];
