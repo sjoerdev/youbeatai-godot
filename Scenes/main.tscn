@@ -165,3 +165,114 @@ offset_bottom = -597.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Play/Pause"
+
+[node name="ReverbButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.0
+offset_top = -495.0
+offset_right = -80.0
+offset_bottom = -463.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Reverb"
+
+[node name="DelayButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.0
+offset_top = -452.0
+offset_right = -80.0
+offset_bottom = -420.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Delay"
+
+[node name="StyleButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.0
+offset_top = -410.0
+offset_right = -80.0
+offset_bottom = -378.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Style
+"
+
+[node name="StyleLeftButton" type="Button" parent="Buttons/StyleButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.0
+offset_top = -16.0
+offset_right = -72.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "<"
+
+[node name="StyleRightButton" type="Button" parent="Buttons/StyleButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 71.0
+offset_top = -16.0
+offset_right = 106.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = ">"
+
+[node name="BpmUpButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1057.0
+offset_top = -495.0
+offset_right = -929.0
+offset_bottom = -463.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Bpm Up"
+
+[node name="BpmDownButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1057.0
+offset_top = -452.0
+offset_right = -929.0
+offset_bottom = -420.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Bpm Down"
+
+[node name="Circle" type="Sprite2D" parent="."]
+position = Vector2(516, -155)
+scale = Vector2(0.61, 0.61)
+texture = ExtResource("2_1ig4u")
+
+[node name="Circle2" type="Sprite2D" parent="."]
+position = Vector2(517, -111)
+scale = Vector2(0.61, 0.61)
+texture = ExtResource("2_1ig4u")
