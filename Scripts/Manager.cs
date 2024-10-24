@@ -16,6 +16,7 @@ public partial class Manager : Node
     [Export] AudioStreamPlayer2D fourthAudioPlayer;
 
     // timing
+    bool playing = false;
     [Export] int bpm = 120;
     [Export] int beatsAmount = 16;
     int currentBeat = 0;
@@ -23,7 +24,7 @@ public partial class Manager : Node
 
     // beats
     Sprite2D[,] beatSprites;
-    public bool[,] beatActives;
+    public bool[,] beatActives = new bool[4, 32];
 
     // other
     [Export] Button SaveLayoutButton;
@@ -39,9 +40,9 @@ public partial class Manager : Node
     bool clapped = false;
 
     public void OnSaveLayoutButton() => GD.Print("Save");
-    public void OnClearLayoutButton() => GD.Print("Clear");
+    public void OnClearLayoutButton() => beatActives = new bool[4, 32];
     public void OnRecordButton() => GD.Print("Record");
-    public void OnPlayPauseButton() => GD.Print("Play");
+    public void OnPlayPauseButton() => playing = !playing;
 
     public override void _Ready()
     {
@@ -53,17 +54,6 @@ public partial class Manager : Node
         ClearLayoutButton.Pressed += OnClearLayoutButton;
         RecordButton.Pressed += OnRecordButton;
         PlayPauseButton.Pressed += OnPlayPauseButton;
-
-        // set default actives
-        beatActives = new bool[4, beatsAmount];
-        for (int ring = 0; ring < 4; ring++)
-        {
-            for (int beat = 0; beat < beatsAmount; beat++)
-            {
-                bool active = new Random().NextSingle() < 0.2f;
-                beatActives[ring, beat] = active;
-            }
-        }
 
         // spawn sprites
         beatSprites = new Sprite2D[4, beatsAmount];
@@ -80,14 +70,36 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
-        // keep time
-        beatTimer += (float)delta;
-        var timePerBeat = (60f / bpm) / 4;
-        if (beatTimer > timePerBeat)
+        if (playing)
         {
-            beatTimer = 0;
-            currentBeat = (currentBeat + 1) % beatsAmount;
-            OnBeat();
+            // keep time
+            beatTimer += (float)delta;
+            var timePerBeat = (60f / bpm) / 4;
+            if (beatTimer > timePerBeat)
+            {
+                beatTimer = 0;
+                currentBeat = (currentBeat + 1) % beatsAmount;
+                OnBeat();
+            }
+
+            // update pointer
+            float intergerFactor = (float)currentBeat / (float)beatsAmount;
+            float perbeat = (60f / bpm) / 4;
+            float currentBeatProgressFactor = beatTimer / perbeat;
+            float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
+            float factor = intergerFactor + currentbeatProgress;
+            pointer.RotationDegrees = factor * 360f;
+
+            // update progressbar
+            progressBar.Value = progressBarValue;
+            progressBarValue -= 0.25f * (float)delta;
+
+            // check clap
+            if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
+            {
+                OnClap();
+                clapped = true;
+            }
         }
 
         // update sprites
@@ -108,25 +120,6 @@ public partial class Manager : Node
 
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
-        }
-
-        // update pointer
-        float intergerFactor = (float)currentBeat / (float)beatsAmount;
-        float currentBeatProgressFactor = beatTimer / timePerBeat;
-        float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
-        float offset = 1f / beatsAmount / 2;
-        float factor = intergerFactor + currentbeatProgress - offset;
-        pointer.RotationDegrees = factor * 360f;
-
-        // update progressbar
-        progressBar.Value = progressBarValue;
-        progressBarValue -= 0.25f * (float)delta;
-
-        // check clap
-        if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
-        {
-            OnClap();
-            clapped = true;
         }
     }
 
