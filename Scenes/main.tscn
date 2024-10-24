@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=15 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -10,6 +10,7 @@
 [ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://background.tres" id="9_nnqde"]
 [ext_resource type="Script" path="res://Scripts/TemplateManager.cs" id="9_t3vou"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
+[ext_resource type="Script" path="res://Scripts/ReverbDelayManager.cs" id="10_jykfx"]
 [ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
@@ -95,6 +96,13 @@ script = ExtResource("9_t3vou")
 templateButton = NodePath("../Buttons/TemplateButton")
 leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
 rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
+
+[node name="ReverbDelayManager" type="Node" parent="." node_paths=PackedStringArray("reverbButton", "delayButton", "reverbSprite", "delaySprite")]
+script = ExtResource("10_jykfx")
+reverbButton = NodePath("../Buttons/ReverbButton")
+delayButton = NodePath("../Buttons/DelayButton")
+reverbSprite = NodePath("../ReverbSprite")
+delaySprite = NodePath("../DelaySprite")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 anchors_preset = 8
@@ -271,12 +279,12 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Bpm Down"
 
-[node name="Circle" type="Sprite2D" parent="."]
+[node name="ReverbSprite" type="Sprite2D" parent="."]
 position = Vector2(516, -155)
 scale = Vector2(0.61, 0.61)
 texture = ExtResource("2_1ig4u")
 
-[node name="Circle2" type="Sprite2D" parent="."]
+[node name="DelaySprite" type="Sprite2D" parent="."]
 position = Vector2(517, -111)
 scale = Vector2(0.61, 0.61)
 texture = ExtResource("2_1ig4u")
