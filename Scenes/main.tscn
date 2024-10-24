@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=14 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -10,6 +10,7 @@
 [ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://background.tres" id="9_nnqde"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
 [ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
+[ext_resource type="Script" path="res://Scenes/TemplateManager.cs" id="11_w6wuc"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
@@ -194,7 +195,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Delay"
 
-[node name="StyleButton" type="Button" parent="Buttons"]
+[node name="TemplateButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -206,35 +207,32 @@ offset_right = -80.0
 offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Style
-"
+text = "Template"
 
-[node name="StyleLeftButton" type="Button" parent="Buttons/StyleButton"]
-layout_mode = 1
+[node name="TemplateLeftButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -107.0
-offset_top = -16.0
-offset_right = -72.0
-offset_bottom = 16.0
+offset_left = -247.0
+offset_top = -410.0
+offset_right = -212.0
+offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "<"
 
-[node name="StyleRightButton" type="Button" parent="Buttons/StyleButton"]
-layout_mode = 1
+[node name="TemplateRightButton" type="Button" parent="Buttons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 71.0
-offset_top = -16.0
-offset_right = 106.0
-offset_bottom = 16.0
+offset_left = -76.0
+offset_top = -410.0
+offset_right = -41.0
+offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
 text = ">"
@@ -276,3 +274,9 @@ texture = ExtResource("2_1ig4u")
 position = Vector2(517, -111)
 scale = Vector2(0.61, 0.61)
 texture = ExtResource("2_1ig4u")
+
+[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton")]
+script = ExtResource("11_w6wuc")
+templateButton = NodePath("../Buttons/TemplateButton")
+leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
+rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
