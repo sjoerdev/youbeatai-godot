@@ -43,12 +43,12 @@ public partial class ReverbDelayManager : Node
     private void SetReverbLevel(float level)
     {
         reverbEffect.RoomSize = level;
-		reverbSprite.Scale = Vector2.One * level;
+		reverbSprite.Scale = Vector2.One * (level / 2 + 0.1f);
     }
 
     private void SetDelayLevel(float level)
     {
         delayEffect.Dry = 1 - level;
-		delaySprite.Scale = Vector2.One * level;
+		delaySprite.Scale = Vector2.One * (level / 2 + 0.1f);
     }
 }
