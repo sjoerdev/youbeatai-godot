@@ -94,11 +94,13 @@ stream = ExtResource("8_4xf5a")
 [node name="MicrophoneCapture" type="Node" parent="."]
 script = ExtResource("10_4yy8e")
 
-[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton")]
+[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton", "showTemplateButton", "setTemplateButton")]
 script = ExtResource("9_t3vou")
 templateButton = NodePath("../Buttons/TemplateButton")
 leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
 rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
+showTemplateButton = NodePath("../Buttons/ShowTemplateButton")
+setTemplateButton = NodePath("../Buttons/SetTemplateButton")
 
 [node name="ReverbDelayManager" type="Node" parent="." node_paths=PackedStringArray("reverbButton", "delayButton", "reverbSprite", "delaySprite")]
 script = ExtResource("10_jykfx")
@@ -225,6 +227,35 @@ offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Template"
+
+[node name="ShowTemplateButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -208.0
+offset_top = -372.0
+offset_right = -146.0
+offset_bottom = -340.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Show"
+
+[node name="SetTemplateButton" type="Button" parent="Buttons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -142.0
+offset_top = -372.0
+offset_right = -80.0
+offset_bottom = -340.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Set
+"
 
 [node name="TemplateLeftButton" type="Button" parent="Buttons"]
 anchors_preset = 8

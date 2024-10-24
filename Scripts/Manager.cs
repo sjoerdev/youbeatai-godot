@@ -24,6 +24,7 @@ public partial class Manager : Node
 
     // beats
     Sprite2D[,] beatSprites;
+    Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
 
     // other
@@ -40,6 +41,7 @@ public partial class Manager : Node
     [Export] Sprite2D pointer;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
+    public bool showTemplate = false;
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
@@ -70,6 +72,18 @@ public partial class Manager : Node
                 var sprite = CreateSprite(beat, ring);
                 AddChild(sprite);
                 beatSprites[ring, beat] = sprite;
+            }
+        }
+
+        // spawn template sprites
+        templateSprites = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < beatsAmount; beat++)
+            {
+                var sprite = CreateTemplateSprite(beat, ring);
+                AddChild(sprite);
+                templateSprites[ring, beat] = sprite;
             }
         }
     }
@@ -127,6 +141,18 @@ public partial class Manager : Node
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
         }
+
+        // update template sprites
+        for (int beat = 0; beat < beatsAmount; beat++)
+        {
+            for (int ring = 0; ring < 4; ring++)
+            {
+                var sprite = templateSprites[ring, beat];
+                var active = TemplateManager.instance.GetCurrentActives()[ring, beat];
+                sprite.Modulate = new Color(0, 0, 0, 0);
+                if (active && showTemplate) sprite.Modulate = new Color(0, 0, 0, 1);
+            }
+        }
     }
 
     public void OnClap()
@@ -163,6 +189,18 @@ public partial class Manager : Node
         beatSprite.spriteIndex = beat;
         beatSprite.ringIndex = ring;
 
+        return sprite;
+    }
+
+    private Sprite2D CreateTemplateSprite(int beat, int ring)
+    {
+        var sprite = new Sprite2D();
+        float angle = Mathf.Pi * 2 * beat / beatsAmount - Mathf.Pi / 2;
+        float distance = (4 - ring) * 30 + 110;
+        sprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
+        sprite.Texture = texture;
+        sprite.Modulate = new Color(0, 0, 0, 1);
+        sprite.Scale = Vector2.One * 0.2f;
         return sprite;
     }
 }

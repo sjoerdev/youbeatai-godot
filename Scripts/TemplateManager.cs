@@ -7,6 +7,8 @@ public partial class TemplateManager : Node
     [Export] Button templateButton;
     [Export] Button leftTemplateButton;
     [Export] Button rightTemplateButton;
+    [Export] Button showTemplateButton;
+    [Export] Button setTemplateButton;
 
     public static TemplateManager instance = null;
 
@@ -22,7 +24,9 @@ public partial class TemplateManager : Node
 
         leftTemplateButton.Pressed += PreviousTemplate;
         rightTemplateButton.Pressed += NextTemplate;
-        templateButton.Pressed += SetTemplate;
+
+        showTemplateButton.Pressed += ToggleShowTemplate;
+        setTemplateButton.Pressed += SetTemplate;
 
         ReadTemplates();
     }
@@ -181,6 +185,8 @@ public partial class TemplateManager : Node
     }
 
     void SetTemplate() => Manager.instance.beatActives = GetCurrentActives();
+
+    void ToggleShowTemplate() => Manager.instance.showTemplate = !Manager.instance.showTemplate;
 
     public bool[,] GetCurrentActives() => actives[currentTemplate];
 }
