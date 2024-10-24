@@ -31,6 +31,8 @@ public partial class Manager : Node
     [Export] Button ClearLayoutButton;
     [Export] Button RecordButton;
     [Export] Button PlayPauseButton;
+    [Export] Button BpmUpButton;
+    [Export] Button BpmDownButton;
 
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
@@ -39,13 +41,12 @@ public partial class Manager : Node
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
-    public void OnSaveLayoutButton()
-    {
-        TemplateManager.instance.CreateNewTemplate("custom", beatActives);
-    }
+    public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
     public void OnRecordButton() => GD.Print("Record");
     public void OnPlayPauseButton() => playing = !playing;
+    public void OnBpmUpButton() => bpm += 10;
+    public void OnBpmDownButton() => bpm -= 10;
 
     public override void _Ready()
     {
@@ -57,6 +58,8 @@ public partial class Manager : Node
         ClearLayoutButton.Pressed += OnClearLayoutButton;
         RecordButton.Pressed += OnRecordButton;
         PlayPauseButton.Pressed += OnPlayPauseButton;
+        BpmUpButton.Pressed += OnBpmUpButton;
+        BpmDownButton.Pressed += OnBpmDownButton;
 
         // spawn sprites
         beatSprites = new Sprite2D[4, beatsAmount];

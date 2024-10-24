@@ -48,7 +48,9 @@ public partial class ReverbDelayManager : Node
 
     private void SetDelayLevel(float level)
     {
-        delayEffect.Dry = 1 - level;
+        delayEffect.Tap1Active = true;
+        delayEffect.Tap2Active = false;
+        delayEffect.Tap1DelayMs = level * 1000f;
 		delaySprite.Scale = Vector2.One * (level / 2 + 0.1f);
     }
 }
