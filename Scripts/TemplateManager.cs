@@ -35,7 +35,9 @@ public partial class TemplateManager : Node
     {
         if (currentTemplate >= 0 && currentTemplate < names.Count)
         {
-            templateButton.Text = names[currentTemplate];
+            string name = names[currentTemplate];
+            string modified = name[..^4];
+            templateButton.Text = modified;
         }
     }
 
