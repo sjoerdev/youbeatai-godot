@@ -42,7 +42,6 @@ public partial class Manager : Node
     public void OnSaveLayoutButton()
     {
         TemplateManager.instance.CreateNewTemplate("custom", beatActives);
-        TemplateManager.instance.ReadTemplates();
     }
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
     public void OnRecordButton() => GD.Print("Record");

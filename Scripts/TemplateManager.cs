@@ -4,70 +4,68 @@ using System.Collections.Generic;
 
 public partial class TemplateManager : Node
 {
-	[Export] Button templateButton;
-	[Export] Button leftTemplateButton;
-	[Export] Button rightTemplateButton;
+    [Export] Button templateButton;
+    [Export] Button leftTemplateButton;
+    [Export] Button rightTemplateButton;
 
-	public static TemplateManager instance = null;
+    public static TemplateManager instance = null;
 
-	public List<string> names = null;
-	public List<string> contents = null;
-	public List<bool[,]> actives = null;
+    public List<string> names = new List<string>();
+    public List<string> contents = new List<string>();
+    public List<bool[,]> actives = new List<bool[,]>();
 
-	public int currentTemplate = 4;
-	public bool[,] GetCurrentActives() => actives[currentTemplate];
+    public int currentTemplate = 4;
 
-	void PreviousTemplate()
-	{
-		currentTemplate--;
-		if (currentTemplate < 0) currentTemplate = names.Count - 1;
-		templateButton.Text = names[currentTemplate];
-	}
+    public override void _Ready()
+    {
+        instance ??= this;
 
-	void NextTemplate()
-	{
-		currentTemplate++;
-		if (currentTemplate == names.Count) currentTemplate = 0;
-		templateButton.Text = names[currentTemplate];
-	}
-	
-	void SetTemplate() => Manager.instance.beatActives = GetCurrentActives();
+        leftTemplateButton.Pressed += PreviousTemplate;
+        rightTemplateButton.Pressed += NextTemplate;
+        templateButton.Pressed += SetTemplate;
 
-	public void ReadTemplates()
-	{
-		var tuple = LoadTextFilesInDirectory("templates");
-
-		names = new();
-		contents = new();
-		actives = new();
-
-		names = tuple.names;
-		contents = tuple.contents;
-		actives = tuple.actives;
-	}
-
-	public override void _Ready()
-	{
-		instance ??= this;
-
-		leftTemplateButton.Pressed += PreviousTemplate;
-		rightTemplateButton.Pressed += NextTemplate;
-		templateButton.Pressed += SetTemplate;
-		
         ReadTemplates();
-		templateButton.Text = names[currentTemplate];
-	}
+    }
+
+    public override void _Process(double delta)
+    {
+        if (currentTemplate >= 0 && currentTemplate < names.Count)
+        {
+            templateButton.Text = names[currentTemplate];
+        }
+    }
+
+    public void ReadTemplates()
+    {
+        var tuple = LoadTextFilesInDirectory("templates");
+        names = tuple.names;
+        contents = tuple.contents;
+        actives = tuple.actives;
+    }
 
     public void CreateNewTemplate(string name, bool[,] actives)
     {
         string folderPath = "res://templates/";
         string filePath = folderPath + name + ".txt";
 
+        // Ensure the directory exists
         var dir = DirAccess.Open(folderPath);
-        if (dir.FileExists(filePath)) dir.Remove(filePath);
+        if (!dir.DirExists(folderPath))
+        {
+            GD.PrintErr("Directory does not exist: " + folderPath);
+            return;
+        }
+
+        // Check if the file already exists and remove it
+        if (dir.FileExists(filePath))
+        {
+            dir.Remove(filePath);
+            GD.Print($"Deleted existing template file: {filePath}");
+        }
 
         string[] rowLabels = { "a", "b", "c", "d" };
         string formattedContent = "";
+
         for (int i = 0; i < 4; i++)
         {
             formattedContent += rowLabels[i];
@@ -75,12 +73,28 @@ public partial class TemplateManager : Node
             {
                 formattedContent += actives[i, j] ? "1" : "0";
             }
-            if (i < 3) formattedContent += "\n";
+            formattedContent += "\n"; // Ensure each line ends with a newline
         }
 
+        // Debugging: Print the formatted content before writing it to the file
+        GD.Print("Formatted content to be written:");
+        GD.Print(formattedContent);
+
+        // Writing the file
         var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Write);
-        file.StoreString(formattedContent);
+        file.StoreString(formattedContent); // Write the formatted content
+        file.Close(); // Ensure the file is closed properly
         GD.Print($"Template {name}.txt created at {filePath}");
+
+        // Debugging: Read the file content immediately after writing
+        var fileCheck = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+        string checkContent = fileCheck.GetAsText();
+        GD.Print("Content of the newly created file:");
+        GD.Print(checkContent);
+        fileCheck.Close(); // Close the check file
+
+        // Read templates after saving
+        ReadTemplates();
     }
 
     (List<string> names, List<string> contents, List<bool[,]> actives) LoadTextFilesInDirectory(string folder)
@@ -90,21 +104,33 @@ public partial class TemplateManager : Node
 
         List<string> tempNames = new();
         List<string> tempContents = new();
-		List<bool[,]> tempActives = new();
-		
-       	dir.ListDirBegin();
-		string fileName = dir.GetNext();
-		if (fileName.EndsWith(".txt"))
-		{
-			string filePath = folderPath + fileName;
-			var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+        List<bool[,]> tempActives = new();
 
-			tempNames.Add(fileName);
-			tempContents.Add(file.GetAsText());
-			tempActives.Add(ToActives(file.GetAsText()));
-		}
-		fileName = dir.GetNext();
-		dir.ListDirEnd();
+        dir.ListDirBegin();
+        string fileName = dir.GetNext();
+
+        while (!string.IsNullOrEmpty(fileName)) // Ensure to read all files
+        {
+            if (fileName.EndsWith(".txt"))
+            {
+                string filePath = folderPath + fileName;
+                try
+                {
+                    var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+                    tempNames.Add(fileName);
+                    string content = file.GetAsText();
+                    tempContents.Add(content);
+                    tempActives.Add(ToActives(content));
+                    file.Close(); // Make sure to close the file
+                }
+                catch (Exception ex)
+                {
+                    GD.PrintErr($"Error reading file {filePath}: {ex.Message}");
+                }
+            }
+            fileName = dir.GetNext();
+        }
+        dir.ListDirEnd();
 
         return (tempNames, tempContents, tempActives);
     }
@@ -112,17 +138,49 @@ public partial class TemplateManager : Node
     private bool[,] ToActives(string content)
     {
         string[] lines = content.Trim().Split('\n');
+        
+        // Check if we received the expected number of lines
+        if (lines.Length != 4)
+        {
+            GD.PrintErr($"Invalid number of lines: {lines.Length}. Expected 4 lines.");
+            throw new FormatException("Expected 4 lines for the active states.");
+        }
+
         bool[,] boolArray = new bool[4, 32];
 
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            string line = lines[i].Trim().Substring(1);
-            for (int j = 0; j < line.Length && j < 32; j++)
+            string line = lines[i].Trim();
+            
+            // Check if the current line has the expected length
+            if (line.Length != 33) // 1 for label + 32 for binary values
             {
-                boolArray[i, j] = line[j] == '1';
+                GD.PrintErr($"Invalid line length: {line.Length}. Expected 33 characters.");
+                throw new FormatException("Line does not contain enough data.");
+            }
+
+            for (int j = 0; j < 32; j++)
+            {
+                boolArray[i, j] = line[j + 1] == '1'; // Skip the first character which is the label
             }
         }
 
         return boolArray;
     }
+
+    void PreviousTemplate()
+    {
+        currentTemplate--;
+        if (currentTemplate < 0) currentTemplate = names.Count - 1;
+    }
+
+    void NextTemplate()
+    {
+        currentTemplate++;
+        if (currentTemplate >= names.Count) currentTemplate = 0;
+    }
+
+    void SetTemplate() => Manager.instance.beatActives = GetCurrentActives();
+
+    public bool[,] GetCurrentActives() => actives[currentTemplate];
 }
