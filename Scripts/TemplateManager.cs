@@ -33,6 +33,19 @@ public partial class TemplateManager : Node
 	
 	void SetTemplate() => Manager.instance.beatActives = GetCurrentActives();
 
+	public void ReadTemplates()
+	{
+		var tuple = LoadTextFilesInDirectory("templates");
+
+		names = new();
+		contents = new();
+		actives = new();
+
+		names = tuple.names;
+		contents = tuple.contents;
+		actives = tuple.actives;
+	}
+
 	public override void _Ready()
 	{
 		instance ??= this;
@@ -41,13 +54,34 @@ public partial class TemplateManager : Node
 		rightTemplateButton.Pressed += NextTemplate;
 		templateButton.Pressed += SetTemplate;
 		
-        var tuple = LoadTextFilesInDirectory("templates");
-		names = tuple.names;
-		contents = tuple.contents;
-		actives = tuple.actives;
-
+        ReadTemplates();
 		templateButton.Text = names[currentTemplate];
 	}
+
+    public void CreateNewTemplate(string name, bool[,] actives)
+    {
+        string folderPath = "res://templates/";
+        string filePath = folderPath + name + ".txt";
+
+        var dir = DirAccess.Open(folderPath);
+        if (dir.FileExists(filePath)) dir.Remove(filePath);
+
+        string[] rowLabels = { "a", "b", "c", "d" };
+        string formattedContent = "";
+        for (int i = 0; i < 4; i++)
+        {
+            formattedContent += rowLabels[i];
+            for (int j = 0; j < 32; j++)
+            {
+                formattedContent += actives[i, j] ? "1" : "0";
+            }
+            if (i < 3) formattedContent += "\n";
+        }
+
+        var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Write);
+        file.StoreString(formattedContent);
+        GD.Print($"Template {name}.txt created at {filePath}");
+    }
 
     (List<string> names, List<string> contents, List<bool[,]> actives) LoadTextFilesInDirectory(string folder)
     {
@@ -60,19 +94,16 @@ public partial class TemplateManager : Node
 		
        	dir.ListDirBegin();
 		string fileName = dir.GetNext();
-		while (!string.IsNullOrEmpty(fileName))
+		if (fileName.EndsWith(".txt"))
 		{
-			if (!dir.CurrentIsDir() && fileName.EndsWith(".txt"))
-			{
-				string filePath = folderPath + fileName;
-				using var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+			string filePath = folderPath + fileName;
+			var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
 
-				tempNames.Add(fileName);
-				tempContents.Add(file.GetAsText());
-				tempActives.Add(ToActives(file.GetAsText()));
-			}
-			fileName = dir.GetNext();
+			tempNames.Add(fileName);
+			tempContents.Add(file.GetAsText());
+			tempActives.Add(ToActives(file.GetAsText()));
 		}
+		fileName = dir.GetNext();
 		dir.ListDirEnd();
 
         return (tempNames, tempContents, tempActives);

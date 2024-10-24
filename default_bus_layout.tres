@@ -1,9 +1,19 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://cbsvq6wm8s4ny"]
+[gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://cbsvq6wm8s4ny"]
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_2i7vm"]
+resource_name = "Reverb"
+
+[sub_resource type="AudioEffectDelay" id="AudioEffectDelay_ah6a7"]
+resource_name = "Delay"
 
 [sub_resource type="AudioEffectCapture" id="AudioEffectCapture_04ot4"]
 resource_name = "Capture"
 
 [resource]
+bus/0/effect/0/effect = SubResource("AudioEffectReverb_2i7vm")
+bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectDelay_ah6a7")
+bus/0/effect/1/enabled = false
 bus/1/name = &"Microphone"
 bus/1/solo = false
 bus/1/mute = true

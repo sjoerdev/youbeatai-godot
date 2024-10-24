@@ -39,7 +39,11 @@ public partial class Manager : Node
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
 
-    public void OnSaveLayoutButton() => GD.Print("Save");
+    public void OnSaveLayoutButton()
+    {
+        TemplateManager.instance.CreateNewTemplate("custom", beatActives);
+        TemplateManager.instance.ReadTemplates();
+    }
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
     public void OnRecordButton() => GD.Print("Record");
     public void OnPlayPauseButton() => playing = !playing;

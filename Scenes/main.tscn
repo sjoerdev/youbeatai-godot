@@ -8,9 +8,9 @@
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
 [ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://background.tres" id="9_nnqde"]
+[ext_resource type="Script" path="res://Scripts/TemplateManager.cs" id="9_t3vou"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
 [ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
-[ext_resource type="Script" path="res://Scenes/TemplateManager.cs" id="11_w6wuc"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
@@ -90,6 +90,12 @@ stream = ExtResource("8_4xf5a")
 [node name="MicrophoneCapture" type="Node" parent="."]
 script = ExtResource("10_4yy8e")
 
+[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton")]
+script = ExtResource("9_t3vou")
+templateButton = NodePath("../Buttons/TemplateButton")
+leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
+rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
+
 [node name="ProgressBar" type="ProgressBar" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -117,9 +123,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -208.0
+offset_left = -142.0
 offset_top = -583.0
-offset_right = -80.0
+offset_right = -14.0
 offset_bottom = -551.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -145,9 +151,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1057.0
+offset_left = -1133.0
 offset_top = -583.0
-offset_right = -929.0
+offset_right = -1005.0
 offset_bottom = -551.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -274,9 +280,3 @@ texture = ExtResource("2_1ig4u")
 position = Vector2(517, -111)
 scale = Vector2(0.61, 0.61)
 texture = ExtResource("2_1ig4u")
-
-[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton")]
-script = ExtResource("11_w6wuc")
-templateButton = NodePath("../Buttons/TemplateButton")
-leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
-rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
