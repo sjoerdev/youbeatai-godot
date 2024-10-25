@@ -10,7 +10,7 @@ public partial class BeatSprite : Sprite2D
     {
 		if (inputEvent is InputEventMouseButton mouseEvent)
 		{
-			if (mouseEvent.IsPressed() && mouseEvent.ButtonIndex == MouseButton.Left)
+			if (mouseEvent.IsReleased() && mouseEvent.ButtonIndex == MouseButton.Left)
 			{
 				if (IsPixelOpaque(GetLocalMousePosition()))
 				{

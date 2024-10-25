@@ -17,15 +17,18 @@ public partial class Manager : Node
 
     // timing
     bool playing = false;
-    [Export] int bpm = 120;
+    [Export] public int bpm = 120;
     [Export] int beatsAmount = 16;
-    int currentBeat = 0;
+    public int currentBeat = 0;
     float beatTimer = 0;
 
     // beats
     Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
+
+    [Export] Sprite2D draganddropthing;
+    public bool dragginganddropping = false;
 
     // other
     [Export] Button SaveLayoutButton;
@@ -42,6 +45,7 @@ public partial class Manager : Node
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
     public bool showTemplate = false;
+    [Export] Label bpmLabel;
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
@@ -90,6 +94,18 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
+        // draganddropstuff
+        if (dragginganddropping)
+        {
+            draganddropthing.Modulate = new Color(0.8f, 0.2f, 0f);
+            draganddropthing.Position = GetViewport().GetMousePosition() - (DisplayServer.WindowGetSize() / 2);
+        }
+        else
+        {
+            draganddropthing.Modulate = new Color(1, 1, 1, 0);
+        }
+
+
         if (playing)
         {
             // keep time
@@ -153,6 +169,9 @@ public partial class Manager : Node
                 if (active && showTemplate) sprite.Modulate = new Color(0, 0, 0, 1);
             }
         }
+
+        // update bpm label
+        bpmLabel.Text = bpm.ToString();
     }
 
     public void OnClap()

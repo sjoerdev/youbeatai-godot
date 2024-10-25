@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=17 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
 [ext_resource type="Script" path="res://Scripts/ReverbDelayManager.cs" id="10_jykfx"]
 [ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
+[ext_resource type="Script" path="res://Scenes/MidiManager.cs" id="11_iqwjw"]
+[ext_resource type="Script" path="res://Scenes/DragAndDropButton.cs" id="14_4mig3"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
@@ -60,7 +62,7 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "draganddropthing", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -69,6 +71,7 @@ thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
 beatsAmount = 32
+draganddropthing = NodePath("../draganddropthing")
 SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
 RecordButton = NodePath("../Buttons/RecordButton")
@@ -78,6 +81,7 @@ BpmDownButton = NodePath("../Buttons/BpmDownButton")
 progressBar = NodePath("../ProgressBar")
 texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
+bpmLabel = NodePath("../BpmLabel")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
@@ -108,6 +112,9 @@ reverbButton = NodePath("../Buttons/ReverbButton")
 delayButton = NodePath("../Buttons/DelayButton")
 reverbSprite = NodePath("../ReverbSprite")
 delaySprite = NodePath("../DelaySprite")
+
+[node name="MidiManager" type="Node" parent="."]
+script = ExtResource("11_iqwjw")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 anchors_preset = 8
@@ -321,4 +328,45 @@ texture = ExtResource("2_1ig4u")
 [node name="DelaySprite" type="Sprite2D" parent="."]
 position = Vector2(517, -111)
 scale = Vector2(0.61, 0.61)
+texture = ExtResource("2_1ig4u")
+
+[node name="BpmLabel" type="Label" parent="."]
+offset_left = -546.0
+offset_top = -171.0
+offset_right = -485.0
+offset_bottom = -96.0
+text = "bpm"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DragAndDropButton0" type="Sprite2D" parent="."]
+position = Vector2(-500, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+
+[node name="DragAndDropButton1" type="Sprite2D" parent="."]
+position = Vector2(-425, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 1
+
+[node name="DragAndDropButton2" type="Sprite2D" parent="."]
+position = Vector2(-350, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 2
+
+[node name="DragAndDropButton3" type="Sprite2D" parent="."]
+position = Vector2(-275, 256)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 3
+
+[node name="draganddropthing" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-405, 127)
 texture = ExtResource("2_1ig4u")
