@@ -37,25 +37,25 @@ offset = Vector2(-0.5, -1)
 
 [node name="Vertical" type="Sprite2D" parent="Cross"]
 modulate = Color(0, 0, 0, 1)
-scale = Vector2(8, 200)
+scale = Vector2(8, 512)
 texture = SubResource("CanvasTexture_b5jd4")
 
 [node name="Horizontal" type="Sprite2D" parent="Cross"]
 modulate = Color(0, 0, 0, 1)
 rotation = 1.5708
-scale = Vector2(8, 200)
+scale = Vector2(8, 512)
 texture = SubResource("CanvasTexture_b5jd4")
 
 [node name="Vertical2" type="Sprite2D" parent="Cross"]
 modulate = Color(0, 0, 0, 1)
 rotation = 0.785398
-scale = Vector2(8, 200)
+scale = Vector2(8, 512)
 texture = SubResource("CanvasTexture_b5jd4")
 
 [node name="Horizontal2" type="Sprite2D" parent="Cross"]
 modulate = Color(0, 0, 0, 1)
 rotation = -0.785398
-scale = Vector2(8, 200)
+scale = Vector2(8, 512)
 texture = SubResource("CanvasTexture_b5jd4")
 
 [node name="metronome" type="Sprite2D" parent="."]
