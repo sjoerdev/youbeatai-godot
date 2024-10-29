@@ -12,13 +12,20 @@ public partial class DragAndDropButton : Sprite2D
 
 	public bool holding = false;
 
+	bool holdingforthis = false;
+
 	public override void _Input(InputEvent inputEvent)
     {
 		if (inputEvent is InputEventMouseButton mouseEvent)
 		{
 			if (mouseEvent.ButtonIndex == MouseButton.Left)
 			{
-				if (mouseEvent.IsPressed()) pressing = true;
+				if (mouseEvent.IsPressed())
+				{
+					if (IsPixelOpaque(GetLocalMousePosition())) holdingforthis = true;
+					else holdingforthis = false;
+					pressing = true;
+				} 
 
 				if (mouseEvent.IsReleased() && !inside)
 				{
@@ -45,6 +52,12 @@ public partial class DragAndDropButton : Sprite2D
 		else timePressing = 0;
 
 		if (pressing && inside && timePressing > 0.5f) Add();
+
+		bool hover = IsPixelOpaque(GetLocalMousePosition());
+		if (hover) Modulate = Manager.instance.colors[ring];
+		else Modulate = Manager.instance.colors[ring] / 2;
+
+		if (holding && holdingforthis) Manager.instance.holdingforring = ring;
     }
 
 	private void Add()

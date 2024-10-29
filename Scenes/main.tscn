@@ -62,7 +62,7 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "draganddropthing", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -71,7 +71,7 @@ thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
 bpm = 60
 beatsAmount = 32
-draganddropthing = NodePath("../draganddropthing")
+colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
 SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
 RecordButton = NodePath("../Buttons/RecordButton")
@@ -82,6 +82,7 @@ progressBar = NodePath("../ProgressBar")
 texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
 bpmLabel = NodePath("../BpmLabel")
+draganddropthing = NodePath("../draganddropthing")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")

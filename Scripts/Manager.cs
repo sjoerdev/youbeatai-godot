@@ -22,15 +22,15 @@ public partial class Manager : Node
     public int currentBeat = 0;
     float beatTimer = 0;
 
+    // colors
+    [Export] public Color[] colors;
+
     // beats
     Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
 
-    [Export] Sprite2D draganddropthing;
-    public bool dragginganddropping = false;
-
-    // other
+    // buttons
     [Export] Button SaveLayoutButton;
     [Export] Button ClearLayoutButton;
     [Export] Button RecordButton;
@@ -38,6 +38,7 @@ public partial class Manager : Node
     [Export] Button BpmUpButton;
     [Export] Button BpmDownButton;
 
+    // other
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
     [Export] Texture2D texture;
@@ -46,6 +47,9 @@ public partial class Manager : Node
     bool clapped = false;
     public bool showTemplate = false;
     [Export] Label bpmLabel;
+    [Export] Sprite2D draganddropthing;
+    public bool dragginganddropping = false;
+    public int holdingforring;
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
@@ -94,17 +98,13 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
-        // draganddropstuff
+        // drag&drop
         if (dragginganddropping)
         {
-            draganddropthing.Modulate = new Color(0.8f, 0.2f, 0f);
+            draganddropthing.Modulate = colors[holdingforring];
             draganddropthing.Position = GetViewport().GetMousePosition() - (DisplayServer.WindowGetSize() / 2);
         }
-        else
-        {
-            draganddropthing.Modulate = new Color(1, 1, 1, 0);
-        }
-
+        else draganddropthing.Modulate = new Color(1, 1, 1, 0);
 
         if (playing)
         {
@@ -145,14 +145,13 @@ public partial class Manager : Node
             {
                 var sprite = beatSprites[ring, beat];
                 var active = beatActives[ring, beat];
-                
-                var white = new Color(1, 1, 1);
-                var orange = new Color(0.8f, 0.2f, 0f);
-                var blue = new Color(0, 0, 1f);
 
-                sprite.Modulate = white;
-                if (active) sprite.Modulate = orange;
-                if (beat == currentBeat) sprite.Modulate = blue;
+                var color = colors[ring] / 2;
+
+                if (active) color *= 2;
+                if (beat == currentBeat) color *= 2;
+
+                sprite.Modulate = color;
 
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
