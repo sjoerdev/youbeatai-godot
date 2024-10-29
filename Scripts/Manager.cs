@@ -50,6 +50,7 @@ public partial class Manager : Node
     [Export] Sprite2D draganddropthing;
     public bool dragginganddropping = false;
     public int holdingforring;
+    [Export] public Sprite2D metronome;
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
@@ -117,6 +118,10 @@ public partial class Manager : Node
                 currentBeat = (currentBeat + 1) % beatsAmount;
                 OnBeat();
             }
+
+            // Metronome
+            var beatprogress = beatTimer / timePerBeat;
+            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-162, -100, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
 
             // update pointer
             float intergerFactor = (float)currentBeat / (float)beatsAmount;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=18 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -18,6 +18,8 @@
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_b5jd4"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_6dn85"]
 
 [node name="scene" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-1840.0]
@@ -56,13 +58,25 @@ rotation = -0.785398
 scale = Vector2(8, 200)
 texture = SubResource("CanvasTexture_b5jd4")
 
+[node name="metronome" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-336, -164)
+scale = Vector2(8, 8)
+texture = SubResource("CanvasTexture_6dn85")
+
+[node name="idk" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-336, -133.5)
+scale = Vector2(4.00001, 75)
+texture = SubResource("CanvasTexture_6dn85")
+
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
 
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 firstAudioPlayer = NodePath("firstAudioPlayer")
@@ -83,6 +97,7 @@ texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
 bpmLabel = NodePath("../BpmLabel")
 draganddropthing = NodePath("../draganddropthing")
+metronome = NodePath("../metronome")
 
 [node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
 stream = ExtResource("5_cl760")
