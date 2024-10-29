@@ -51,7 +51,7 @@ public partial class DragAndDropButton : Sprite2D
 		if (pressing) timePressing += (float)delta;
 		else timePressing = 0;
 
-		if (pressing && inside && timePressing > 0.5f) Add();
+		if (pressing && inside && timePressing > 0.5f && !Manager.instance.beatActives[ring, Manager.instance.currentBeat]) Add();
 
 		bool hover = IsPixelOpaque(GetLocalMousePosition());
 		if (hover) Modulate = Manager.instance.colors[ring];
@@ -64,6 +64,11 @@ public partial class DragAndDropButton : Sprite2D
 	{
 		GD.Print("add");
 		Manager.instance.beatActives[ring, Manager.instance.currentBeat] = true;
+
+		if (ring == 0) Manager.instance.firstAudioPlayer.Play();
+		if (ring == 1) Manager.instance.secondAudioPlayer.Play();
+		if (ring == 2) Manager.instance.thirdAudioPlayer.Play();
+		if (ring == 3) Manager.instance.fourthAudioPlayer.Play();
 	}
 
 	private void Drop()

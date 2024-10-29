@@ -10,10 +10,10 @@ public partial class Manager : Node
     [Export] PackedScene spritePrefab;
 
 	// audio
-    [Export] AudioStreamPlayer2D firstAudioPlayer;
-    [Export] AudioStreamPlayer2D secondAudioPlayer;
-    [Export] AudioStreamPlayer2D thirdAudioPlayer;
-    [Export] AudioStreamPlayer2D fourthAudioPlayer;
+    [Export] public AudioStreamPlayer2D firstAudioPlayer;
+    [Export] public AudioStreamPlayer2D secondAudioPlayer;
+    [Export] public AudioStreamPlayer2D thirdAudioPlayer;
+    [Export] public AudioStreamPlayer2D fourthAudioPlayer;
 
     // timing
     bool playing = false;
