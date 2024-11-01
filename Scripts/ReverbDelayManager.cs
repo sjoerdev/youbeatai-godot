@@ -14,7 +14,9 @@ public partial class ReverbDelayManager : Node
 
     private int currentReverbLevel = 0;
     private int currentDelayLevel = 0;
-    private float[] levels = { 0.0f, 0.5f, 1.0f };
+    
+    private float[] reverbLevels = { 0.0f, 0.5f, 1.0f };
+    private float[] delayLevels = { 0.0f, 0.3f, 0.6f };
 
     public override void _Ready()
     {
@@ -24,20 +26,20 @@ public partial class ReverbDelayManager : Node
         delayEffect = new AudioEffectDelay();
         AudioServer.AddBusEffect(AudioServer.GetBusIndex("Master"), reverbEffect);
         AudioServer.AddBusEffect(AudioServer.GetBusIndex("Master"), delayEffect);
-        SetReverbLevel(levels[currentReverbLevel]);
-        SetDelayLevel(levels[currentDelayLevel]);
+        SetReverbLevel(reverbLevels[currentReverbLevel]);
+        SetDelayLevel(delayLevels[currentDelayLevel]);
     }
 
     private void OnReverbButtonPressed()
     {
-        currentReverbLevel = (currentReverbLevel + 1) % levels.Length;
-        SetReverbLevel(levels[currentReverbLevel]);
+        currentReverbLevel = (currentReverbLevel + 1) % reverbLevels.Length;
+        SetReverbLevel(reverbLevels[currentReverbLevel]);
     }
 
 	private void OnDelayButtonPressed()
     {
-        currentDelayLevel = (currentDelayLevel + 1) % levels.Length;
-        SetDelayLevel(levels[currentDelayLevel]);
+        currentDelayLevel = (currentDelayLevel + 1) % delayLevels.Length;
+        SetDelayLevel(delayLevels[currentDelayLevel]);
     }
 
     private void SetReverbLevel(float level)
