@@ -15,10 +15,14 @@ public partial class Manager : Node
     [Export] public AudioStreamPlayer2D thirdAudioPlayer;
     [Export] public AudioStreamPlayer2D fourthAudioPlayer;
 
+    // saving
+    [Export] AudioStream[] audioFiles;
+    [Export] Button saveToWavButton;
+
     // timing
     bool playing = false;
     [Export] public int bpm = 120;
-    [Export] int beatsAmount = 16;
+    [Export] int beatsAmount = 32;
     public int currentBeat = 0;
     float beatTimer = 0;
 
@@ -71,6 +75,8 @@ public partial class Manager : Node
         PlayPauseButton.Pressed += OnPlayPauseButton;
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
+        
+        saveToWavButton.Pressed += SaveDrumLoopAsFile;
 
         // spawn sprites
         beatSprites = new Sprite2D[4, beatsAmount];
@@ -95,6 +101,132 @@ public partial class Manager : Node
                 templateSprites[ring, beat] = sprite;
             }
         }
+    }
+
+    public void SaveDrumLoopAsFile()
+    {
+        // set path to save to
+        string pathToSaveTo = "res://savedloop.wav";
+        // set beats per drum loop
+        int beatsPerDrumLoop = 32;
+        // Calculate the duration of one beat in seconds
+        float secondsPerBeat = 60f / bpm;
+        // Calculate the total duration of the loop in seconds
+        float totalDuration = beatsPerDrumLoop * secondsPerBeat;
+
+        // Sample rate for .wav file (CD quality)
+        const int sampleRate = 44100;
+        // Number of samples in total
+        int totalSamples = (int)(totalDuration * sampleRate);
+        // Array to hold audio samples
+        float[] audioData = new float[totalSamples];
+
+        // Loop through each beat layer and beat in layer
+        for (int beatLayer = 0; beatLayer < beatActives.GetLength(0); beatLayer++)
+        {
+            for (int beatInLayer = 0; beatInLayer < beatActives.GetLength(1); beatInLayer++)
+            {
+                // Check if the beat is active
+                if (beatActives[beatLayer, beatInLayer])
+                {
+                    // Calculate the position of the sample in the audioData array
+                    int startSample = (int)(beatInLayer * secondsPerBeat * sampleRate);
+                    // Load the audio stream from the audio file
+                    AudioStream audioStream = audioFiles[beatLayer];
+
+                    if (audioStream is AudioStreamWav wavStream)
+                    {
+                        // Preload the data into memory
+                        var audioByteData = wavStream.GetData();
+                        // Convert audio data from byte array to float array
+                        float[] sampleData = new float[audioByteData.Length / 2]; // Assuming 16-bit samples
+                        for (int i = 0; i < sampleData.Length; i++)
+                        {
+                            // Convert bytes to short
+                            short sample = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF));
+                            // Normalize to -1.0 to 1.0
+                            sampleData[i] = sample / (float)short.MaxValue;
+                        }
+
+                        // Mix the audio sample into the audioData array
+                        for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
+                        {
+                            // Calculate the sample position
+                            int samplePos = startSample + sampleIndex;
+                            // Check if within bounds of audioData
+                            if (samplePos < totalSamples)
+                            {
+                                // Mix the samples, ensuring we do not exceed the maximum float value
+                                audioData[samplePos] += sampleData[sampleIndex];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GD.PrintErr("Unsupported AudioStream type.");
+                    }
+                }
+            }
+        }
+
+        // Normalize the audio data to avoid clipping
+        float maxAmplitude = 0;
+
+        // Find the maximum amplitude in the audio data
+        foreach (var sample in audioData)
+        {
+            if (Math.Abs(sample) > maxAmplitude)
+            {
+                maxAmplitude = Math.Abs(sample);
+            }
+        }
+
+        // Normalize if necessary
+        if (maxAmplitude > 1.0f)
+        {
+            for (int i = 0; i < audioData.Length; i++)
+            {
+                audioData[i] /= maxAmplitude;
+            }
+        }
+
+        // Save the audio data as a .wav file using Godot's FileAccess class
+        FileAccess file = FileAccess.Open(pathToSaveTo, FileAccess.ModeFlags.Write);
+        if (file == null)
+        {
+            GD.PrintErr("Failed to open file for writing.");
+            return;
+        }
+
+        // Prepare the WAV header
+        int byteRate = sampleRate * 2; // 16 bits = 2 bytes
+        int dataSize = audioData.Length * 2; // Size of the audio data in bytes
+
+        // Write the WAV header
+        file.StoreString("RIFF");
+        file.Store32((uint)(36 + dataSize)); // Chunk size
+        file.StoreString("WAVE");
+        file.StoreString("fmt ");
+        file.Store32(16); // Subchunk1 size
+        file.Store16(1); // Audio format (PCM)
+        file.Store16(1); // Number of channels
+        file.Store32((uint)sampleRate); // Sample rate
+        file.Store32((uint)byteRate); // Byte rate
+        file.Store16(2); // Block align
+        file.Store16(16); // Bits per sample
+        file.StoreString("data");
+        file.Store32((uint)dataSize); // Subchunk2 size
+
+        // Write audio data
+        foreach (var sample in audioData)
+        {
+            short intSample = (short)(sample * short.MaxValue);
+            byte[] byteSample = BitConverter.GetBytes(intSample);
+            file.StoreBuffer(byteSample);
+        }
+
+        file.Close(); // Close the file
+        GD.Print("Drum loop saved successfully!");
     }
 
     public override void _Process(double delta)
