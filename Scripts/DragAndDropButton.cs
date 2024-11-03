@@ -6,73 +6,65 @@ public partial class DragAndDropButton : Sprite2D
 	[Export] int ring = 0;
 
 	bool inside => IsPixelOpaque(GetLocalMousePosition());
-	bool pressing = false;
 
 	float timePressing = 0;
 
-	public bool holding = false;
-
+	bool pressing = false;
+	bool holdingOutside = false;
+	bool startedholdingthisringinside = false;
 	bool holdingforthis = false;
 
 	public override void _Input(InputEvent inputEvent)
     {
-		if (inputEvent is InputEventMouseButton mouseEvent)
+		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
 		{
-			if (mouseEvent.ButtonIndex == MouseButton.Left)
+			// on press
+			if (mouseEvent.IsPressed())
 			{
-				if (mouseEvent.IsPressed())
-				{
-					if (IsPixelOpaque(GetLocalMousePosition())) holdingforthis = true;
-					else holdingforthis = false;
-					pressing = true;
-				} 
+				pressing = true;
 
-				if (mouseEvent.IsReleased() && !inside)
-				{
-					Drop();
-					pressing = false;
-				}
+				if (inside) holdingforthis = true;
+				else holdingforthis = false;
 
-				if (mouseEvent.IsReleased() && inside)
-				{
-					Add();
-					pressing = false;
-				}
+				startedholdingthisringinside = inside;
+			} 
+
+			// on release
+			if (mouseEvent.IsReleased())
+			{
+				pressing = false;
+
+				if (inside) ActivateBeat();
+
+				startedholdingthisringinside = false;
+				Manager.instance.dragginganddropping = false;
 			}
 		}
     }
 
     public override void _Process(double delta)
     {
-		holding = pressing && !inside;
-
-		Manager.instance.dragginganddropping = holding;
+		holdingOutside = pressing && !inside;
+		var holdingthisring = holdingOutside && holdingforthis;
+		if (holdingthisring) Manager.instance.holdingforring = ring;
+		if (holdingthisring) Manager.instance.dragginganddropping = holdingOutside && startedholdingthisringinside;
 
 		if (pressing) timePressing += (float)delta;
 		else timePressing = 0;
 
-		if (pressing && inside && timePressing > 0.5f && !Manager.instance.beatActives[ring, Manager.instance.currentBeat]) Add();
+		if (pressing && inside && timePressing > 0.5f && !Manager.instance.beatActives[ring, Manager.instance.currentBeat]) ActivateBeat();
 
-		bool hover = IsPixelOpaque(GetLocalMousePosition());
-		if (hover) Modulate = Manager.instance.colors[ring];
+		if (inside) Modulate = Manager.instance.colors[ring];
 		else Modulate = Manager.instance.colors[ring] / 2;
-
-		if (holding && holdingforthis) Manager.instance.holdingforring = ring;
     }
 
-	private void Add()
+	private void ActivateBeat()
 	{
 		GD.Print("add");
 		Manager.instance.beatActives[ring, Manager.instance.currentBeat] = true;
-
 		if (ring == 0) Manager.instance.firstAudioPlayer.Play();
 		if (ring == 1) Manager.instance.secondAudioPlayer.Play();
 		if (ring == 2) Manager.instance.thirdAudioPlayer.Play();
 		if (ring == 3) Manager.instance.fourthAudioPlayer.Play();
-	}
-
-	private void Drop()
-	{
-		GD.Print("drop");
 	}
 }
