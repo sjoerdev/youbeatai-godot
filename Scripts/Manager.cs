@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.IO;
 
 public partial class Manager : Node
 {
@@ -107,10 +108,13 @@ public partial class Manager : Node
     {
         // set path to save to
         string pathToSaveTo = "res://savedloop.wav";
+        // Check if file exists and delete it
+        if (Godot.FileAccess.FileExists(pathToSaveTo)) File.Delete(pathToSaveTo);
+
         // set beats per drum loop
         int beatsPerDrumLoop = 32;
         // Calculate the duration of one beat in seconds
-        float secondsPerBeat = 60f / bpm;
+        float secondsPerBeat = (60f / bpm) / 4;
         // Calculate the total duration of the loop in seconds
         float totalDuration = beatsPerDrumLoop * secondsPerBeat;
 
@@ -191,7 +195,7 @@ public partial class Manager : Node
         }
 
         // Save the audio data as a .wav file using Godot's FileAccess class
-        FileAccess file = FileAccess.Open(pathToSaveTo, FileAccess.ModeFlags.Write);
+        Godot.FileAccess file = Godot.FileAccess.Open(pathToSaveTo, Godot.FileAccess.ModeFlags.Write);
         if (file == null)
         {
             GD.PrintErr("Failed to open file for writing.");
