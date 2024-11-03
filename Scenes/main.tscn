@@ -12,8 +12,8 @@
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
 [ext_resource type="Script" path="res://Scripts/ReverbDelayManager.cs" id="10_jykfx"]
 [ext_resource type="StyleBox" uid="uid://dp8gkmm81bir0" path="res://fill.tres" id="10_t1q83"]
-[ext_resource type="Script" path="res://Scenes/MidiManager.cs" id="11_iqwjw"]
-[ext_resource type="Script" path="res://Scenes/DragAndDropButton.cs" id="14_4mig3"]
+[ext_resource type="Script" path="res://Scripts/MidiManager.cs" id="11_iqwjw"]
+[ext_resource type="Script" path="res://Scripts/DragAndDropButton.cs" id="14_4mig3"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
@@ -79,14 +79,13 @@ current = true
 [node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
-bpm = 60
-beatsAmount = 32
-colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
-texture = ExtResource("2_1ig4u")
 firstAudioPlayer = NodePath("firstAudioPlayer")
 secondAudioPlayer = NodePath("secondAudioPlayer")
 thirdAudioPlayer = NodePath("thirdAudioPlayer")
 fourthAudioPlayer = NodePath("fourthAudioPlayer")
+bpm = 60
+beatsAmount = 32
+colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
 SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
 RecordButton = NodePath("../Buttons/RecordButton")
@@ -94,6 +93,7 @@ PlayPauseButton = NodePath("../Buttons/PlayPauseButton")
 BpmUpButton = NodePath("../Buttons/BpmUpButton")
 BpmDownButton = NodePath("../Buttons/BpmDownButton")
 progressBar = NodePath("../ProgressBar")
+texture = ExtResource("2_1ig4u")
 pointer = NodePath("../Pointer")
 bpmLabel = NodePath("../BpmLabel")
 draganddropthing = NodePath("../draganddropthing")
