@@ -17,7 +17,8 @@ public partial class Manager : Node
     public AudioStreamPlayer2D fourthAudioPlayer;
 
     // saving
-    [Export] AudioStream[] audioFiles;
+    [Export] AudioStream[] mainAudioFiles;
+    public AudioStream[] audioFilesToUse;
     [Export] Button saveToWavButton;
 
     // timing
@@ -43,6 +44,16 @@ public partial class Manager : Node
     [Export] Button BpmUpButton;
     [Export] Button BpmDownButton;
 
+    // recordsamplebuttons
+    [Export] RecordSampleButton recordSampleButton0;
+    [Export] RecordSampleButton recordSampleButton1;
+    [Export] RecordSampleButton recordSampleButton2;
+    [Export] RecordSampleButton recordSampleButton3;
+    [Export] CheckButton recordSampleCheckButton0;
+    [Export] CheckButton recordSampleCheckButton1;
+    [Export] CheckButton recordSampleCheckButton2;
+    [Export] CheckButton recordSampleCheckButton3;
+
     // other
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
@@ -64,6 +75,30 @@ public partial class Manager : Node
     public void OnBpmUpButton() => bpm += 10;
     public void OnBpmDownButton() => bpm -= 10;
 
+    private void OnToggled0(bool toggledOn)
+    {
+        audioFilesToUse[0] = toggledOn ? recordSampleButton0.recordedAudio : mainAudioFiles[0];
+        firstAudioPlayer.Stream = audioFilesToUse[0];
+    }
+
+    private void OnToggled1(bool toggledOn)
+    {
+        audioFilesToUse[1] = toggledOn ? recordSampleButton1.recordedAudio : mainAudioFiles[1];
+        secondAudioPlayer.Stream = audioFilesToUse[1];
+    }
+
+    private void OnToggled2(bool toggledOn)
+    {
+        audioFilesToUse[2] = toggledOn ? recordSampleButton2.recordedAudio : mainAudioFiles[2];
+        thirdAudioPlayer.Stream = audioFilesToUse[2];
+    }
+
+    private void OnToggled3(bool toggledOn)
+    {
+        audioFilesToUse[3] = toggledOn ? recordSampleButton3.recordedAudio : mainAudioFiles[3];
+        fourthAudioPlayer.Stream = audioFilesToUse[3];
+    }
+
     public override void _Ready()
     {
         // init singleton
@@ -74,16 +109,16 @@ public partial class Manager : Node
         secondAudioPlayer = new AudioStreamPlayer2D();
         thirdAudioPlayer = new AudioStreamPlayer2D();
         fourthAudioPlayer = new AudioStreamPlayer2D();
-
         AddChild(firstAudioPlayer);
         AddChild(secondAudioPlayer);
         AddChild(thirdAudioPlayer);
         AddChild(fourthAudioPlayer);
 
-        firstAudioPlayer.Stream = audioFiles[0];
-        secondAudioPlayer.Stream = audioFiles[1];
-        thirdAudioPlayer.Stream = audioFiles[2];
-        fourthAudioPlayer.Stream = audioFiles[3];
+        audioFilesToUse = mainAudioFiles;
+        firstAudioPlayer.Stream = mainAudioFiles[0];
+        secondAudioPlayer.Stream = mainAudioFiles[1];
+        thirdAudioPlayer.Stream = mainAudioFiles[2];
+        fourthAudioPlayer.Stream = mainAudioFiles[3];
 
         // init buttons
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
@@ -92,8 +127,13 @@ public partial class Manager : Node
         PlayPauseButton.Pressed += OnPlayPauseButton;
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
-        
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
+
+        // checkbuttons
+        recordSampleCheckButton0.Toggled += OnToggled0;
+        recordSampleCheckButton1.Toggled += OnToggled1;
+        recordSampleCheckButton2.Toggled += OnToggled2;
+        recordSampleCheckButton3.Toggled += OnToggled3;
 
         // spawn sprites
         beatSprites = new Sprite2D[4, beatsAmount];
@@ -118,6 +158,87 @@ public partial class Manager : Node
                 templateSprites[ring, beat] = sprite;
             }
         }
+    }
+
+    public override void _Process(double delta)
+    {
+        // drag&drop
+        if (dragginganddropping)
+        {
+            draganddropthing.Modulate = colors[holdingforring];
+            draganddropthing.Position = GetViewport().GetMousePosition() - (DisplayServer.WindowGetSize() / 2);
+        }
+        else draganddropthing.Modulate = new Color(1, 1, 1, 0);
+
+        if (playing)
+        {
+            // keep time
+            beatTimer += (float)delta;
+            var timePerBeat = (60f / bpm) / 4;
+            if (beatTimer > timePerBeat)
+            {
+                beatTimer = 0;
+                currentBeat = (currentBeat + 1) % beatsAmount;
+                OnBeat();
+            }
+
+            // Metronome
+            var beatprogress = beatTimer / timePerBeat;
+            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-162, -100, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
+
+            // update pointer
+            float intergerFactor = (float)currentBeat / (float)beatsAmount;
+            float perbeat = (60f / bpm) / 4;
+            float currentBeatProgressFactor = beatTimer / perbeat;
+            float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
+            float factor = intergerFactor + currentbeatProgress;
+            pointer.RotationDegrees = factor * 360f;
+
+            // update progressbar
+            progressBar.Value = progressBarValue;
+            progressBarValue -= 0.25f * (float)delta;
+
+            // check clap
+            if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
+            {
+                OnClap();
+                clapped = true;
+            }
+        }
+
+        // update sprites
+        for (int beat = 0; beat < beatsAmount; beat++)
+        {
+            for (int ring = 0; ring < 4; ring++)
+            {
+                var sprite = beatSprites[ring, beat];
+                var active = beatActives[ring, beat];
+
+                var color = colors[ring] / 2;
+
+                if (active) color *= 2;
+                if (beat == currentBeat) color *= 2;
+
+                sprite.Modulate = color;
+
+                if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
+            }
+        }
+
+        // update template sprites
+        for (int beat = 0; beat < beatsAmount; beat++)
+        {
+            for (int ring = 0; ring < 4; ring++)
+            {
+                var sprite = templateSprites[ring, beat];
+                var active = TemplateManager.instance.GetCurrentActives()[ring, beat];
+                sprite.Modulate = new Color(0, 0, 0, 0);
+                if (active && showTemplate) sprite.Modulate = new Color(0, 0, 0, 1);
+            }
+        }
+
+        // update bpm label
+        bpmLabel.Text = bpm.ToString();
     }
 
     public void SaveDrumLoopAsFile()
@@ -152,7 +273,7 @@ public partial class Manager : Node
                     // Calculate the position of the sample in the audioData array
                     int startSample = (int)(beatInLayer * secondsPerBeat * sampleRate);
                     // Load the audio stream from the audio file
-                    AudioStream audioStream = audioFiles[beatLayer];
+                    AudioStream audioStream = audioFilesToUse[beatLayer];
 
                     if (audioStream is AudioStreamWav wavStream)
                     {
@@ -247,87 +368,6 @@ public partial class Manager : Node
 
         file.Close(); // Close the file
         GD.Print("Drum loop saved successfully!");
-    }
-
-    public override void _Process(double delta)
-    {
-        // drag&drop
-        if (dragginganddropping)
-        {
-            draganddropthing.Modulate = colors[holdingforring];
-            draganddropthing.Position = GetViewport().GetMousePosition() - (DisplayServer.WindowGetSize() / 2);
-        }
-        else draganddropthing.Modulate = new Color(1, 1, 1, 0);
-
-        if (playing)
-        {
-            // keep time
-            beatTimer += (float)delta;
-            var timePerBeat = (60f / bpm) / 4;
-            if (beatTimer > timePerBeat)
-            {
-                beatTimer = 0;
-                currentBeat = (currentBeat + 1) % beatsAmount;
-                OnBeat();
-            }
-
-            // Metronome
-            var beatprogress = beatTimer / timePerBeat;
-            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-162, -100, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
-
-            // update pointer
-            float intergerFactor = (float)currentBeat / (float)beatsAmount;
-            float perbeat = (60f / bpm) / 4;
-            float currentBeatProgressFactor = beatTimer / perbeat;
-            float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
-            float factor = intergerFactor + currentbeatProgress;
-            pointer.RotationDegrees = factor * 360f;
-
-            // update progressbar
-            progressBar.Value = progressBarValue;
-            progressBarValue -= 0.25f * (float)delta;
-
-            // check clap
-            if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
-            {
-                OnClap();
-                clapped = true;
-            }
-        }
-
-        // update sprites
-        for (int beat = 0; beat < beatsAmount; beat++)
-        {
-            for (int ring = 0; ring < 4; ring++)
-            {
-                var sprite = beatSprites[ring, beat];
-                var active = beatActives[ring, beat];
-
-                var color = colors[ring] / 2;
-
-                if (active) color *= 2;
-                if (beat == currentBeat) color *= 2;
-
-                sprite.Modulate = color;
-
-                if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
-            }
-        }
-
-        // update template sprites
-        for (int beat = 0; beat < beatsAmount; beat++)
-        {
-            for (int ring = 0; ring < 4; ring++)
-            {
-                var sprite = templateSprites[ring, beat];
-                var active = TemplateManager.instance.GetCurrentActives()[ring, beat];
-                sprite.Modulate = new Color(0, 0, 0, 0);
-                if (active && showTemplate) sprite.Modulate = new Color(0, 0, 0, 1);
-            }
-        }
-
-        // update bpm label
-        bpmLabel.Text = bpm.ToString();
     }
 
     public void OnClap()
