@@ -76,13 +76,9 @@ scale = Vector2(4.12, 1)
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("firstAudioPlayer", "secondAudioPlayer", "thirdAudioPlayer", "fourthAudioPlayer", "saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
+[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
-firstAudioPlayer = NodePath("firstAudioPlayer")
-secondAudioPlayer = NodePath("secondAudioPlayer")
-thirdAudioPlayer = NodePath("thirdAudioPlayer")
-fourthAudioPlayer = NodePath("fourthAudioPlayer")
 audioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../Buttons/SaveToWavButton")
 bpm = 60
@@ -99,18 +95,6 @@ pointer = NodePath("../Pointer")
 bpmLabel = NodePath("../BpmLabel")
 draganddropthing = NodePath("../draganddropthing")
 metronome = NodePath("../metronome")
-
-[node name="firstAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
-stream = ExtResource("5_cl760")
-
-[node name="secondAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
-stream = ExtResource("6_v5052")
-
-[node name="thirdAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
-stream = ExtResource("7_s71c0")
-
-[node name="fourthAudioPlayer" type="AudioStreamPlayer2D" parent="Manager"]
-stream = ExtResource("8_4xf5a")
 
 [node name="MicrophoneCapture" type="Node" parent="."]
 script = ExtResource("10_4yy8e")

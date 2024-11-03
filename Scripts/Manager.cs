@@ -11,10 +11,10 @@ public partial class Manager : Node
     [Export] PackedScene spritePrefab;
 
 	// audio
-    [Export] public AudioStreamPlayer2D firstAudioPlayer;
-    [Export] public AudioStreamPlayer2D secondAudioPlayer;
-    [Export] public AudioStreamPlayer2D thirdAudioPlayer;
-    [Export] public AudioStreamPlayer2D fourthAudioPlayer;
+    public AudioStreamPlayer2D firstAudioPlayer;
+    public AudioStreamPlayer2D secondAudioPlayer;
+    public AudioStreamPlayer2D thirdAudioPlayer;
+    public AudioStreamPlayer2D fourthAudioPlayer;
 
     // saving
     [Export] AudioStream[] audioFiles;
@@ -68,6 +68,22 @@ public partial class Manager : Node
     {
         // init singleton
         instance ??= this;
+
+        // init audioplayers
+        firstAudioPlayer = new AudioStreamPlayer2D();
+        secondAudioPlayer = new AudioStreamPlayer2D();
+        thirdAudioPlayer = new AudioStreamPlayer2D();
+        fourthAudioPlayer = new AudioStreamPlayer2D();
+
+        AddChild(firstAudioPlayer);
+        AddChild(secondAudioPlayer);
+        AddChild(thirdAudioPlayer);
+        AddChild(fourthAudioPlayer);
+
+        firstAudioPlayer.Stream = audioFiles[0];
+        secondAudioPlayer.Stream = audioFiles[1];
+        thirdAudioPlayer.Stream = audioFiles[2];
+        fourthAudioPlayer.Stream = audioFiles[3];
 
         // init buttons
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
