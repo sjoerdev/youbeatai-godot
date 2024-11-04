@@ -32,6 +32,7 @@ public partial class Manager : Node
     [Export] public Color[] colors;
 
     // beats
+    Sprite2D[,] beatOutlines;
     Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
@@ -58,6 +59,7 @@ public partial class Manager : Node
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
     [Export] Texture2D texture;
+    [Export] Texture2D outline;
     [Export] Sprite2D pointer;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
@@ -147,6 +149,18 @@ public partial class Manager : Node
             }
         }
 
+        // spawn outlines
+        beatOutlines = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < beatsAmount; beat++)
+            {
+                var outline = CreateOutline(beat, ring);
+                AddChild(outline);
+                beatOutlines[ring, beat] = outline;
+            }
+        }
+
         // spawn template sprites
         templateSprites = new Sprite2D[4, beatsAmount];
         for (int ring = 0; ring < 4; ring++)
@@ -214,14 +228,24 @@ public partial class Manager : Node
                 var sprite = beatSprites[ring, beat];
                 var active = beatActives[ring, beat];
 
-                var color = colors[ring] / 2;
+                var color = colors[ring];
 
-                if (active) color *= 2;
-                if (beat == currentBeat) color *= 2;
+                if (beat == currentBeat) color = color.Lightened(2);
+                else if (!active) color.A = 0.2f;
 
                 sprite.Modulate = color;
 
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
+            }
+        }
+
+        // update outlines
+        for (int beat = 0; beat < beatsAmount; beat++)
+        {
+            for (int ring = 0; ring < 4; ring++)
+            {
+                var outline = beatOutlines[ring, beat];
+                outline.Modulate = colors[ring];
             }
         }
 
@@ -390,6 +414,16 @@ public partial class Manager : Node
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
         clapped = false;
+    }
+
+    private Sprite2D CreateOutline(int beat, int ring)
+    {
+        var sprite = new Sprite2D();
+        float angle = Mathf.Pi * 2 * beat / beatsAmount - Mathf.Pi / 2;
+        float distance = (4 - ring) * 30 + 110;
+        sprite.Position = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
+        sprite.Texture = outline;
+        return sprite;
     }
 
     private Sprite2D CreateSprite(int beat, int ring)

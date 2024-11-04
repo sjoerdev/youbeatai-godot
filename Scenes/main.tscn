@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=21 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Assets/clap.wav" id="6_v5052"]
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
 [ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Assets/snare.wav" id="8_4xf5a"]
+[ext_resource type="Texture2D" uid="uid://ddx3ttnpgkple" path="res://Assets/ring.png" id="8_llrl4"]
 [ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://background.tres" id="9_nnqde"]
 [ext_resource type="Script" path="res://Scripts/TemplateManager.cs" id="9_t3vou"]
 [ext_resource type="Script" path="res://Scripts/MicrophoneCapture.cs" id="10_4yy8e"]
@@ -84,7 +85,7 @@ spritePrefab = ExtResource("2_1eep1")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../Buttons/SaveToWavButton")
 bpm = 60
-colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1)
+colors = PackedColorArray(1, 0.5, 0.5, 1, 1, 0.791667, 0.5, 1, 1, 1, 0.6, 1, 0.51, 0.812167, 1, 1)
 SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
 RecordButton = NodePath("../Buttons/RecordButton")
@@ -101,6 +102,7 @@ recordSampleCheckButton2 = NodePath("../bottonleftbuttons/UseSampleCheckButton2"
 recordSampleCheckButton3 = NodePath("../bottonleftbuttons/UseSampleCheckButton3")
 progressBar = NodePath("../ProgressBar")
 texture = ExtResource("2_1ig4u")
+outline = ExtResource("8_llrl4")
 pointer = NodePath("../Pointer")
 bpmLabel = NodePath("../BpmLabel")
 draganddropthing = NodePath("../draganddropthing")
