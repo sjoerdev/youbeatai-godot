@@ -18,9 +18,9 @@
 [ext_resource type="Texture2D" uid="uid://b5gky5aods412" path="res://Assets/rawmic.png" id="15_5hbpj"]
 [ext_resource type="Script" path="res://Scripts/RecordSampleButton.cs" id="16_ngh84"]
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
-
 [sub_resource type="CanvasTexture" id="CanvasTexture_b5jd4"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_6dn85"]
 
@@ -28,117 +28,368 @@
 metadata/_edit_vertical_guides_ = [-1840.0]
 metadata/_edit_horizontal_guides_ = [-1000.0]
 
-[node name="Pointer" type="Sprite2D" parent="."]
-modulate = Color(0.5, 0.5, 0.5, 1)
-z_index = 1
-scale = Vector2(8, 80)
-texture = SubResource("CanvasTexture_bao2x")
-centered = false
-offset = Vector2(-0.5, -1)
-
-[node name="Cross" type="Node" parent="."]
-
-[node name="Vertical" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-scale = Vector2(8, 512)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Horizontal" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = 1.5708
-scale = Vector2(8, 512)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Vertical2" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = 0.785398
-scale = Vector2(8, 512)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="Horizontal2" type="Sprite2D" parent="Cross"]
-modulate = Color(0, 0, 0, 1)
-rotation = -0.785398
-scale = Vector2(8, 512)
-texture = SubResource("CanvasTexture_b5jd4")
-
-[node name="metronome" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 0, 1)
-position = Vector2(-336, -164)
-scale = Vector2(8, 8)
-texture = SubResource("CanvasTexture_6dn85")
-
-[node name="idk" type="Sprite2D" parent="."]
-z_index = -1
-position = Vector2(-336, -133.5)
-scale = Vector2(4.00001, 75)
-texture = SubResource("CanvasTexture_6dn85")
-
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
 
 [node name="AudioListener" type="AudioListener2D" parent="Camera"]
 current = true
 
-[node name="Manager" type="Node" parent="." node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
+[node name="Managers" type="Node" parent="."]
+
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "BpmUpButton", "BpmDownButton", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
-saveToWavButton = NodePath("../Buttons/SaveToWavButton")
+saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 bpm = 60
 colors = PackedColorArray(1, 0.5, 0.5, 1, 1, 0.791667, 0.5, 1, 1, 1, 0.6, 1, 0.51, 0.812167, 1, 1)
-SaveLayoutButton = NodePath("../Buttons/SaveLayoutButton")
-ClearLayoutButton = NodePath("../Buttons/ClearLayoutButton")
-RecordButton = NodePath("../Buttons/RecordButton")
-PlayPauseButton = NodePath("../Buttons/PlayPauseButton")
-BpmUpButton = NodePath("../Buttons/BpmUpButton")
-BpmDownButton = NodePath("../Buttons/BpmDownButton")
-recordSampleButton0 = NodePath("../bottonleftbuttons/SampleRecordingButton0")
-recordSampleButton1 = NodePath("../bottonleftbuttons/SampleRecordingButton1")
-recordSampleButton2 = NodePath("../bottonleftbuttons/SampleRecordingButton2")
-recordSampleButton3 = NodePath("../bottonleftbuttons/SampleRecordingButton3")
-recordSampleCheckButton0 = NodePath("../bottonleftbuttons/UseSampleCheckButton0")
-recordSampleCheckButton1 = NodePath("../bottonleftbuttons/UseSampleCheckButton1")
-recordSampleCheckButton2 = NodePath("../bottonleftbuttons/UseSampleCheckButton2")
-recordSampleCheckButton3 = NodePath("../bottonleftbuttons/UseSampleCheckButton3")
-progressBar = NodePath("../ProgressBar")
+SaveLayoutButton = NodePath("../../UserInterface/MainButtons/SaveLayoutButton")
+ClearLayoutButton = NodePath("../../UserInterface/MainButtons/ClearLayoutButton")
+RecordButton = NodePath("../../UserInterface/RecordButton")
+PlayPauseButton = NodePath("../../UserInterface/MainButtons/PlayPauseButton")
+BpmUpButton = NodePath("../../UserInterface/MainButtons/BpmUpButton")
+BpmDownButton = NodePath("../../UserInterface/MainButtons/BpmDownButton")
+recordSampleButton0 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton0")
+recordSampleButton1 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton1")
+recordSampleButton2 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton2")
+recordSampleButton3 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton3")
+recordSampleCheckButton0 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton0")
+recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton1")
+recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
+recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
+progressBar = NodePath("../../UserInterface/ProgressBar")
 texture = ExtResource("2_1ig4u")
 outline = ExtResource("8_llrl4")
-pointer = NodePath("../Pointer")
-bpmLabel = NodePath("../BpmLabel")
-draganddropthing = NodePath("../draganddropthing")
-metronome = NodePath("../metronome")
+pointer = NodePath("../../UserInterface/Pointer")
+bpmLabel = NodePath("../../UserInterface/BpmLabel")
+draganddropthing = NodePath("../../UserInterface/draganddropthing")
+metronome = NodePath("../../UserInterface/metronome/metronome_point")
 
-[node name="MicrophoneCapture" type="Node" parent="."]
+[node name="MicrophoneCapture" type="Node" parent="Managers"]
 script = ExtResource("10_4yy8e")
 
-[node name="TemplateManager" type="Node" parent="." node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton", "showTemplateButton", "setTemplateButton")]
+[node name="TemplateManager" type="Node" parent="Managers" node_paths=PackedStringArray("templateButton", "leftTemplateButton", "rightTemplateButton", "showTemplateButton", "setTemplateButton")]
 script = ExtResource("9_t3vou")
-templateButton = NodePath("../Buttons/TemplateButton")
-leftTemplateButton = NodePath("../Buttons/TemplateLeftButton")
-rightTemplateButton = NodePath("../Buttons/TemplateRightButton")
-showTemplateButton = NodePath("../Buttons/ShowTemplateButton")
-setTemplateButton = NodePath("../Buttons/SetTemplateButton")
+templateButton = NodePath("../../UserInterface/MainButtons/TemplateButton")
+leftTemplateButton = NodePath("../../UserInterface/MainButtons/TemplateLeftButton")
+rightTemplateButton = NodePath("../../UserInterface/MainButtons/TemplateRightButton")
+showTemplateButton = NodePath("../../UserInterface/MainButtons/ShowTemplateButton")
+setTemplateButton = NodePath("../../UserInterface/MainButtons/SetTemplateButton")
 
-[node name="ReverbDelayManager" type="Node" parent="." node_paths=PackedStringArray("reverbButton", "delayButton", "reverbSprite", "delaySprite")]
+[node name="ReverbDelayManager" type="Node" parent="Managers" node_paths=PackedStringArray("reverbButton", "delayButton", "reverbSprite", "delaySprite")]
 script = ExtResource("10_jykfx")
-reverbButton = NodePath("../Buttons/ReverbButton")
-delayButton = NodePath("../Buttons/DelayButton")
-reverbSprite = NodePath("../ReverbSprite")
-delaySprite = NodePath("../DelaySprite")
+reverbButton = NodePath("../../UserInterface/MainButtons/ReverbButton")
+delayButton = NodePath("../../UserInterface/MainButtons/DelayButton")
+reverbSprite = NodePath("../../UserInterface/MainButtons/ReverbButton/ReverbSprite")
+delaySprite = NodePath("../../UserInterface/MainButtons/DelayButton/DelaySprite")
 
-[node name="MidiManager" type="Node" parent="."]
+[node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="UserInterface" type="Node" parent="."]
+
+[node name="MainButtons" type="Node" parent="UserInterface"]
+
+[node name="PlayPauseButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -417.0
-offset_top = -306.0
-offset_right = 417.0
-offset_bottom = -274.0
+offset_left = -1144.0
+offset_top = -640.0
+offset_right = -1016.0
+offset_bottom = -608.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Play/Pause"
+
+[node name="ClearLayoutButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -592.0
+offset_right = -1016.0
+offset_bottom = -560.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Clear Layout"
+
+[node name="SaveLayoutButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -556.0
+offset_right = -1016.0
+offset_bottom = -524.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Save Layout"
+
+[node name="SaveToWavButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -520.0
+offset_right = -1016.0
+offset_bottom = -488.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Save As Wav"
+
+[node name="TemplateButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -484.0
+offset_right = -1016.0
+offset_bottom = -452.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Template"
+
+[node name="TemplateLeftButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -449.0
+offset_right = -1081.0
+offset_bottom = -417.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "<"
+
+[node name="TemplateRightButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1079.0
+offset_top = -449.0
+offset_right = -1016.0
+offset_bottom = -417.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = ">"
+
+[node name="ShowTemplateButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -415.0
+offset_right = -1081.0
+offset_bottom = -383.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Show"
+
+[node name="SetTemplateButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1079.0
+offset_top = -415.0
+offset_right = -1016.0
+offset_bottom = -383.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Set
+"
+
+[node name="ReverbButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -367.0
+offset_right = -1016.0
+offset_bottom = -335.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Reverb"
+
+[node name="ReverbSprite" type="Sprite2D" parent="UserInterface/MainButtons/ReverbButton"]
+position = Vector2(143, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_1ig4u")
+
+[node name="DelayButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -331.0
+offset_right = -1016.0
+offset_bottom = -299.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Delay"
+
+[node name="DelaySprite" type="Sprite2D" parent="UserInterface/MainButtons/DelayButton"]
+position = Vector2(143, 16)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_1ig4u")
+
+[node name="BpmUpButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -283.0
+offset_right = -1016.0
+offset_bottom = -251.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Bpm Up"
+
+[node name="BpmDownButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1144.0
+offset_top = -247.0
+offset_right = -1016.0
+offset_bottom = -215.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Bpm Down"
+
+[node name="SampleButtons" type="Node" parent="UserInterface"]
+
+[node name="DragAndDropButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-540, 286)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+
+[node name="DragAndDropButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-465, 286)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 1
+
+[node name="DragAndDropButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-390, 286)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 2
+
+[node name="DragAndDropButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-315, 286)
+scale = Vector2(2, 2)
+texture = ExtResource("2_1ig4u")
+script = ExtResource("14_4mig3")
+ring = 3
+
+[node name="SampleRecordingButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-540, 230)
+scale = Vector2(0.75, 0.78)
+texture = ExtResource("15_5hbpj")
+script = ExtResource("16_ngh84")
+
+[node name="SampleRecordingButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-466, 230)
+scale = Vector2(0.75, 0.78)
+texture = ExtResource("15_5hbpj")
+script = ExtResource("16_ngh84")
+ring = 1
+
+[node name="SampleRecordingButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-391, 230)
+scale = Vector2(0.75, 0.78)
+texture = ExtResource("15_5hbpj")
+script = ExtResource("16_ngh84")
+ring = 2
+
+[node name="SampleRecordingButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
+position = Vector2(-315, 230)
+scale = Vector2(0.75, 0.78)
+texture = ExtResource("15_5hbpj")
+script = ExtResource("16_ngh84")
+ring = 3
+
+[node name="UseSampleCheckButton0" type="CheckButton" parent="UserInterface/SampleButtons"]
+offset_left = -565.0
+offset_top = 184.0
+offset_right = -521.0
+offset_bottom = 208.0
+focus_mode = 0
+
+[node name="UseSampleCheckButton1" type="CheckButton" parent="UserInterface/SampleButtons"]
+offset_left = -490.0
+offset_top = 184.0
+offset_right = -446.0
+offset_bottom = 208.0
+focus_mode = 0
+
+[node name="UseSampleCheckButton2" type="CheckButton" parent="UserInterface/SampleButtons"]
+offset_left = -415.0
+offset_top = 184.0
+offset_right = -371.0
+offset_bottom = 208.0
+focus_mode = 0
+
+[node name="UseSampleCheckButton3" type="CheckButton" parent="UserInterface/SampleButtons"]
+offset_left = -340.0
+offset_top = 184.0
+offset_right = -296.0
+offset_bottom = 208.0
+focus_mode = 0
+
+[node name="ProgressBar" type="ProgressBar" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -580.0
+offset_right = -10.0
+offset_bottom = -68.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -147,310 +398,81 @@ theme_override_constants/outline_size = 2
 theme_override_styles/background = ExtResource("9_nnqde")
 theme_override_styles/fill = ExtResource("10_t1q83")
 rounded = true
+fill_mode = 2
 
-[node name="Buttons" type="Node" parent="."]
-
-[node name="SaveLayoutButton" type="Button" parent="Buttons"]
+[node name="RecordButton" type="Button" parent="UserInterface"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -142.0
-offset_top = -583.0
-offset_right = -14.0
-offset_bottom = -551.0
+offset_left = -183.0
+offset_top = -767.0
+offset_right = -55.0
+offset_bottom = -735.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Save Layout"
-
-[node name="SaveToWavButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -208.0
-offset_top = -93.0
-offset_right = -80.0
-offset_bottom = -61.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Save As Wav"
-
-[node name="ClearLayoutButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -142.0
-offset_top = -630.0
-offset_right = -14.0
-offset_bottom = -598.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Clear Layout"
-
-[node name="RecordButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1133.0
-offset_top = -583.0
-offset_right = -1005.0
-offset_bottom = -551.0
-grow_horizontal = 2
-grow_vertical = 2
+focus_mode = 0
 text = "Record"
 
-[node name="PlayPauseButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1133.0
-offset_top = -629.0
-offset_right = -1005.0
-offset_bottom = -597.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Play/Pause"
-
-[node name="ReverbButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -208.0
-offset_top = -495.0
-offset_right = -80.0
-offset_bottom = -463.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Reverb"
-
-[node name="DelayButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -208.0
-offset_top = -452.0
-offset_right = -80.0
-offset_bottom = -420.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Delay"
-
-[node name="TemplateButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -208.0
-offset_top = -410.0
-offset_right = -80.0
-offset_bottom = -378.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Template"
-
-[node name="ShowTemplateButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -208.0
-offset_top = -372.0
-offset_right = -146.0
-offset_bottom = -340.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Show"
-
-[node name="SetTemplateButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -142.0
-offset_top = -372.0
-offset_right = -80.0
-offset_bottom = -340.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Set
-"
-
-[node name="TemplateLeftButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -247.0
-offset_top = -410.0
-offset_right = -212.0
-offset_bottom = -378.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "<"
-
-[node name="TemplateRightButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -76.0
-offset_top = -410.0
-offset_right = -41.0
-offset_bottom = -378.0
-grow_horizontal = 2
-grow_vertical = 2
-text = ">"
-
-[node name="BpmUpButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1057.0
-offset_top = -495.0
-offset_right = -929.0
-offset_bottom = -463.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Bpm Up"
-
-[node name="BpmDownButton" type="Button" parent="Buttons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1057.0
-offset_top = -452.0
-offset_right = -929.0
-offset_bottom = -420.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Bpm Down"
-
-[node name="ReverbSprite" type="Sprite2D" parent="."]
-position = Vector2(516, -155)
-scale = Vector2(0.61, 0.61)
-texture = ExtResource("2_1ig4u")
-
-[node name="DelaySprite" type="Sprite2D" parent="."]
-position = Vector2(517, -111)
-scale = Vector2(0.61, 0.61)
-texture = ExtResource("2_1ig4u")
-
-[node name="BpmLabel" type="Label" parent="."]
-offset_left = -546.0
-offset_top = -171.0
-offset_right = -485.0
-offset_bottom = -96.0
+[node name="BpmLabel" type="Label" parent="UserInterface"]
+offset_left = -440.0
+offset_top = 42.0
+offset_right = -361.0
+offset_bottom = 109.0
 text = "bpm"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="draganddropthing" type="Sprite2D" parent="."]
+[node name="draganddropthing" type="Sprite2D" parent="UserInterface"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(-405, 127)
 texture = ExtResource("2_1ig4u")
 
-[node name="bottonleftbuttons" type="Node" parent="."]
+[node name="Cross" type="Node" parent="UserInterface"]
 
-[node name="DragAndDropButton0" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-500, 256)
-scale = Vector2(2, 2)
-texture = ExtResource("2_1ig4u")
-script = ExtResource("14_4mig3")
+[node name="Vertical" type="Sprite2D" parent="UserInterface/Cross"]
+modulate = Color(0.78, 0.78, 0.78, 1)
+z_index = -1
+scale = Vector2(4, 484)
+texture = SubResource("CanvasTexture_b5jd4")
 
-[node name="DragAndDropButton1" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-425, 256)
-scale = Vector2(2, 2)
-texture = ExtResource("2_1ig4u")
-script = ExtResource("14_4mig3")
-ring = 1
+[node name="Horizontal" type="Sprite2D" parent="UserInterface/Cross"]
+modulate = Color(0.78, 0.78, 0.78, 1)
+z_index = -1
+rotation = 1.5708
+scale = Vector2(4, 484)
+texture = SubResource("CanvasTexture_b5jd4")
 
-[node name="DragAndDropButton2" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-350, 256)
-scale = Vector2(2, 2)
-texture = ExtResource("2_1ig4u")
-script = ExtResource("14_4mig3")
-ring = 2
+[node name="Vertical2" type="Sprite2D" parent="UserInterface/Cross"]
+modulate = Color(0.78, 0.78, 0.78, 1)
+z_index = -1
+rotation = 0.785398
+scale = Vector2(4, 484)
+texture = SubResource("CanvasTexture_b5jd4")
 
-[node name="DragAndDropButton3" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-275, 256)
-scale = Vector2(2, 2)
-texture = ExtResource("2_1ig4u")
-script = ExtResource("14_4mig3")
-ring = 3
+[node name="Horizontal2" type="Sprite2D" parent="UserInterface/Cross"]
+modulate = Color(0.78, 0.78, 0.78, 1)
+z_index = -1
+rotation = -0.785398
+scale = Vector2(4, 484)
+texture = SubResource("CanvasTexture_b5jd4")
 
-[node name="SampleRecordingButton0" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-500, 200)
-scale = Vector2(0.75, 0.78)
-texture = ExtResource("15_5hbpj")
-script = ExtResource("16_ngh84")
+[node name="Pointer" type="Sprite2D" parent="UserInterface"]
+modulate = Color(0.78, 0.78, 0.78, 1)
+z_index = -1
+scale = Vector2(4, 80)
+texture = SubResource("CanvasTexture_bao2x")
+centered = false
+offset = Vector2(-0.5, -1)
 
-[node name="SampleRecordingButton1" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-426, 200)
-scale = Vector2(0.75, 0.78)
-texture = ExtResource("15_5hbpj")
-script = ExtResource("16_ngh84")
-ring = 1
+[node name="metronome" type="Sprite2D" parent="UserInterface"]
+z_index = -1
+position = Vector2(-429, 76.5)
+scale = Vector2(4.00001, 75)
+texture = SubResource("CanvasTexture_6dn85")
 
-[node name="SampleRecordingButton2" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-351, 200)
-scale = Vector2(0.75, 0.78)
-texture = ExtResource("15_5hbpj")
-script = ExtResource("16_ngh84")
-ring = 2
-
-[node name="SampleRecordingButton3" type="Sprite2D" parent="bottonleftbuttons"]
-position = Vector2(-275, 200)
-scale = Vector2(0.75, 0.78)
-texture = ExtResource("15_5hbpj")
-script = ExtResource("16_ngh84")
-ring = 3
-
-[node name="UseSampleCheckButton0" type="CheckButton" parent="bottonleftbuttons"]
-offset_left = -525.0
-offset_top = 154.0
-offset_right = -481.0
-offset_bottom = 178.0
-focus_mode = 0
-
-[node name="UseSampleCheckButton1" type="CheckButton" parent="bottonleftbuttons"]
-offset_left = -450.0
-offset_top = 154.0
-offset_right = -406.0
-offset_bottom = 178.0
-focus_mode = 0
-
-[node name="UseSampleCheckButton2" type="CheckButton" parent="bottonleftbuttons"]
-offset_left = -375.0
-offset_top = 154.0
-offset_right = -331.0
-offset_bottom = 178.0
-focus_mode = 0
-
-[node name="UseSampleCheckButton3" type="CheckButton" parent="bottonleftbuttons"]
-offset_left = -300.0
-offset_top = 154.0
-offset_right = -256.0
-offset_bottom = 178.0
-focus_mode = 0
+[node name="metronome_point" type="Sprite2D" parent="UserInterface/metronome"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(0, -0.406666)
+scale = Vector2(1.99999, 0.106667)
+texture = SubResource("CanvasTexture_6dn85")
