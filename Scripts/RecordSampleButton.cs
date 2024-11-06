@@ -51,5 +51,38 @@ public partial class RecordSampleButton : Sprite2D
         audioEffectRecord.SetRecordingActive(false);
 		var audioData = audioEffectRecord.GetRecording();
 		recordedAudio = audioData;
+
+        if (ring == 0)
+        {
+            var manager = Manager.instance;
+            manager.firstAudioPlayer.Stop();
+            var istoggleon = manager.recordSampleCheckButton0.ButtonPressed;
+            manager.audioFilesToUse[ring] = istoggleon ? manager.recordSampleButton0.recordedAudio : manager.mainAudioFiles[ring];
+            manager.firstAudioPlayer.Stream = manager.audioFilesToUse[ring];
+        }
+        if (ring == 1)
+        {
+            var manager = Manager.instance;
+            manager.secondAudioPlayer.Stop();
+            var istoggleon = manager.recordSampleCheckButton1.ButtonPressed;
+            manager.audioFilesToUse[ring] = istoggleon ? manager.recordSampleButton1.recordedAudio : manager.mainAudioFiles[ring];
+            manager.secondAudioPlayer.Stream = manager.audioFilesToUse[ring];
+        }
+        if (ring == 2)
+        {
+            var manager = Manager.instance;
+            manager.thirdAudioPlayer.Stop();
+            var istoggleon = manager.recordSampleCheckButton2.ButtonPressed;
+            manager.audioFilesToUse[ring] = istoggleon ? manager.recordSampleButton2.recordedAudio : manager.mainAudioFiles[ring];
+            manager.thirdAudioPlayer.Stream = manager.audioFilesToUse[ring];
+        }
+        if (ring == 3)
+        {
+            var manager = Manager.instance;
+            manager.fourthAudioPlayer.Stop();
+            var istoggleon = manager.recordSampleCheckButton3.ButtonPressed;
+            manager.audioFilesToUse[ring] = istoggleon ? manager.recordSampleButton3.recordedAudio : manager.mainAudioFiles[ring];
+            manager.fourthAudioPlayer.Stream = manager.audioFilesToUse[ring];
+        }
     }
 }

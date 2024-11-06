@@ -17,7 +17,7 @@ public partial class Manager : Node
     public AudioStreamPlayer2D fourthAudioPlayer;
 
     // saving
-    [Export] AudioStream[] mainAudioFiles;
+    [Export] public AudioStream[] mainAudioFiles;
     public AudioStream[] audioFilesToUse;
     [Export] Button saveToWavButton;
 
@@ -46,14 +46,14 @@ public partial class Manager : Node
     [Export] Button BpmDownButton;
 
     // recordsamplebuttons
-    [Export] RecordSampleButton recordSampleButton0;
-    [Export] RecordSampleButton recordSampleButton1;
-    [Export] RecordSampleButton recordSampleButton2;
-    [Export] RecordSampleButton recordSampleButton3;
-    [Export] CheckButton recordSampleCheckButton0;
-    [Export] CheckButton recordSampleCheckButton1;
-    [Export] CheckButton recordSampleCheckButton2;
-    [Export] CheckButton recordSampleCheckButton3;
+    [Export] public RecordSampleButton recordSampleButton0;
+    [Export] public RecordSampleButton recordSampleButton1;
+    [Export] public RecordSampleButton recordSampleButton2;
+    [Export] public RecordSampleButton recordSampleButton3;
+    [Export] public CheckButton recordSampleCheckButton0;
+    [Export] public CheckButton recordSampleCheckButton1;
+    [Export] public CheckButton recordSampleCheckButton2;
+    [Export] public CheckButton recordSampleCheckButton3;
 
     // other
     [Export] ProgressBar progressBar;
@@ -79,26 +79,30 @@ public partial class Manager : Node
 
     private void OnToggled0(bool toggledOn)
     {
+        firstAudioPlayer.Stop();
         audioFilesToUse[0] = toggledOn ? recordSampleButton0.recordedAudio : mainAudioFiles[0];
         firstAudioPlayer.Stream = audioFilesToUse[0];
     }
 
     private void OnToggled1(bool toggledOn)
     {
+        secondAudioPlayer.Stop();
         audioFilesToUse[1] = toggledOn ? recordSampleButton1.recordedAudio : mainAudioFiles[1];
         secondAudioPlayer.Stream = audioFilesToUse[1];
     }
 
     private void OnToggled2(bool toggledOn)
     {
+        thirdAudioPlayer.Stop();
         audioFilesToUse[2] = toggledOn ? recordSampleButton2.recordedAudio : mainAudioFiles[2];
         thirdAudioPlayer.Stream = audioFilesToUse[2];
     }
 
     private void OnToggled3(bool toggledOn)
     {
+        fourthAudioPlayer.Stop();
         audioFilesToUse[3] = toggledOn ? recordSampleButton3.recordedAudio : mainAudioFiles[3];
-        fourthAudioPlayer.Stream = audioFilesToUse[3];
+        fourthAudioPlayer.Stream = audioFilesToUse[3];  
     }
 
     public override void _Ready()
@@ -116,7 +120,7 @@ public partial class Manager : Node
         AddChild(thirdAudioPlayer);
         AddChild(fourthAudioPlayer);
 
-        audioFilesToUse = mainAudioFiles;
+        audioFilesToUse = (AudioStream[])mainAudioFiles.Clone();
         firstAudioPlayer.Stream = mainAudioFiles[0];
         secondAudioPlayer.Stream = mainAudioFiles[1];
         thirdAudioPlayer.Stream = mainAudioFiles[2];
