@@ -272,7 +272,7 @@ public partial class Manager : Node
     public void SaveDrumLoopAsFile()
     {
         // set path to save to
-        string pathToSaveTo = "savedloop.wav";
+        string pathToSaveTo = "savedloop" + "_" + bpm.ToString() + "bpm" + ".wav";
         // Check if file exists and delete it
         if (Godot.FileAccess.FileExists(pathToSaveTo)) File.Delete(pathToSaveTo);
 
