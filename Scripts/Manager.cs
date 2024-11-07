@@ -139,7 +139,7 @@ public partial class Manager : Node
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
-        ResetPlayerButton.Pressed += OnResetPlayerButton;
+        ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -199,7 +199,7 @@ public partial class Manager : Node
 
         // enter as reset player
         var enterdown = Input.IsKeyPressed(Key.Enter);
-        if (enterdown && enterdownlastframe == false) OnResetPlayerButton();
+        if (enterdown && enterdownlastframe == false) { OnResetPlayerButton(); playing = true; }
         enterdownlastframe = enterdown;
 
         // drag&drop
