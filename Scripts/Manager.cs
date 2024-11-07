@@ -178,8 +178,15 @@ public partial class Manager : Node
         }
     }
 
+    private bool spacedownlastframe = false;
+
     public override void _Process(double delta)
     {
+        // space as play/pause
+        var spacedown = Input.IsKeyPressed(Key.Space);
+        if (spacedown && spacedownlastframe == false) OnPlayPauseButton();
+        spacedownlastframe = spacedown;
+
         // drag&drop
         if (dragginganddropping)
         {
