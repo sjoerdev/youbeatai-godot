@@ -473,6 +473,6 @@ texture = SubResource("CanvasTexture_6dn85")
 
 [node name="metronome_point" type="Sprite2D" parent="UserInterface/metronome"]
 modulate = Color(0, 0, 0, 1)
-position = Vector2(0, -0.406666)
+position = Vector2(0, -0.4)
 scale = Vector2(1.99999, 0.106667)
 texture = SubResource("CanvasTexture_6dn85")

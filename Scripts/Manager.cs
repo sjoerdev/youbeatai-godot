@@ -202,7 +202,7 @@ public partial class Manager : Node
 
             // Metronome
             var beatprogress = beatTimer / timePerBeat;
-            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-162, -100, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
+            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-0.4f, 0.4f, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
 
             // update pointer
             float intergerFactor = (float)currentBeat / (float)beatsAmount;
