@@ -42,6 +42,7 @@ public partial class Manager : Node
     [Export] Button ClearLayoutButton;
     [Export] Button RecordButton;
     [Export] Button PlayPauseButton;
+    [Export] Button ResetPlayerButton;
     [Export] Button BpmUpButton;
     [Export] Button BpmDownButton;
 
@@ -76,6 +77,7 @@ public partial class Manager : Node
     public void OnPlayPauseButton() => playing = !playing;
     public void OnBpmUpButton() => bpm += 10;
     public void OnBpmDownButton() => bpm -= 10;
+    public void OnResetPlayerButton() => currentBeat = 0;
 
     private void OnToggled0(bool toggledOn)
     {
@@ -134,6 +136,7 @@ public partial class Manager : Node
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
+        ResetPlayerButton.Pressed += OnResetPlayerButton;
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -179,6 +182,7 @@ public partial class Manager : Node
     }
 
     private bool spacedownlastframe = false;
+    private bool enterdownlastframe = false;
 
     public override void _Process(double delta)
     {
@@ -187,6 +191,11 @@ public partial class Manager : Node
         if (spacedown && spacedownlastframe == false) OnPlayPauseButton();
         spacedownlastframe = spacedown;
 
+        // enter as reset player
+        var enterdown = Input.IsKeyPressed(Key.Enter);
+        if (enterdown && enterdownlastframe == false) OnResetPlayerButton();
+        enterdownlastframe = enterdown;
+
         // drag&drop
         if (dragginganddropping)
         {
@@ -194,6 +203,10 @@ public partial class Manager : Node
             draganddropthing.Position = GetViewport().GetMousePosition() - (DisplayServer.WindowGetSize() / 2);
         }
         else draganddropthing.Modulate = new Color(1, 1, 1, 0);
+
+        // update pointer
+        float intergerFactor = (float)currentBeat / (float)beatsAmount;
+        pointer.RotationDegrees = intergerFactor * 360f;
 
         if (playing)
         {
@@ -210,14 +223,6 @@ public partial class Manager : Node
             // Metronome
             var beatprogress = beatTimer / timePerBeat;
             metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-0.4f, 0.4f, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
-
-            // update pointer
-            float intergerFactor = (float)currentBeat / (float)beatsAmount;
-            float perbeat = (60f / bpm) / 4;
-            float currentBeatProgressFactor = beatTimer / perbeat;
-            float currentbeatProgress = currentBeatProgressFactor / beatsAmount;
-            float factor = intergerFactor + currentbeatProgress;
-            pointer.RotationDegrees = factor * 360f;
 
             // update progressbar
             progressBar.Value = progressBarValue;
