@@ -71,6 +71,9 @@ public partial class Manager : Node
     public int holdingforring;
     [Export] public Sprite2D metronome;
 
+    [Export] float swing = 0.5f;
+    [Export] Slider swingslider;
+
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton() => beatActives = new bool[4, 32];
     public void OnRecordButton() => GD.Print("Record");
@@ -186,6 +189,9 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
+        // update swing amount
+        swing = (float)swingslider.Value;
+
         // space as play/pause
         var spacedown = Input.IsKeyPressed(Key.Space);
         if (spacedown && spacedownlastframe == false) OnPlayPauseButton();
@@ -210,12 +216,13 @@ public partial class Manager : Node
 
         if (playing)
         {
-            // keep time
+            // Keep time (with swing)
             beatTimer += (float)delta;
-            var timePerBeat = (60f / bpm) / 4;
+            var baseTimePerBeat = (60f / bpm) / 4;
+            var timePerBeat = (currentBeat % 2 == 1) ? baseTimePerBeat * (1 + swing) : baseTimePerBeat * (1 - (swing / 2));
             if (beatTimer > timePerBeat)
             {
-                beatTimer = 0;
+                beatTimer -= timePerBeat;
                 currentBeat = (currentBeat + 1) % beatsAmount;
                 OnBeat();
             }
@@ -283,122 +290,54 @@ public partial class Manager : Node
 
     public void SaveDrumLoopAsFile()
     {
-        // set path to save to
         string pathToSaveTo = "savedloop" + "_" + bpm.ToString() + "bpm" + ".wav";
-        // Check if file exists and delete it
         if (Godot.FileAccess.FileExists(pathToSaveTo)) File.Delete(pathToSaveTo);
-
-        // set beats per drum loop
-        int beatsPerDrumLoop = 32;
-        // Calculate the duration of one beat in seconds
+        
         float secondsPerBeat = (60f / bpm) / 4;
-        // Calculate the total duration of the loop in seconds
-        float totalDuration = beatsPerDrumLoop * secondsPerBeat;
+        float totalDuration = beatsAmount * secondsPerBeat;
 
-        // Sample rate for .wav file (CD quality)
-        const int sampleRate = 44100;
-        // Number of samples in total
+        int sampleRate = 44100;
         int totalSamples = (int)(totalDuration * sampleRate);
-        // Array to hold audio samples
         float[] audioData = new float[totalSamples];
 
-        // Loop through each beat layer and beat in layer
-        for (int beatLayer = 0; beatLayer < beatActives.GetLength(0); beatLayer++)
+        for (int ring = 0; ring < beatActives.GetLength(0); ring++)
         {
-            for (int beatInLayer = 0; beatInLayer < beatActives.GetLength(1); beatInLayer++)
+            for (int beat = 0; beat < beatActives.GetLength(1); beat++)
             {
-                // Check if the beat is active
-                if (beatActives[beatLayer, beatInLayer])
+                if (beatActives[ring, beat])
                 {
-                    // Calculate the position of the sample in the audioData array
-                    int startSample = (int)(beatInLayer * secondsPerBeat * sampleRate);
-                    // Load the audio stream from the audio file
-                    AudioStream audioStream = audioFilesToUse[beatLayer];
-
-                    if (audioStream is AudioStreamWav wavStream)
+                    var audioByteData = ((AudioStreamWav)audioFilesToUse[ring]).GetData();
+                    float[] sampleData = new float[audioByteData.Length / 2];
+                    for (int i = 0; i < sampleData.Length; i++) sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
+                    for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
                     {
-                        // Preload the data into memory
-                        var audioByteData = wavStream.GetData();
-                        // Convert audio data from byte array to float array
-                        float[] sampleData = new float[audioByteData.Length / 2]; // Assuming 16-bit samples
-                        for (int i = 0; i < sampleData.Length; i++)
-                        {
-                            // Convert bytes to short
-                            short sample = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF));
-                            // Normalize to -1.0 to 1.0
-                            sampleData[i] = sample / (float)short.MaxValue;
-                        }
-
-                        // Mix the audio sample into the audioData array
-                        for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
-                        {
-                            // Calculate the sample position
-                            int samplePos = startSample + sampleIndex;
-                            // Check if within bounds of audioData
-                            if (samplePos < totalSamples)
-                            {
-                                // Mix the samples, ensuring we do not exceed the maximum float value
-                                audioData[samplePos] += sampleData[sampleIndex];
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GD.PrintErr("Unsupported AudioStream type.");
+                        int samplePos = (int)(beat * secondsPerBeat * sampleRate) + sampleIndex;
+                        if (samplePos < totalSamples) audioData[samplePos] += sampleData[sampleIndex];
                     }
                 }
             }
         }
 
-        // Normalize the audio data to avoid clipping
         float maxAmplitude = 0;
+        foreach (var sample in audioData) if (Math.Abs(sample) > maxAmplitude) maxAmplitude = Math.Abs(sample);
+        if (maxAmplitude > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= maxAmplitude;
 
-        // Find the maximum amplitude in the audio data
-        foreach (var sample in audioData)
-        {
-            if (Math.Abs(sample) > maxAmplitude)
-            {
-                maxAmplitude = Math.Abs(sample);
-            }
-        }
-
-        // Normalize if necessary
-        if (maxAmplitude > 1.0f)
-        {
-            for (int i = 0; i < audioData.Length; i++)
-            {
-                audioData[i] /= maxAmplitude;
-            }
-        }
-
-        // Save the audio data as a .wav file using Godot's FileAccess class
         Godot.FileAccess file = Godot.FileAccess.Open(pathToSaveTo, Godot.FileAccess.ModeFlags.Write);
-        if (file == null)
-        {
-            GD.PrintErr("Failed to open file for writing.");
-            return;
-        }
-
-        // Prepare the WAV header
-        int byteRate = sampleRate * 2; // 16 bits = 2 bytes
-        int dataSize = audioData.Length * 2; // Size of the audio data in bytes
-
-        // Write the WAV header
+        int byteRate = sampleRate * 2;
+        int dataSize = audioData.Length * 2;
         file.StoreString("RIFF");
-        file.Store32((uint)(36 + dataSize)); // Chunk size
+        file.Store32((uint)(36 + dataSize));
         file.StoreString("WAVE");
         file.StoreString("fmt ");
-        file.Store32(16); // Subchunk1 size
-        file.Store16(1); // Audio format (PCM)
-        file.Store16(1); // Number of channels
-        file.Store32((uint)sampleRate); // Sample rate
-        file.Store32((uint)byteRate); // Byte rate
-        file.Store16(2); // Block align
-        file.Store16(16); // Bits per sample
+        file.Store32(16);
+        file.Store16(1);
+        file.Store16(1);
+        file.Store32((uint)sampleRate);
+        file.Store32((uint)byteRate);
+        file.Store16(2);
+        file.Store16(16);
         file.StoreString("data");
-        file.Store32((uint)dataSize); // Subchunk2 size
-
-        // Write audio data
+        file.Store32((uint)dataSize);
         foreach (var sample in audioData)
         {
             short intSample = (short)(sample * short.MaxValue);
@@ -406,7 +345,7 @@ public partial class Manager : Node
             file.StoreBuffer(byteSample);
         }
 
-        file.Close(); // Close the file
+        file.Close();
         GD.Print("Drum loop saved successfully!");
     }
 
