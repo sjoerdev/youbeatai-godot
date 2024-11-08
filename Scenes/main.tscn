@@ -36,13 +36,15 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome", "swingslider", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
-spritePrefab = ExtResource("2_1eep1")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 bpm = 60
 colors = PackedColorArray(1, 0.5, 0.5, 1, 1, 0.791667, 0.5, 1, 1, 1, 0.6, 1, 0.51, 0.812167, 1, 1)
+spritePrefab = ExtResource("2_1eep1")
+texture = ExtResource("2_1ig4u")
+outline = ExtResource("8_llrl4")
 SaveLayoutButton = NodePath("../../UserInterface/MainButtons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../../UserInterface/MainButtons/ClearLayoutButton")
 RecordButton = NodePath("../../UserInterface/RecordButton")
@@ -50,6 +52,10 @@ PlayPauseButton = NodePath("../../UserInterface/MainButtons/PlayPauseButton")
 ResetPlayerButton = NodePath("../../UserInterface/MainButtons/ResetPlayerButton")
 BpmUpButton = NodePath("../../UserInterface/MainButtons/BpmUpButton")
 BpmDownButton = NodePath("../../UserInterface/MainButtons/BpmDownButton")
+draganddropButton0 = NodePath("../../UserInterface/SampleButtons/DragAndDropButton0")
+draganddropButton1 = NodePath("../../UserInterface/SampleButtons/DragAndDropButton1")
+draganddropButton2 = NodePath("../../UserInterface/SampleButtons/DragAndDropButton2")
+draganddropButton3 = NodePath("../../UserInterface/SampleButtons/DragAndDropButton3")
 recordSampleButton0 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton0")
 recordSampleButton1 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton1")
 recordSampleButton2 = NodePath("../../UserInterface/SampleButtons/SampleRecordingButton2")
@@ -58,15 +64,16 @@ recordSampleCheckButton0 = NodePath("../../UserInterface/SampleButtons/UseSample
 recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton1")
 recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
 recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
+skiptutorialbutton = NodePath("../../UserInterface/SkipTutorialButton")
 progressBar = NodePath("../../UserInterface/ProgressBar")
-texture = ExtResource("2_1ig4u")
-outline = ExtResource("8_llrl4")
 pointer = NodePath("../../UserInterface/Pointer")
+metronome = NodePath("../../UserInterface/metronome/metronome_point")
+metronomebg = NodePath("../../UserInterface/metronome")
 bpmLabel = NodePath("../../UserInterface/BpmLabel")
 draganddropthing = NodePath("../../UserInterface/draganddropthing")
-metronome = NodePath("../../UserInterface/metronome/metronome_point")
 swing = 0.0
 swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
+swinglabel = NodePath("../../UserInterface/SwingLabel")
 InstructionLabel = NodePath("../../UserInterface/InstructionPanel/InstructionLabel")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
@@ -398,6 +405,21 @@ offset_top = 224.0
 offset_right = -360.0
 offset_bottom = 248.0
 focus_mode = 0
+
+[node name="SkipTutorialButton" type="Button" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -303.0
+offset_top = -621.0
+offset_right = -175.0
+offset_bottom = -589.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Skip Tutorial"
 
 [node name="SwingLabel" type="Label" parent="UserInterface"]
 offset_left = -629.0

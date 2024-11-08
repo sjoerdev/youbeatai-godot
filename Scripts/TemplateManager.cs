@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public partial class TemplateManager : Node
 {
-    [Export] Button templateButton;
-    [Export] Button leftTemplateButton;
-    [Export] Button rightTemplateButton;
-    [Export] Button showTemplateButton;
-    [Export] Button setTemplateButton;
+    [Export] public Button templateButton;
+    [Export] public Button leftTemplateButton;
+    [Export] public Button rightTemplateButton;
+    [Export] public Button showTemplateButton;
+    [Export] public Button setTemplateButton;
 
     public static TemplateManager instance = null;
 

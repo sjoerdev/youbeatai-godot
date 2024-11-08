@@ -5,8 +5,8 @@ public partial class ReverbDelayManager : Node
 {
     public static ReverbDelayManager instance = null;
 
-	[Export] Button reverbButton;
-	[Export] Button delayButton;
+	[Export] public Button reverbButton;
+	[Export] public Button delayButton;
 
 	[Export] Sprite2D reverbSprite;
 	[Export] Sprite2D delaySprite;

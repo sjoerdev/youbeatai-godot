@@ -8,9 +8,6 @@ public partial class Manager : Node
     // singleton
     public static Manager instance = null;
 
-    // prefabs
-    [Export] PackedScene spritePrefab;
-
 	// audio
     public AudioStreamPlayer2D firstAudioPlayer;
     public AudioStreamPlayer2D secondAudioPlayer;
@@ -21,6 +18,7 @@ public partial class Manager : Node
     [Export] public AudioStream[] mainAudioFiles;
     public AudioStream[] audioFilesToUse;
     [Export] Button saveToWavButton;
+    bool hassavedtowav = false;
 
     // timing
     bool playing = false;
@@ -33,12 +31,15 @@ public partial class Manager : Node
     [Export] public Color[] colors;
 
     // beats
+    [Export] PackedScene spritePrefab;
+    [Export] Texture2D texture;
+    [Export] Texture2D outline;
     Sprite2D[,] beatOutlines;
     Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
 
-    // buttons
+    // left buttons
     [Export] Button SaveLayoutButton;
     [Export] Button ClearLayoutButton;
     [Export] Button RecordButton;
@@ -47,7 +48,11 @@ public partial class Manager : Node
     [Export] Button BpmUpButton;
     [Export] Button BpmDownButton;
 
-    // recordsamplebuttons
+    // sample buttons
+    [Export] public Sprite2D draganddropButton0;
+    [Export] public Sprite2D draganddropButton1;
+    [Export] public Sprite2D draganddropButton2;
+    [Export] public Sprite2D draganddropButton3;
     [Export] public RecordSampleButton recordSampleButton0;
     [Export] public RecordSampleButton recordSampleButton1;
     [Export] public RecordSampleButton recordSampleButton2;
@@ -57,37 +62,35 @@ public partial class Manager : Node
     [Export] public CheckButton recordSampleCheckButton2;
     [Export] public CheckButton recordSampleCheckButton3;
 
-    // other
+    // other interface
+    [Export] Button skiptutorialbutton;
     [Export] ProgressBar progressBar;
     float progressBarValue = 0;
-    [Export] Texture2D texture;
-    [Export] Texture2D outline;
     [Export] Sprite2D pointer;
-    [Export] float clapTreshold = 0.1f;
-    bool clapped = false;
-    int clappedAmount = 0;
-    public bool showTemplate = false;
-    public bool selectedTemplate = false;
+    [Export] public Sprite2D metronome;
+    [Export] public Sprite2D metronomebg;
     [Export] Label bpmLabel;
     [Export] Sprite2D draganddropthing;
     public bool dragginganddropping = false;
     public int holdingforring;
-    [Export] public Sprite2D metronome;
-    bool haschangedbpm = false;
     [Export] float swing = 0.5f;
     [Export] Slider swingslider;
-    bool hassavedtowav = false;
+    [Export] Label swinglabel;
+
+    // clapping
+    [Export] float clapTreshold = 0.1f;
+    bool clapped = false;
+    int clappedAmount = 0;
+
+    // other
+    public bool showTemplate = false;
+    public bool selectedTemplate = false;
+    bool haschangedbpm = false;
     bool hasclearedlayout = false;
     private bool spacedownlastframe = false;
     private bool enterdownlastframe = false;
 
-    int AmountOfActives(int ring)
-    {
-        int amount = 0;
-        for (int beat = 0; beat < beatsAmount; beat++) if (beatActives[ring, beat]) amount++;
-        return amount;
-    }
-
+    // on button functions
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
     public void OnClearLayoutButton()
     {
@@ -108,27 +111,25 @@ public partial class Manager : Node
     }
     public void OnResetPlayerButton() => currentBeat = 0;
 
+    // on toggle functions
     private void OnToggled0(bool toggledOn)
     {
         firstAudioPlayer.Stop();
         audioFilesToUse[0] = toggledOn ? recordSampleButton0.recordedAudio : mainAudioFiles[0];
         firstAudioPlayer.Stream = audioFilesToUse[0];
     }
-
     private void OnToggled1(bool toggledOn)
     {
         secondAudioPlayer.Stop();
         audioFilesToUse[1] = toggledOn ? recordSampleButton1.recordedAudio : mainAudioFiles[1];
         secondAudioPlayer.Stream = audioFilesToUse[1];
     }
-
     private void OnToggled2(bool toggledOn)
     {
         thirdAudioPlayer.Stop();
         audioFilesToUse[2] = toggledOn ? recordSampleButton2.recordedAudio : mainAudioFiles[2];
         thirdAudioPlayer.Stream = audioFilesToUse[2];
     }
-
     private void OnToggled3(bool toggledOn)
     {
         fourthAudioPlayer.Stop();
@@ -166,6 +167,18 @@ public partial class Manager : Node
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
+        skiptutorialbutton.Pressed += () => 
+        {
+            instructionlevel = instructions.Count;
+            showring0 = true;
+            showring1 = true;
+            showring2 = true;
+            showring3 = true;
+            showplaypausebutton = true;
+            showleftbuttons = true;
+            showsamplebuttons = true;
+            showprogressbar = true;
+        };
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -216,11 +229,11 @@ public partial class Manager : Node
     // instructions
     List<string> instructions = new()
     {
-        "Druk op minimaal 6 van de rode beats",
-        "Druk of minimaal 6 van de orange beats",
-        "Druk of minimaal 6 van de geel beats",
-        "Druk of minimaal 6 van de blauwe beats",
-        "Klap 10 keer op het goede moment mee",
+        "Druk op minimaal 4 van de rode beats",
+        "Druk of minimaal 4 van de orange beats",
+        "Druk of minimaal 4 van de geel beats",
+        "Druk of minimaal 4 van de blauwe beats",
+        "Klap 4 keer op het goede moment mee",
         "Selecteer een beat template van de lijst",
         "Geef de beat loop een beetje swing",
         "Verander de snelheid van de bpm",
@@ -232,11 +245,11 @@ public partial class Manager : Node
     };
 
     // achievement checks
-    bool RedsPlaced() => AmountOfActives(0) >= 6;
-    bool OrangesPlaced() => AmountOfActives(1) >= 6;
-    bool YellowsPlaced() => AmountOfActives(2) >= 6;
-    bool BluesPlaced() => AmountOfActives(3) >= 6;
-    bool ClappedEnough() => clappedAmount >= 10;
+    bool RedsPlaced() => AmountOfActives(0) >= 4;
+    bool OrangesPlaced() => AmountOfActives(1) >= 4;
+    bool YellowsPlaced() => AmountOfActives(2) >= 4;
+    bool BluesPlaced() => AmountOfActives(3) >= 4;
+    bool ClappedEnough() => clappedAmount >= 4;
     bool HasSelectedTemplate() => selectedTemplate;
     bool HasAddedSwing() => swing > 0.1f;
     bool HasChangedBPM() => haschangedbpm;
@@ -253,23 +266,104 @@ public partial class Manager : Node
         return zero || one || two || three;
     }
 
+    // interface show bools
+    bool showring0 = false;
+    bool showring1 = false;
+    bool showring2 = false;
+    bool showring3 = false;
+    bool showplaypausebutton = false;
+    bool showleftbuttons = false;
+    bool showsamplebuttons = false;
+    bool showprogressbar = true;
+
     public override void _Process(double delta)
     {
+        // deal with showing parts of interface
+        {
+            // ring 0
+            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[0, beat].Visible = showring0;
+            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[0, beat].Visible = showring0;
+            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[0, beat].Visible = showring0;
+            // ring 1
+            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[1, beat].Visible = showring1;
+            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[1, beat].Visible = showring1;
+            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[1, beat].Visible = showring1;
+            // ring 2
+            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[2, beat].Visible = showring2;
+            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[2, beat].Visible = showring2;
+            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[2, beat].Visible = showring2;
+            // ring 3
+            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[3, beat].Visible = showring3;
+            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[3, beat].Visible = showring3;
+            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[3, beat].Visible = showring3;
+
+            // progress bar
+            progressBar.Visible = showprogressbar;
+
+            // playpause button
+            PlayPauseButton.Visible = showplaypausebutton;
+
+            // left buttons
+            SaveLayoutButton.Visible = showleftbuttons;
+            ClearLayoutButton.Visible = showleftbuttons;
+            RecordButton.Visible = showleftbuttons;
+            ResetPlayerButton.Visible = showleftbuttons;
+            BpmUpButton.Visible = showleftbuttons;
+            BpmDownButton.Visible = showleftbuttons;
+            bpmLabel.Visible = showleftbuttons;
+            metronome.Visible = showleftbuttons;
+            metronomebg.Visible = showleftbuttons;
+            swingslider.Visible = showleftbuttons;
+            swinglabel.Visible = showleftbuttons;
+            saveToWavButton.Visible = showleftbuttons;
+            TemplateManager.instance.templateButton.Visible = showleftbuttons;
+            TemplateManager.instance.leftTemplateButton.Visible = showleftbuttons;
+            TemplateManager.instance.rightTemplateButton.Visible = showleftbuttons;
+            TemplateManager.instance.showTemplateButton.Visible = showleftbuttons;
+            TemplateManager.instance.setTemplateButton.Visible = showleftbuttons;
+            ReverbDelayManager.instance.reverbButton.Visible = showleftbuttons;
+            ReverbDelayManager.instance.delayButton.Visible = showleftbuttons;
+
+            // sample buttons
+            recordSampleButton0.Visible = showsamplebuttons;
+            recordSampleButton1.Visible = showsamplebuttons;
+            recordSampleButton2.Visible = showsamplebuttons;
+            recordSampleButton3.Visible = showsamplebuttons;
+            recordSampleCheckButton0.Visible = showsamplebuttons;
+            recordSampleCheckButton1.Visible = showsamplebuttons;
+            recordSampleCheckButton2.Visible = showsamplebuttons;
+            recordSampleCheckButton3.Visible = showsamplebuttons;
+            draganddropButton0.Visible = showsamplebuttons;
+            draganddropButton1.Visible = showsamplebuttons;
+            draganddropButton2.Visible = showsamplebuttons;
+            draganddropButton3.Visible = showsamplebuttons;
+        }
+
         // deal with instructions
         if (instructionlevel < instructions.Count) InstructionLabel.Text = instructions[instructionlevel];
         else InstructionLabel.Text = "...";
 
         // deal with achievements
+        if (instructionlevel == 0) showring0 = true;
+        if (instructionlevel == 1) showring1 = true;
+        if (instructionlevel == 2) showring2 = true;
+        if (instructionlevel == 3) showring3 = true;
         if (instructionlevel == 0 && RedsPlaced()) instructionlevel++;
         if (instructionlevel == 1 && OrangesPlaced()) instructionlevel++;
         if (instructionlevel == 2 && YellowsPlaced()) instructionlevel++;
         if (instructionlevel == 3 && BluesPlaced()) instructionlevel++;
+
+        if (instructionlevel == 4) showplaypausebutton = true;
         if (instructionlevel == 4 && ClappedEnough()) instructionlevel++;
+
+        if (instructionlevel == 5) showleftbuttons = true;
         if (instructionlevel == 5 && HasSelectedTemplate()) instructionlevel++;
         if (instructionlevel == 6 && HasAddedSwing()) instructionlevel++;
         if (instructionlevel == 7 && HasChangedBPM()) instructionlevel++;
         if (instructionlevel == 8 && HasAddedReverb()) instructionlevel++;
         if (instructionlevel == 9 && HasAddedDelay()) instructionlevel++;
+        
+        if (instructionlevel == 10) showsamplebuttons = true;
         if (instructionlevel == 10 && HasRecordedSample()) instructionlevel++;
         if (instructionlevel == 11 && HasSavedToWav()) instructionlevel++;
         if (instructionlevel == 12 && HasClearedLayout()) instructionlevel++;
@@ -493,5 +587,12 @@ public partial class Manager : Node
         sprite.Modulate = new Color(0, 0, 0, 1);
         sprite.Scale = Vector2.One * 0.2f;
         return sprite;
+    }
+
+    int AmountOfActives(int ring)
+    {
+        int amount = 0;
+        for (int beat = 0; beat < beatsAmount; beat++) if (beatActives[ring, beat]) amount++;
+        return amount;
     }
 }
