@@ -3,6 +3,8 @@ using System;
 
 public partial class ReverbDelayManager : Node
 {
+    public static ReverbDelayManager instance = null;
+
 	[Export] Button reverbButton;
 	[Export] Button delayButton;
 
@@ -12,14 +14,15 @@ public partial class ReverbDelayManager : Node
 	AudioEffectReverb reverbEffect;
     AudioEffectDelay delayEffect;
 
-    private int currentReverbLevel = 0;
-    private int currentDelayLevel = 0;
+    public int currentReverbLevel = 0;
+    public int currentDelayLevel = 0;
     
     private float[] reverbLevels = { 0.0f, 0.5f, 1.0f };
     private float[] delayLevels = { 0.0f, 0.3f, 0.6f };
 
     public override void _Ready()
     {
+        instance ??= this;
         reverbButton.Pressed += OnReverbButtonPressed;
         delayButton.Pressed += OnDelayButtonPressed;
         reverbEffect = new AudioEffectReverb();

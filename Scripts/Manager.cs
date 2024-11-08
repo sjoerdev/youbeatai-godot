@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 public partial class Manager : Node
@@ -64,22 +65,43 @@ public partial class Manager : Node
     [Export] Sprite2D pointer;
     [Export] float clapTreshold = 0.1f;
     bool clapped = false;
+    int clappedAmount = 0;
     public bool showTemplate = false;
+    public bool selectedTemplate = false;
     [Export] Label bpmLabel;
     [Export] Sprite2D draganddropthing;
     public bool dragginganddropping = false;
     public int holdingforring;
     [Export] public Sprite2D metronome;
-
+    bool haschangedbpm = false;
     [Export] float swing = 0.5f;
     [Export] Slider swingslider;
+    bool hassavedtowav = false;
+    bool hasclearedlayout = false;
+    private bool spacedownlastframe = false;
+    private bool enterdownlastframe = false;
+
+    int AmountOfActives(int ring)
+    {
+        int amount = 0;
+        for (int beat = 0; beat < beatsAmount; beat++) if (beatActives[ring, beat]) amount++;
+        return amount;
+    }
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
-    public void OnClearLayoutButton() => beatActives = new bool[4, 32];
+    public void OnClearLayoutButton() { beatActives = new bool[4, 32]; hasclearedlayout = true; }
     public void OnRecordButton() => GD.Print("Record");
     public void OnPlayPauseButton() => playing = !playing;
-    public void OnBpmUpButton() => bpm += 10;
-    public void OnBpmDownButton() => bpm -= 10;
+    public void OnBpmUpButton()
+    {
+        bpm += 10;
+        haschangedbpm = true;;
+    }
+    public void OnBpmDownButton()
+    {
+        bpm -= 10;
+        haschangedbpm = true;
+    }
     public void OnResetPlayerButton() => currentBeat = 0;
 
     private void OnToggled0(bool toggledOn)
@@ -184,11 +206,68 @@ public partial class Manager : Node
         }
     }
 
-    private bool spacedownlastframe = false;
-    private bool enterdownlastframe = false;
+    [Export] Label InstructionLabel;
+    int instructionlevel = 0;
+
+    // instructions
+    List<string> instructions = new()
+    {
+        "Druk op minimaal 6 van de rode beats",
+        "Druk of minimaal 6 van de orange beats",
+        "Druk of minimaal 6 van de geel beats",
+        "Druk of minimaal 6 van de blauwe beats",
+        "Klap 10 keer op het goede moment mee",
+        "Selecteer een beat template van de lijst",
+        "Geef de beat loop een beetje swing",
+        "Verander de snelheid van de bpm",
+        "Geef de beat loop een beetje reverb",
+        "Geef de beat loop een beetje delay",
+        "Neem een sample op met je microphoon",
+        "Maak een wav bestand van je drum loop",
+        "Reset de drum loop en begin opnieuw",
+    };
+
+    // achievement checks
+    bool RedsPlaced() => AmountOfActives(0) >= 6;
+    bool OrangesPlaced() => AmountOfActives(1) >= 6;
+    bool YellowsPlaced() => AmountOfActives(2) >= 6;
+    bool BluesPlaced() => AmountOfActives(3) >= 6;
+    bool ClappedEnough() => clappedAmount >= 10;
+    bool HasSelectedTemplate() => selectedTemplate;
+    bool HasAddedSwing() => swing > 0.1f;
+    bool HasChangedBPM() => haschangedbpm;
+    bool HasAddedReverb() => ReverbDelayManager.instance.currentReverbLevel != 0;
+    bool HasAddedDelay() => ReverbDelayManager.instance.currentDelayLevel != 0;
+    bool HasSavedToWav() => hassavedtowav;
+    bool HasClearedLayout() => hasclearedlayout;
+    bool HasRecordedSample()
+    {
+        bool zero = recordSampleButton0.recordedAudio != null;
+        bool one = recordSampleButton1.recordedAudio != null;
+        bool two = recordSampleButton2.recordedAudio != null;
+        bool three = recordSampleButton3.recordedAudio != null;
+        return zero || one || two || three;
+    }
 
     public override void _Process(double delta)
     {
+        // deal with achievements
+        InstructionLabel.Text = instructions[instructionlevel];
+        if (instructionlevel == 0 && RedsPlaced()) instructionlevel++;
+        if (instructionlevel == 1 && OrangesPlaced()) instructionlevel++;
+        if (instructionlevel == 2 && YellowsPlaced()) instructionlevel++;
+        if (instructionlevel == 3 && BluesPlaced()) instructionlevel++;
+        if (instructionlevel == 4 && ClappedEnough()) instructionlevel++;
+        if (instructionlevel == 5 && HasSelectedTemplate()) instructionlevel++;
+        if (instructionlevel == 6 && HasAddedSwing()) instructionlevel++;
+        if (instructionlevel == 7 && HasChangedBPM()) instructionlevel++;
+        if (instructionlevel == 8 && HasAddedReverb()) instructionlevel++;
+        if (instructionlevel == 9 && HasAddedDelay()) instructionlevel++;
+        if (instructionlevel == 10 && HasRecordedSample()) instructionlevel++;
+        if (instructionlevel == 11 && HasSavedToWav()) instructionlevel++;
+        if (instructionlevel == 12 && HasClearedLayout()) instructionlevel++;
+        if (instructionlevel == 13) GD.Print("All Achievements Are Done!!!!");
+
         // update swing amount
         swing = (float)swingslider.Value;
 
@@ -347,6 +426,7 @@ public partial class Manager : Node
 
         file.Close();
         GD.Print("Drum loop saved successfully!");
+        hassavedtowav = true;
     }
 
     public void OnClap()
@@ -360,6 +440,7 @@ public partial class Manager : Node
             sprite.Scale += Vector2.One;
             progressBarValue += 1f / beatsAmount * 100f;
         }
+        clappedAmount++;
     }
 
     public void OnBeat()

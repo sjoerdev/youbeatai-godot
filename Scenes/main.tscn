@@ -36,7 +36,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome", "swingslider")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "progressBar", "pointer", "bpmLabel", "draganddropthing", "metronome", "swingslider", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
 spritePrefab = ExtResource("2_1eep1")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
@@ -67,6 +67,7 @@ draganddropthing = NodePath("../../UserInterface/draganddropthing")
 metronome = NodePath("../../UserInterface/metronome/metronome_point")
 swing = 0.0
 swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
+InstructionLabel = NodePath("../../UserInterface/InstructionPanel/InstructionLabel")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
 script = ExtResource("10_4yy8e")
@@ -512,3 +513,26 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(0, -0.4)
 scale = Vector2(2, 0.15)
 texture = SubResource("CanvasTexture_6dn85")
+
+[node name="InstructionPanel" type="Panel" parent="UserInterface"]
+offset_left = 257.0
+offset_top = -343.0
+offset_right = 558.0
+offset_bottom = -264.0
+
+[node name="Title" type="Label" parent="UserInterface/InstructionPanel"]
+layout_mode = 0
+offset_right = 301.0
+offset_bottom = 40.0
+text = "Current Goal:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InstructionLabel" type="Label" parent="UserInterface/InstructionPanel"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 301.0
+offset_bottom = 79.0
+text = "..."
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -24,7 +24,6 @@ public partial class TemplateManager : Node
 
         leftTemplateButton.Pressed += PreviousTemplate;
         rightTemplateButton.Pressed += NextTemplate;
-
         showTemplateButton.Pressed += ToggleShowTemplate;
         setTemplateButton.Pressed += SetTemplate;
 
@@ -186,7 +185,11 @@ public partial class TemplateManager : Node
         if (currentTemplate >= names.Count) currentTemplate = 0;
     }
 
-    void SetTemplate() => Manager.instance.beatActives = GetCurrentActives();
+    void SetTemplate()
+    {
+        Manager.instance.beatActives = GetCurrentActives();
+        Manager.instance.selectedTemplate = true;
+    }
 
     void ToggleShowTemplate() => Manager.instance.showTemplate = !Manager.instance.showTemplate;
 
