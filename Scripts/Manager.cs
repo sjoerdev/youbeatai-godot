@@ -89,7 +89,11 @@ public partial class Manager : Node
     }
 
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
-    public void OnClearLayoutButton() { beatActives = new bool[4, 32]; hasclearedlayout = true; }
+    public void OnClearLayoutButton()
+    {
+        beatActives = new bool[4, 32];
+        hasclearedlayout = true;
+    }
     public void OnRecordButton() => GD.Print("Record");
     public void OnPlayPauseButton() => playing = !playing;
     public void OnBpmUpButton()
@@ -251,8 +255,11 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
+        // deal with instructions
+        if (instructionlevel < instructions.Count) InstructionLabel.Text = instructions[instructionlevel];
+        else InstructionLabel.Text = "...";
+
         // deal with achievements
-        InstructionLabel.Text = instructions[instructionlevel];
         if (instructionlevel == 0 && RedsPlaced()) instructionlevel++;
         if (instructionlevel == 1 && OrangesPlaced()) instructionlevel++;
         if (instructionlevel == 2 && YellowsPlaced()) instructionlevel++;
@@ -266,7 +273,6 @@ public partial class Manager : Node
         if (instructionlevel == 10 && HasRecordedSample()) instructionlevel++;
         if (instructionlevel == 11 && HasSavedToWav()) instructionlevel++;
         if (instructionlevel == 12 && HasClearedLayout()) instructionlevel++;
-        if (instructionlevel == 13) GD.Print("All Achievements Are Done!!!!");
 
         // update swing amount
         swing = (float)swingslider.Value;
