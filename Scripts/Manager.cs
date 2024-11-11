@@ -18,7 +18,6 @@ public partial class Manager : Node
     AudioStreamPlayer2D extraAudioPlayer;
     [Export] AudioStream metronome_sfx;
     [Export] AudioStream achievement_sfx;
-    [Export] Button metronome_sfx_toggle_button;
     bool metronome_sfx_enabled = true;
 
     // saving
@@ -70,6 +69,9 @@ public partial class Manager : Node
     [Export] public CheckButton recordSampleCheckButton2;
     [Export] public CheckButton recordSampleCheckButton3;
 
+    // settings menu buttons
+    [Export] Button metronome_sfx_toggle_button;
+
     // other interface
     [Export] Button skiptutorialbutton;
     [Export] ProgressBar progressBar;
@@ -84,6 +86,9 @@ public partial class Manager : Node
     [Export] float swing = 0.5f;
     [Export] Slider swingslider;
     [Export] Label swinglabel;
+    [Export] Button settingsButton;
+    bool showsettingsmenu = false;
+    [Export] Panel settingsPanel;
 
     // clapping
     [Export] float clapTreshold = 0.1f;
@@ -176,6 +181,7 @@ public partial class Manager : Node
         fourthAudioPlayer.Stream = mainAudioFiles[3];
 
         // init buttons
+        settingsButton.Pressed += () => showsettingsmenu = !showsettingsmenu;
         metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
         ClearLayoutButton.Pressed += OnClearLayoutButton;
@@ -356,6 +362,10 @@ public partial class Manager : Node
             draganddropButton1.Visible = showsamplebuttons;
             draganddropButton2.Visible = showsamplebuttons;
             draganddropButton3.Visible = showsamplebuttons;
+
+            // settings menu
+            settingsPanel.Visible = showsettingsmenu;
+            metronome_sfx_toggle_button.Visible = showsettingsmenu;
         }
 
         // blip

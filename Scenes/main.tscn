@@ -38,11 +38,10 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("metronome_sfx_toggle_button", "saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_dtyd4")
 achievement_sfx = ExtResource("3_jh4i8")
-metronome_sfx_toggle_button = NodePath("../../UserInterface/MainButtons/ToggleMetronomeButton")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 bpm = 60
@@ -69,6 +68,7 @@ recordSampleCheckButton0 = NodePath("../../UserInterface/SampleButtons/UseSample
 recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton1")
 recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
 recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
+metronome_sfx_toggle_button = NodePath("../../UserInterface/ToggleMetronomeButton")
 skiptutorialbutton = NodePath("../../UserInterface/SkipTutorialButton")
 progressBar = NodePath("../../UserInterface/ProgressBar")
 pointer = NodePath("../../UserInterface/Pointer")
@@ -79,6 +79,8 @@ draganddropthing = NodePath("../../UserInterface/draganddropthing")
 swing = 0.0
 swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
 swinglabel = NodePath("../../UserInterface/SwingLabel")
+settingsButton = NodePath("../../UserInterface/SettingsButton")
+settingsPanel = NodePath("../../UserInterface/SettingsButton/SettingsPanel")
 InstructionLabel = NodePath("../../UserInterface/InstructionPanel/InstructionLabel")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
@@ -312,21 +314,6 @@ grow_vertical = 2
 focus_mode = 0
 text = "Bpm Up"
 
-[node name="ToggleMetronomeButton" type="Button" parent="UserInterface/MainButtons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1040.0
-offset_top = -311.0
-offset_right = -912.0
-offset_bottom = -279.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_mode = 0
-text = "Toggle Metro"
-
 [node name="BpmDownButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8
 anchor_left = 0.5
@@ -426,6 +413,28 @@ offset_right = -360.0
 offset_bottom = 248.0
 focus_mode = 0
 
+[node name="SettingsButton" type="Button" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -297.0
+offset_top = -553.0
+offset_right = -169.0
+offset_bottom = -521.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Settings ⚙️"
+
+[node name="SettingsPanel" type="Panel" parent="UserInterface/SettingsButton"]
+layout_mode = 0
+offset_left = -31.0
+offset_top = 40.0
+offset_right = 169.0
+offset_bottom = 153.0
+
 [node name="SkipTutorialButton" type="Button" parent="UserInterface"]
 anchors_preset = 8
 anchor_left = 0.5
@@ -440,6 +449,21 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "Skip Tutorial"
+
+[node name="ToggleMetronomeButton" type="Button" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -297.0
+offset_top = -500.0
+offset_right = -169.0
+offset_bottom = -468.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Toggle Metronome"
 
 [node name="SwingLabel" type="Label" parent="UserInterface"]
 offset_left = -629.0
