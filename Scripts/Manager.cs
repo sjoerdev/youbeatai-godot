@@ -90,10 +90,11 @@ public partial class Manager : Node
     bool showsettingsmenu = false;
     [Export] Panel settingsPanel;
 
-    // clapping
-    [Export] float clapTreshold = 0.1f;
+    // clapping and stomping
+    bool stomped = false;
     bool clapped = false;
     int clappedAmount = 0;
+    int stompedAmount = 0;
 
     // other
     public bool showTemplate = false;
@@ -275,6 +276,7 @@ public partial class Manager : Node
     bool YellowsPlaced() => AmountOfActives(2) >= 4;
     bool BluesPlaced() => AmountOfActives(3) >= 4;
     bool ClappedEnough() => clappedAmount >= 4;
+    bool StompedEnough() => stompedAmount >= 4;
     bool HasSelectedTemplate() => selectedTemplate;
     bool HasAddedSwing() => swing > 0.1f;
     bool HasChangedBPM() => haschangedbpm;
@@ -470,11 +472,24 @@ public partial class Manager : Node
             progressBar.Value = progressBarValue;
             progressBarValue -= 0.25f * (float)delta;
 
+            // blip
+            var volume = MicrophoneCapture.instance.volume;
+            var frequency = MicrophoneCapture.instance.frequency;
+
+            //if (volume > 0.1f) GD.Print(frequency);
+
             // check clap
-            if (MicrophoneCapture.instance.volume > clapTreshold && clapped == false)
+            if (volume > 0.1f && frequency > 500 && clapped == false)
             {
                 OnClap();
                 clapped = true;
+            }
+
+            // check stomp
+            if (volume > 0.1f && frequency < 400 && stomped == false)
+            {
+                OnStomp();
+                stomped = true;
             }
         }
 
@@ -603,6 +618,20 @@ public partial class Manager : Node
         clappedAmount++;
     }
 
+    public void OnStomp()
+    {
+        GD.Print("stomp");
+        int ring = 0;
+        bool active = beatActives[ring, currentBeat];
+        var sprite = beatSprites[ring, currentBeat];
+        if (active)
+        {
+            sprite.Scale += Vector2.One;
+            progressBarValue += 1f / beatsAmount * 100f;
+        }
+        stompedAmount++;
+    }
+
     public void OnBeat()
     {
         if (currentBeat is 7 or 15 or 23 or 31 && metronome_sfx_enabled) PlayExtraSFX(metronome_sfx);
@@ -611,6 +640,7 @@ public partial class Manager : Node
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
         clapped = false;
+        stomped = false;
     }
 
     private Sprite2D CreateOutline(int beat, int ring)
