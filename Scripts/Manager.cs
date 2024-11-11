@@ -488,7 +488,11 @@ public partial class Manager : Node
 
                 var color = colors[ring];
 
-                if (beat == currentBeat) color = color.Lightened(2);
+                if (beat == currentBeat)
+                {
+                    if (active) color = color.Lightened(0.75f);
+                    else color = new(1, 1, 1, 0.5f);
+                }
                 else if (!active) color.A = 0.2f;
 
                 sprite.Modulate = color;
