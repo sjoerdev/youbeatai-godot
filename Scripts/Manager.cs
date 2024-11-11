@@ -14,6 +14,11 @@ public partial class Manager : Node
     public AudioStreamPlayer2D thirdAudioPlayer;
     public AudioStreamPlayer2D fourthAudioPlayer;
 
+    // other sfx
+    public AudioStreamPlayer2D extraAudioPlayer;
+    [Export] public AudioStream metronome_sfx;
+    [Export] public AudioStream achievement_sfx;
+
     // saving
     [Export] public AudioStream[] mainAudioFiles;
     public AudioStream[] audioFilesToUse;
@@ -111,6 +116,13 @@ public partial class Manager : Node
     }
     public void OnResetPlayerButton() => currentBeat = 0;
 
+    private void PlayExtraSFX(AudioStream audioStream)
+    {
+        extraAudioPlayer.Stop();
+        extraAudioPlayer.Stream = audioStream;
+        extraAudioPlayer.Play();
+    }
+
     // on toggle functions
     private void OnToggled0(bool toggledOn)
     {
@@ -143,10 +155,12 @@ public partial class Manager : Node
         instance ??= this;
 
         // init audioplayers
+        extraAudioPlayer = new AudioStreamPlayer2D();
         firstAudioPlayer = new AudioStreamPlayer2D();
         secondAudioPlayer = new AudioStreamPlayer2D();
         thirdAudioPlayer = new AudioStreamPlayer2D();
         fourthAudioPlayer = new AudioStreamPlayer2D();
+        AddChild(extraAudioPlayer);
         AddChild(firstAudioPlayer);
         AddChild(secondAudioPlayer);
         AddChild(thirdAudioPlayer);
@@ -225,6 +239,7 @@ public partial class Manager : Node
 
     [Export] Label InstructionLabel;
     int instructionlevel = 0;
+    int previousframeinstructionlevel = 0;
 
     // instructions
     List<string> instructions = new()
@@ -339,6 +354,9 @@ public partial class Manager : Node
             draganddropButton3.Visible = showsamplebuttons;
         }
 
+        // blip
+        previousframeinstructionlevel = instructionlevel;
+
         // deal with instructions
         if (instructionlevel < instructions.Count) InstructionLabel.Text = instructions[instructionlevel];
         else InstructionLabel.Text = "...";
@@ -367,6 +385,9 @@ public partial class Manager : Node
         if (instructionlevel == 10 && HasRecordedSample()) instructionlevel++;
         if (instructionlevel == 11 && HasSavedToWav()) instructionlevel++;
         if (instructionlevel == 12 && HasClearedLayout()) instructionlevel++;
+
+        // blip 2
+        if (instructionlevel != previousframeinstructionlevel) PlayExtraSFX(achievement_sfx);
 
         // update swing amount
         swing = (float)swingslider.Value;
@@ -545,6 +566,7 @@ public partial class Manager : Node
 
     public void OnBeat()
     {
+        PlayExtraSFX(metronome_sfx);
         if (beatActives[0, currentBeat]) firstAudioPlayer.Play();
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
