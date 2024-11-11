@@ -3,7 +3,7 @@ using System;
 
 public partial class BeatSprite : Sprite2D
 {
-	public int ringIndex;
+	public int ring;
 	public int spriteIndex;
 
     public override void _Input(InputEvent inputEvent)
@@ -14,7 +14,15 @@ public partial class BeatSprite : Sprite2D
 			{
 				if (IsPixelOpaque(GetLocalMousePosition()))
 				{
-					Manager.instance.beatActives[ringIndex, spriteIndex] = !Manager.instance.beatActives[ringIndex, spriteIndex];
+					Manager.instance.beatActives[ring, spriteIndex] = !Manager.instance.beatActives[ring, spriteIndex];
+
+					if (Manager.instance.beatActives[ring, spriteIndex])
+					{
+						if (ring == 0) Manager.instance.firstAudioPlayer.Play();
+						if (ring == 1) Manager.instance.secondAudioPlayer.Play();
+						if (ring == 2) Manager.instance.thirdAudioPlayer.Play();
+						if (ring == 3) Manager.instance.fourthAudioPlayer.Play();
+					}
 				}
 			}
 		}

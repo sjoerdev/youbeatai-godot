@@ -629,7 +629,7 @@ public partial class Manager : Node
 
         BeatSprite beatSprite = sprite as BeatSprite;
         beatSprite.spriteIndex = beat;
-        beatSprite.ringIndex = ring;
+        beatSprite.ring = ring;
 
         return sprite;
     }
