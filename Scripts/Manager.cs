@@ -115,7 +115,7 @@ public partial class Manager : Node
     public void OnBpmUpButton()
     {
         bpm += 10;
-        haschangedbpm = true;;
+        haschangedbpm = true;
     }
     public void OnBpmDownButton()
     {
@@ -301,8 +301,26 @@ public partial class Manager : Node
     bool showsamplebuttons = false;
     bool showprogressbar = true;
 
+    // arrow keys
+    bool up_pressed = false;
+	bool up_pressed_lastframe = false;
+    bool dn_pressed = false;
+	bool dn_pressed_lastframe = false;
+    bool lf_pressed = false;
+	bool lf_pressed_lastframe = false;
+    bool rt_pressed = false;
+	bool rt_pressed_lastframe = false;
+
     public override void _Process(double delta)
     {
+        // deal with arrowkeys
+        up_pressed_lastframe = up_pressed;
+		up_pressed = Input.IsKeyPressed(Key.Up);
+		if (up_pressed && up_pressed != up_pressed_lastframe) OnBpmUpButton();
+        dn_pressed_lastframe = dn_pressed;
+		dn_pressed = Input.IsKeyPressed(Key.Down);
+		if (dn_pressed && dn_pressed != dn_pressed_lastframe) OnBpmDownButton();
+
         // deal with showing parts of interface
         {
             // ring 0
