@@ -31,6 +31,7 @@ public partial class Manager : Node
     [Export] int beatsAmount = 32;
     public int currentBeat = 0;
     float beatTimer = 0;
+    float slowBeatTimer = 0;
 
     // colors
     [Export] public Color[] colors;
@@ -416,7 +417,7 @@ public partial class Manager : Node
 
         if (playing)
         {
-            // Keep time (with swing)
+            // keep time (with swing)
             beatTimer += (float)delta;
             var baseTimePerBeat = (60f / bpm) / 4;
             var timePerBeat = (currentBeat % 2 == 1) ? baseTimePerBeat * (1 + swing) : baseTimePerBeat * (1 - (swing / 2));
@@ -427,9 +428,12 @@ public partial class Manager : Node
                 OnBeat();
             }
 
-            // Metronome
-            var beatprogress = beatTimer / timePerBeat;
-            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-0.4f, 0.4f, (Mathf.Sin(beatprogress * Mathf.Pi * 2) + 1) / 2));
+            slowBeatTimer += (float)delta / 4;
+            if (slowBeatTimer > timePerBeat) slowBeatTimer -= timePerBeat;
+
+            // metronome
+            var beatprogress = slowBeatTimer / timePerBeat;
+            metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-0.4f, 0.4f, beatprogress));
 
             // update progressbar
             progressBar.Value = progressBarValue;
