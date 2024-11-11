@@ -38,10 +38,11 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("metronome_sfx_toggle_button", "saveToWavButton", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_dtyd4")
 achievement_sfx = ExtResource("3_jh4i8")
+metronome_sfx_toggle_button = NodePath("../../UserInterface/MainButtons/ToggleMetronomeButton")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 bpm = 60
@@ -310,6 +311,21 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "Bpm Up"
+
+[node name="ToggleMetronomeButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1040.0
+offset_top = -311.0
+offset_right = -912.0
+offset_bottom = -279.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Toggle Metro"
 
 [node name="BpmDownButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8

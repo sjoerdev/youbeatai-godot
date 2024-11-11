@@ -15,9 +15,11 @@ public partial class Manager : Node
     public AudioStreamPlayer2D fourthAudioPlayer;
 
     // other sfx
-    public AudioStreamPlayer2D extraAudioPlayer;
-    [Export] public AudioStream metronome_sfx;
-    [Export] public AudioStream achievement_sfx;
+    AudioStreamPlayer2D extraAudioPlayer;
+    [Export] AudioStream metronome_sfx;
+    [Export] AudioStream achievement_sfx;
+    [Export] Button metronome_sfx_toggle_button;
+    bool metronome_sfx_enabled = true;
 
     // saving
     [Export] public AudioStream[] mainAudioFiles;
@@ -174,6 +176,7 @@ public partial class Manager : Node
         fourthAudioPlayer.Stream = mainAudioFiles[3];
 
         // init buttons
+        metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
         ClearLayoutButton.Pressed += OnClearLayoutButton;
         RecordButton.Pressed += OnRecordButton;
@@ -570,7 +573,7 @@ public partial class Manager : Node
 
     public void OnBeat()
     {
-        PlayExtraSFX(metronome_sfx);
+        if (currentBeat is 7 or 15 or 23 or 31 && metronome_sfx_enabled) PlayExtraSFX(metronome_sfx);
         if (beatActives[0, currentBeat]) firstAudioPlayer.Play();
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
