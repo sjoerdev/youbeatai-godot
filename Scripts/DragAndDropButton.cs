@@ -14,7 +14,7 @@ public partial class DragAndDropButton : Sprite2D
 	bool startedholdingthisringinside = false;
 	bool holdingforthis = false;
 
-	public override void _Input(InputEvent inputEvent)
+    public override void _Input(InputEvent inputEvent)
     {
 		if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
 		{
@@ -42,8 +42,34 @@ public partial class DragAndDropButton : Sprite2D
 		}
     }
 
+	bool w_pressed = false;
+	bool w_pressed_lastframe = false;
+	bool a_pressed = false;
+	bool a_pressed_lastframe = false;
+	bool s_pressed = false;
+	bool s_pressed_lastframe = false;
+	bool d_pressed = false;
+	bool d_pressed_lastframe = false;
+
     public override void _Process(double delta)
     {
+		w_pressed_lastframe = w_pressed;
+		w_pressed = Input.IsKeyPressed(Key.W);
+		if (w_pressed != w_pressed_lastframe && ring == 0 && w_pressed) ActivateBeat();
+
+		a_pressed_lastframe = a_pressed;
+		a_pressed = Input.IsKeyPressed(Key.A);
+		if (a_pressed != a_pressed_lastframe && ring == 1 && a_pressed) ActivateBeat();
+
+		s_pressed_lastframe = s_pressed;
+		s_pressed = Input.IsKeyPressed(Key.S);
+		if (s_pressed != s_pressed_lastframe && ring == 2 && s_pressed) ActivateBeat();
+
+		d_pressed_lastframe = d_pressed;
+		d_pressed = Input.IsKeyPressed(Key.D);
+		if (d_pressed != d_pressed_lastframe && ring == 3 && d_pressed) ActivateBeat();
+
+
 		holdingOutside = pressing && !inside;
 		var holdingthisring = holdingOutside && holdingforthis;
 		if (holdingthisring) Manager.instance.holdingforring = ring;
