@@ -80,8 +80,8 @@ public partial class DragAndDropButton : Sprite2D
 
 		if (pressing && inside && timePressing > 0.5f && !Manager.instance.beatActives[ring, Manager.instance.currentBeat]) ActivateBeat();
 
-		if (inside) Modulate = Manager.instance.colors[ring];
-		else Modulate = Manager.instance.colors[ring] * 0.8f;
+		if (inside) SelfModulate = Manager.instance.colors[ring];
+		else SelfModulate = Manager.instance.colors[ring] * 0.8f;
     }
 
 	private void ActivateBeat()
