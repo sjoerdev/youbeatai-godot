@@ -259,6 +259,7 @@ public partial class Manager : Node
         "Druk of minimaal 4 van de orange beats",
         "Druk of minimaal 4 van de geel beats",
         "Druk of minimaal 4 van de blauwe beats",
+        "Druk nu een keer op de play knop",
         "Klap 4 keer op het goede moment mee",
         "Selecteer een beat template van de lijst",
         "Geef de beat loop een beetje swing",
@@ -275,6 +276,7 @@ public partial class Manager : Node
     bool OrangesPlaced() => AmountOfActives(1) >= 4;
     bool YellowsPlaced() => AmountOfActives(2) >= 4;
     bool BluesPlaced() => AmountOfActives(3) >= 4;
+    bool PressedPlay() => playing;
     bool ClappedEnough() => clappedAmount >= 4;
     bool StompedEnough() => stompedAmount >= 4;
     bool HasSelectedTemplate() => selectedTemplate;
@@ -405,20 +407,23 @@ public partial class Manager : Node
         if (instructionlevel == 2 && YellowsPlaced()) instructionlevel++;
         if (instructionlevel == 3 && BluesPlaced()) instructionlevel++;
 
-        if (instructionlevel == 4) showplaypausebutton = true;
-        if (instructionlevel == 4 && ClappedEnough()) instructionlevel++;
+        if (instructionlevel == 4 && PressedPlay()) instructionlevel++;
 
-        if (instructionlevel == 5) showleftbuttons = true;
-        if (instructionlevel == 5 && HasSelectedTemplate()) instructionlevel++;
-        if (instructionlevel == 6 && HasAddedSwing()) instructionlevel++;
-        if (instructionlevel == 7 && HasChangedBPM()) instructionlevel++;
-        if (instructionlevel == 8 && HasAddedReverb()) instructionlevel++;
-        if (instructionlevel == 9 && HasAddedDelay()) instructionlevel++;
+
+        if (instructionlevel == 5) showplaypausebutton = true;
+        if (instructionlevel == 5 && ClappedEnough()) instructionlevel++;
+
+        if (instructionlevel == 6) showleftbuttons = true;
+        if (instructionlevel == 6 && HasSelectedTemplate()) instructionlevel++;
+        if (instructionlevel == 7 && HasAddedSwing()) instructionlevel++;
+        if (instructionlevel == 8 && HasChangedBPM()) instructionlevel++;
+        if (instructionlevel == 9 && HasAddedReverb()) instructionlevel++;
+        if (instructionlevel == 10 && HasAddedDelay()) instructionlevel++;
         
-        if (instructionlevel == 10) showsamplebuttons = true;
-        if (instructionlevel == 10 && HasRecordedSample()) instructionlevel++;
-        if (instructionlevel == 11 && HasSavedToWav()) instructionlevel++;
-        if (instructionlevel == 12 && HasClearedLayout()) instructionlevel++;
+        if (instructionlevel == 11) showsamplebuttons = true;
+        if (instructionlevel == 11 && HasRecordedSample()) instructionlevel++;
+        if (instructionlevel == 12 && HasSavedToWav()) instructionlevel++;
+        if (instructionlevel == 13 && HasClearedLayout()) instructionlevel++;
 
         // blip 2
         if (instructionlevel != previousframeinstructionlevel) PlayExtraSFX(achievement_sfx);
