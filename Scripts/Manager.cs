@@ -380,10 +380,10 @@ public partial class Manager : Node
             recordSampleCheckButton1.Visible = showsamplebuttons;
             recordSampleCheckButton2.Visible = showsamplebuttons;
             recordSampleCheckButton3.Visible = showsamplebuttons;
-            draganddropButton0.Visible = showsamplebuttons;
-            draganddropButton1.Visible = showsamplebuttons;
-            draganddropButton2.Visible = showsamplebuttons;
-            draganddropButton3.Visible = showsamplebuttons;
+            draganddropButton0.Visible = true;
+            draganddropButton1.Visible = true;
+            draganddropButton2.Visible = true;
+            draganddropButton3.Visible = true;
 
             // settings menu
             settingsPanel.Visible = showsettingsmenu;
