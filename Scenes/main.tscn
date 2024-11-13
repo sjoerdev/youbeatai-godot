@@ -437,10 +437,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -297.0
-offset_top = -553.0
-offset_right = -169.0
-offset_bottom = -521.0
+offset_left = -210.0
+offset_top = -618.0
+offset_right = -82.0
+offset_bottom = -586.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -448,25 +448,9 @@ text = "Settings ⚙️"
 
 [node name="SettingsPanel" type="Panel" parent="UserInterface/SettingsButton"]
 layout_mode = 0
-offset_left = -31.0
-offset_top = 40.0
-offset_right = 169.0
-offset_bottom = 153.0
-
-[node name="SkipTutorialButton" type="Button" parent="UserInterface"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -303.0
-offset_top = -621.0
-offset_right = -175.0
-offset_bottom = -589.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_mode = 0
-text = "Skip Tutorial"
+offset_top = 35.0
+offset_right = 128.0
+offset_bottom = 148.0
 
 [node name="ToggleMetronomeButton" type="Button" parent="UserInterface"]
 anchors_preset = 8
@@ -474,14 +458,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -297.0
-offset_top = -500.0
-offset_right = -169.0
-offset_bottom = -468.0
+offset_left = -203.0
+offset_top = -578.0
+offset_right = -86.0
+offset_bottom = -546.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "Toggle Metronome"
+text = "Metronome"
 
 [node name="SwingLabel" type="Label" parent="UserInterface"]
 offset_left = -629.0
@@ -620,3 +604,18 @@ offset_bottom = 79.0
 text = "..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SkipTutorialButton" type="Button" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -157.0
+offset_top = -700.0
+offset_right = -86.0
+offset_bottom = -668.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "Skip All"
