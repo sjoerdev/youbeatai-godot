@@ -103,6 +103,7 @@ public partial class Manager : Node
     bool hasclearedlayout = false;
     private bool spacedownlastframe = false;
     private bool enterdownlastframe = false;
+    float timeafterplay = 0;
 
     // on button functions
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
@@ -455,6 +456,8 @@ public partial class Manager : Node
 
         if (playing)
         {
+            timeafterplay += ((float)delta);
+
             // keep time (with swing)
             beatTimer += (float)delta;
             var baseTimePerBeat = (60f / bpm) / 4;
@@ -497,6 +500,7 @@ public partial class Manager : Node
                 stomped = true;
             }
         }
+        else timeafterplay = 0;
 
         // update sprites
         for (int beat = 0; beat < beatsAmount; beat++)
@@ -520,6 +524,12 @@ public partial class Manager : Node
                 if (sprite.Scale.X > 1) sprite.Scale -= Vector2.One * (float)delta * 0.3f;
             }
         }
+
+        // bloop
+        if (draganddropButton0.Scale.X > 2) draganddropButton0.Scale -= Vector2.One * (float)delta * 0.8f;
+        if (draganddropButton1.Scale.X > 2) draganddropButton1.Scale -= Vector2.One * (float)delta * 0.8f;
+        if (draganddropButton2.Scale.X > 2) draganddropButton2.Scale -= Vector2.One * (float)delta * 0.8f;
+        if (draganddropButton3.Scale.X > 2) draganddropButton3.Scale -= Vector2.One * (float)delta * 0.8f;
 
         // update outlines
         for (int beat = 0; beat < beatsAmount; beat++)
@@ -611,6 +621,7 @@ public partial class Manager : Node
 
     public void OnClap()
     {
+        if (timeafterplay < 0.2f) return;
         GD.Print("clap");
         int ring = 1;
         bool active = beatActives[ring, currentBeat];
@@ -621,10 +632,13 @@ public partial class Manager : Node
             progressBarValue += 1f / beatsAmount * 100f;
         }
         clappedAmount++;
+        draganddropButton1.Scale += Vector2.One / 2;
+        ((DragAndDropButton)draganddropButton1).ActivateBeat();
     }
 
     public void OnStomp()
     {
+        if (timeafterplay < 0.2f) return;
         GD.Print("stomp");
         int ring = 0;
         bool active = beatActives[ring, currentBeat];
@@ -635,6 +649,8 @@ public partial class Manager : Node
             progressBarValue += 1f / beatsAmount * 100f;
         }
         stompedAmount++;
+        draganddropButton0.Scale += Vector2.One / 2;
+        ((DragAndDropButton)draganddropButton0).ActivateBeat();
     }
 
     public void OnBeat()

@@ -84,7 +84,7 @@ public partial class DragAndDropButton : Sprite2D
 		else SelfModulate = Manager.instance.colors[ring] * 0.8f;
     }
 
-	private void ActivateBeat()
+	public void ActivateBeat()
 	{
 		GD.Print("add");
 		Manager.instance.beatActives[ring, Manager.instance.currentBeat] = true;
