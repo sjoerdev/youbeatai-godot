@@ -298,7 +298,7 @@ public partial class Manager : Node
     bool showring1 = false;
     bool showring2 = false;
     bool showring3 = false;
-    bool showplaypausebutton = false;
+    bool showplaypausebutton = true;
     bool showleftbuttons = false;
     bool showsamplebuttons = false;
     bool showprogressbar = true;
