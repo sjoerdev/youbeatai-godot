@@ -35,20 +35,32 @@ public partial class Manager : Node
     float slowBeatTimer = 0;
 
     // particles
-    [Export] public CpuParticles2D beatParticleSystem;
-    private float beatParticleSystemEmitingTime;
-    private Vector2 beatParticleSystemPosition;
-    private float beatParticleSystemTimeToEmit;
-    private Color beatparticleSystemColor;
-    private bool beatParticlesShouldEmit = false;
+    [Export] public CpuParticles2D beat_particles;
+    private Vector2 beat_particles_position;
+    private float beat_particles_time;
+    private float beat_particles_curtime;
+    private Color beat_particles_color;
+    private bool beat_particles_emitting = false;
+
+    [Export] public CpuParticles2D pbar_particles;
+    private float pbar_particles_time;
+    private float pbar_particles_curtime;
+    private bool pbar_particles_emitting = false;
 
     public void EmitBeatParticles(Vector2 position, Color color)
     {
-        beatparticleSystemColor = color.Lightened(0.25f);
-        beatParticleSystemEmitingTime = 0;
-        beatParticleSystemPosition = position;
-        beatParticleSystemTimeToEmit = 0.05f;
-        beatParticlesShouldEmit = true;
+        beat_particles_curtime = 0;
+        beat_particles_time = 0.05f;
+        beat_particles_position = position;
+        beat_particles_color = color.Lightened(0.25f);
+        beat_particles_emitting = true;
+    }
+
+    public void EmitProgressBarParticles()
+    {
+        pbar_particles_curtime = 0;
+        pbar_particles_time = 0.1f;
+        pbar_particles_emitting = true;
     }
 
     // colors
@@ -336,17 +348,29 @@ public partial class Manager : Node
     public override void _Process(double delta)
     {
         // deal with beat particles
-        if (beatParticlesShouldEmit && beatParticleSystemEmitingTime < beatParticleSystemTimeToEmit)
+        if (beat_particles_emitting && beat_particles_curtime < beat_particles_time)
         {
-            beatParticleSystem.Color = beatparticleSystemColor;
-            beatParticleSystem.Position = beatParticleSystemPosition;
-            beatParticleSystem.Emitting = true;
-            beatParticleSystemEmitingTime += (float)delta;
+            beat_particles.Color = beat_particles_color;
+            beat_particles.Position = beat_particles_position;
+            beat_particles.Emitting = true;
+            beat_particles_curtime += (float)delta;
         }
         else
         {
-            beatParticleSystem.Emitting = false;
-            beatParticlesShouldEmit = false;
+            beat_particles.Emitting = false;
+            beat_particles_emitting = false;
+        }
+
+        // deal with progress bar particles
+        if (pbar_particles_emitting && pbar_particles_curtime < pbar_particles_time)
+        {
+            pbar_particles.Emitting = true;
+            pbar_particles_curtime += (float)delta;
+        }
+        else
+        {
+            pbar_particles.Emitting = false;
+            pbar_particles_emitting = false;
         }
 
         // deal with arrowkeys
@@ -509,7 +533,7 @@ public partial class Manager : Node
 
             // update progressbar
             progressBar.Value = progressBarValue;
-            progressBarValue -= 0.25f * (float)delta;
+            if (progressBarValue > 0) progressBarValue -= 0.25f * (float)delta;
 
             // blip
             var volume = MicrophoneCapture.instance.volume;
@@ -661,6 +685,7 @@ public partial class Manager : Node
         {
             sprite.Scale += Vector2.One;
             progressBarValue += 1f / beatsAmount * 100f;
+            EmitProgressBarParticles();
         }
         clappedAmount++;
         draganddropButton1.Scale += Vector2.One / 2;
@@ -678,6 +703,7 @@ public partial class Manager : Node
         {
             sprite.Scale += Vector2.One;
             progressBarValue += 1f / beatsAmount * 100f;
+            EmitProgressBarParticles();
         }
         stompedAmount++;
         draganddropButton0.Scale += Vector2.One / 2;
