@@ -34,6 +34,23 @@ public partial class Manager : Node
     float beatTimer = 0;
     float slowBeatTimer = 0;
 
+    // particles
+    [Export] public CpuParticles2D beatParticleSystem;
+    private float beatParticleSystemEmitingTime;
+    private Vector2 beatParticleSystemPosition;
+    private float beatParticleSystemTimeToEmit;
+    private Color beatparticleSystemColor;
+    private bool beatParticlesShouldEmit = false;
+
+    public void EmitBeatParticles(Vector2 position, Color color)
+    {
+        beatparticleSystemColor = color.Lightened(0.25f);
+        beatParticleSystemEmitingTime = 0;
+        beatParticleSystemPosition = position;
+        beatParticleSystemTimeToEmit = 0.05f;
+        beatParticlesShouldEmit = true;
+    }
+
     // colors
     [Export] public Color[] colors;
 
@@ -42,7 +59,7 @@ public partial class Manager : Node
     [Export] Texture2D texture;
     [Export] Texture2D outline;
     Sprite2D[,] beatOutlines;
-    Sprite2D[,] beatSprites;
+    public Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
     public bool[,] beatActives = new bool[4, 32];
 
@@ -318,6 +335,20 @@ public partial class Manager : Node
 
     public override void _Process(double delta)
     {
+        // deal with beat particles
+        if (beatParticlesShouldEmit && beatParticleSystemEmitingTime < beatParticleSystemTimeToEmit)
+        {
+            beatParticleSystem.Color = beatparticleSystemColor;
+            beatParticleSystem.Position = beatParticleSystemPosition;
+            beatParticleSystem.Emitting = true;
+            beatParticleSystemEmitingTime += (float)delta;
+        }
+        else
+        {
+            beatParticleSystem.Emitting = false;
+            beatParticlesShouldEmit = false;
+        }
+
         // deal with arrowkeys
         up_pressed_lastframe = up_pressed;
 		up_pressed = Input.IsKeyPressed(Key.Up);

@@ -92,5 +92,7 @@ public partial class DragAndDropButton : Sprite2D
 		if (ring == 1) Manager.instance.secondAudioPlayer.Play();
 		if (ring == 2) Manager.instance.thirdAudioPlayer.Play();
 		if (ring == 3) Manager.instance.fourthAudioPlayer.Play();
+		var position = Manager.instance.beatSprites[ring, Manager.instance.currentBeat].Position;
+		Manager.instance.EmitBeatParticles(position, Manager.instance.colors[ring]);
 	}
 }

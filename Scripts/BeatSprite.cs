@@ -23,6 +23,9 @@ public partial class BeatSprite : Sprite2D
 						if (ring == 2) Manager.instance.thirdAudioPlayer.Play();
 						if (ring == 3) Manager.instance.fourthAudioPlayer.Play();
 					}
+
+					var position = Manager.instance.beatSprites[ring, spriteIndex].Position;
+					Manager.instance.EmitBeatParticles(position, Manager.instance.colors[ring]);
 				}
 			}
 		}
