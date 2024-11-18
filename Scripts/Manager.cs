@@ -47,6 +47,11 @@ public partial class Manager : Node
     private float pbar_particles_curtime;
     private bool pbar_particles_emitting = false;
 
+    [Export] public CpuParticles2D achievement_particles;
+    private float achievement_particles_time;
+    private float achievement_particles_curtime;
+    private bool achievement_particles_emitting = false;
+
     public void EmitBeatParticles(Vector2 position, Color color)
     {
         beat_particles_curtime = 0;
@@ -61,6 +66,13 @@ public partial class Manager : Node
         pbar_particles_curtime = 0;
         pbar_particles_time = 0.1f;
         pbar_particles_emitting = true;
+    }
+
+    public void EmitAchievementParticles()
+    {
+        achievement_particles_curtime = 0;
+        achievement_particles_time = 0.5f;
+        achievement_particles_emitting = true;
     }
 
     // colors
@@ -373,6 +385,18 @@ public partial class Manager : Node
             pbar_particles_emitting = false;
         }
 
+        // deal with progress bar particles
+        if (achievement_particles_emitting && achievement_particles_curtime < achievement_particles_time)
+        {
+            achievement_particles.Emitting = true;
+            achievement_particles_curtime += (float)delta;
+        }
+        else
+        {
+            achievement_particles.Emitting = false;
+            achievement_particles_emitting = false;
+        }
+
         // deal with arrowkeys
         up_pressed_lastframe = up_pressed;
 		up_pressed = Input.IsKeyPressed(Key.Up);
@@ -482,7 +506,7 @@ public partial class Manager : Node
         if (instructionlevel == 13 && HasClearedLayout()) instructionlevel++;
 
         // blip 2
-        if (instructionlevel != previousframeinstructionlevel) PlayExtraSFX(achievement_sfx);
+        if (instructionlevel != previousframeinstructionlevel) { PlayExtraSFX(achievement_sfx); EmitAchievementParticles(); }
 
         // update swing amount
         swing = (float)swingslider.Value;
