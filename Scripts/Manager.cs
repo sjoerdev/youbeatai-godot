@@ -145,6 +145,7 @@ public partial class Manager : Node
     private bool spacedownlastframe = false;
     private bool enterdownlastframe = false;
     float timeafterplay = 0;
+    [Export] Slider ClapBiasSlider;
 
     // on button functions
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
@@ -566,14 +567,14 @@ public partial class Manager : Node
             //if (volume > 0.1f) GD.Print(frequency);
 
             // check clap
-            if (volume > 0.1f && frequency > 500 && clapped == false)
+            if (volume > 0.1f && frequency > ClapBiasSlider.Value && clapped == false)
             {
                 OnClap();
                 clapped = true;
             }
 
             // check stomp
-            if (volume > 0.1f && frequency < 400 && stomped == false)
+            if (volume > 0.1f && frequency < ClapBiasSlider.Value && stomped == false)
             {
                 OnStomp();
                 stomped = true;
