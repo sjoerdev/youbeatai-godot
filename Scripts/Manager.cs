@@ -21,7 +21,7 @@ public partial class Manager : Node
     AudioStreamPlayer2D extraAudioPlayer;
     [Export] AudioStream metronome_sfx;
     [Export] AudioStream achievement_sfx;
-    bool metronome_sfx_enabled = true;
+    bool metronome_sfx_enabled = false;
 
     // saving
     [Export] public AudioStream[] mainAudioFiles;
