@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using NAudio.Wave;
+using NAudio.Lame;
+
 public partial class Manager : Node
 {
     // singleton
@@ -540,7 +543,7 @@ public partial class Manager : Node
 
             // keep time (with swing)
             beatTimer += (float)delta;
-            var baseTimePerBeat = (60f / bpm) / 4;
+            var baseTimePerBeat = (60f / bpm) / 2;
             var timePerBeat = (currentBeat % 2 == 1) ? baseTimePerBeat * (1 + swing) : baseTimePerBeat * (1 - (swing / 2));
             if (beatTimer > timePerBeat)
             {
@@ -639,16 +642,15 @@ public partial class Manager : Node
 
     public void SaveDrumLoopAsFile()
     {
-        string pathToSaveTo = "savedloop" + "_" + bpm.ToString() + "bpm" + ".wav";
-        if (Godot.FileAccess.FileExists(pathToSaveTo)) File.Delete(pathToSaveTo);
-        
-        float secondsPerBeat = (60f / bpm) / 4;
-        float totalDuration = beatsAmount * secondsPerBeat;
+        string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "-");
+        string filename = "savedloop_" + bpm.ToString() + "bpm_" + sanitizedTime;
 
         int sampleRate = 44100;
-        int totalSamples = (int)(totalDuration * sampleRate);
+        float secondsPerBeat = (60f / bpm) / 2;
+        int totalSamples = (int)(beatsAmount * secondsPerBeat * sampleRate);
         float[] audioData = new float[totalSamples];
 
+        // audiodata
         for (int ring = 0; ring < beatActives.GetLength(0); ring++)
         {
             for (int beat = 0; beat < beatActives.GetLength(1); beat++)
@@ -667,36 +669,35 @@ public partial class Manager : Node
             }
         }
 
+        // normalize
         float maxAmplitude = 0;
         foreach (var sample in audioData) if (Math.Abs(sample) > maxAmplitude) maxAmplitude = Math.Abs(sample);
         if (maxAmplitude > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= maxAmplitude;
 
-        Godot.FileAccess file = Godot.FileAccess.Open(pathToSaveTo, Godot.FileAccess.ModeFlags.Write);
-        int byteRate = sampleRate * 2;
-        int dataSize = audioData.Length * 2;
-        file.StoreString("RIFF");
-        file.Store32((uint)(36 + dataSize));
-        file.StoreString("WAVE");
-        file.StoreString("fmt ");
-        file.Store32(16);
-        file.Store16(1);
-        file.Store16(1);
-        file.Store32((uint)sampleRate);
-        file.Store32((uint)byteRate);
-        file.Store16(2);
-        file.Store16(16);
-        file.StoreString("data");
-        file.Store32((uint)dataSize);
-        foreach (var sample in audioData)
+        // write wave
+        using (var writer = new WaveFileWriter(filename + ".wav", new WaveFormat(sampleRate, 1)))
         {
-            short intSample = (short)(sample * short.MaxValue);
-            byte[] byteSample = BitConverter.GetBytes(intSample);
-            file.StoreBuffer(byteSample);
+            foreach (var sample in audioData)
+            {
+                short intSample = (short)(sample * short.MaxValue);
+                writer.WriteSample(intSample / (float)short.MaxValue);
+            }
+            writer.Close();
         }
 
-        file.Close();
-        GD.Print("Drum loop saved successfully!");
-        hassavedtowav = true;
+        GD.Print("Drum loop saved as WAV successfully!");
+        ConvertWavToMp3(filename);
+        GD.Print("Drum loop converted to MP3 successfully!");
+    }
+
+    private void ConvertWavToMp3(string filename)
+    {
+        var reader = new AudioFileReader(filename + ".wav");
+        var writer = new LameMP3FileWriter(filename + ".mp3", reader.WaveFormat, LAMEPreset.STANDARD);
+        reader.CopyTo(writer);
+        reader.Close();
+        writer.Close();
+        File.Delete(filename + ".wav");
     }
 
     public void OnClap()
