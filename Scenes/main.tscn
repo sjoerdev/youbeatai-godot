@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
 [ext_resource type="Texture2D" uid="uid://dlteab6232hoa" path="res://Assets/white.png" id="2_1ig4u"]
-[ext_resource type="AudioStream" uid="uid://crsekn140db8v" path="res://Assets/metronome_temp.wav" id="2_dtyd4"]
-[ext_resource type="AudioStream" uid="uid://dpmww86rlxw83" path="res://Assets/achievement_temp.wav" id="3_jh4i8"]
+[ext_resource type="AudioStream" uid="uid://3hoatoungl5b" path="res://Assets/metronome.wav" id="2_c85ny"]
+[ext_resource type="AudioStream" uid="uid://ck2sni76orwxh" path="res://Assets/achievement.wav" id="3_p4kny"]
 [ext_resource type="AudioStream" uid="uid://mfga1xf5g5ds" path="res://Assets/kick.wav" id="5_cl760"]
 [ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Assets/clap.wav" id="6_v5052"]
 [ext_resource type="AudioStream" uid="uid://c11jklhrlof4j" path="res://Assets/open-hihat.wav" id="7_s71c0"]
@@ -41,8 +41,8 @@ current = true
 
 [node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
-metronome_sfx = ExtResource("2_dtyd4")
-achievement_sfx = ExtResource("3_jh4i8")
+metronome_sfx = ExtResource("2_c85ny")
+achievement_sfx = ExtResource("3_p4kny")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("7_s71c0"), ExtResource("8_4xf5a")])
 saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 bpm = 60

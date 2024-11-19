@@ -737,7 +737,7 @@ public partial class Manager : Node
 
     public void OnBeat()
     {
-        if (currentBeat is 7 or 15 or 23 or 31 && metronome_sfx_enabled) PlayExtraSFX(metronome_sfx);
+        if (metronome_sfx_enabled && currentBeat % 2 == 0) PlayExtraSFX(metronome_sfx);
         if (beatActives[0, currentBeat]) firstAudioPlayer.Play();
         if (beatActives[1, currentBeat]) secondAudioPlayer.Play();
         if (beatActives[2, currentBeat]) thirdAudioPlayer.Play();
