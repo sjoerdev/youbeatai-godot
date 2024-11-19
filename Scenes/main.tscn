@@ -39,7 +39,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "instructionspanel", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -71,7 +71,7 @@ recordSampleCheckButton0 = NodePath("../../UserInterface/SampleButtons/UseSample
 recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton1")
 recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
 recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
-metronome_sfx_toggle_button = NodePath("../../UserInterface/ToggleMetronomeButton")
+metronome_sfx_toggle_button = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ToggleMetronomeButton")
 skiptutorialbutton = NodePath("../../UserInterface/SkipTutorialButton")
 progressBar = NodePath("../../UserInterface/ProgressBar")
 pointer = NodePath("../../UserInterface/Pointer")
@@ -84,7 +84,8 @@ swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
 swinglabel = NodePath("../../UserInterface/SwingLabel")
 settingsButton = NodePath("../../UserInterface/SettingsButton")
 settingsPanel = NodePath("../../UserInterface/SettingsButton/SettingsPanel")
-ClapBiasSlider = NodePath("../../UserInterface/ClapBiasLabel/ClapBiasSlider")
+ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ClapBiasLabel/ClapBiasSlider")
+instructionspanel = NodePath("../../UserInterface/InstructionPanel")
 InstructionLabel = NodePath("../../UserInterface/InstructionPanel/InstructionLabel")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
@@ -451,9 +452,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -243.0
-offset_top = -618.0
+offset_top = -622.0
 offset_right = -82.0
-offset_bottom = -586.0
+offset_bottom = -590.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -466,21 +467,41 @@ offset_top = 35.0
 offset_right = 162.0
 offset_bottom = 148.0
 
-[node name="ToggleMetronomeButton" type="Button" parent="UserInterface"]
+[node name="ToggleMetronomeButton" type="Button" parent="UserInterface/SettingsButton/SettingsPanel"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -229.0
-offset_top = -577.0
-offset_right = -85.0
-offset_bottom = -545.0
+offset_left = -67.0
+offset_top = -46.5
+offset_right = 77.0
+offset_bottom = -14.5
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "Metronome 🫀"
 alignment = 2
+
+[node name="ClapBiasLabel" type="Label" parent="UserInterface/SettingsButton/SettingsPanel"]
+offset_left = 23.0
+offset_top = 78.0
+offset_right = 151.0
+offset_bottom = 101.0
+text = "Stomp / Clap"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ClapBiasSlider" type="HSlider" parent="UserInterface/SettingsButton/SettingsPanel/ClapBiasLabel"]
+layout_mode = 0
+offset_top = -27.0
+offset_right = 63.0
+offset_bottom = -11.0
+scale = Vector2(2, 2)
+min_value = 100.0
+max_value = 1500.0
+value = 500.0
 
 [node name="RecordButton" type="Button" parent="UserInterface"]
 anchors_preset = 8
@@ -515,25 +536,6 @@ offset_bottom = -11.0
 scale = Vector2(2, 2)
 max_value = 1.0
 step = 0.05
-
-[node name="ClapBiasLabel" type="Label" parent="UserInterface"]
-offset_left = 420.0
-offset_top = -149.0
-offset_right = 548.0
-offset_bottom = -126.0
-text = "Stomp / Clap"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ClapBiasSlider" type="HSlider" parent="UserInterface/ClapBiasLabel"]
-layout_mode = 0
-offset_top = -27.0
-offset_right = 63.0
-offset_bottom = -11.0
-scale = Vector2(2, 2)
-min_value = 100.0
-max_value = 1500.0
-value = 500.0
 
 [node name="ProgressBar" type="ProgressBar" parent="UserInterface"]
 anchors_preset = 8

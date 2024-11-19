@@ -149,6 +149,7 @@ public partial class Manager : Node
     private bool enterdownlastframe = false;
     float timeafterplay = 0;
     [Export] Slider ClapBiasSlider;
+    [Export] Panel instructionspanel;
 
     // on button functions
     public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
@@ -479,7 +480,12 @@ public partial class Manager : Node
 
         // deal with instructions
         if (instructionlevel < instructions.Count) InstructionLabel.Text = instructions[instructionlevel];
-        else InstructionLabel.Text = "...";
+        else
+        {
+            instructionspanel.Visible = false;
+            skiptutorialbutton.Visible = false;
+            settingsButton.Position = new(settingsButton.Position.X, -340);
+        }
 
         // deal with achievements
         if (instructionlevel == 0) showring0 = true;
