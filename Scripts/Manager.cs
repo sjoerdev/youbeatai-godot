@@ -436,6 +436,8 @@ public partial class Manager : Node
         {
             outcome();
             achievementLevel++;
+            EmitAchievementParticles();
+            PlayExtraSFX(achievement_sfx);
         }
 
         if (achievementLevel >= instructions.Length) instructionspanel.Visible = false;
