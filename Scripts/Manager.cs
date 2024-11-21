@@ -27,7 +27,7 @@ public partial class Manager : Node
     [Export] public AudioStream[] mainAudioFiles;
     public AudioStream[] audioFilesToUse;
     [Export] Button saveToWavButton;
-    bool hassavedtowav = false;
+    bool hassavedtofile = false;
 
     // timing
     bool playing = false;
@@ -150,9 +150,14 @@ public partial class Manager : Node
     float timeafterplay = 0;
     [Export] Slider ClapBiasSlider;
     [Export] Panel instructionspanel;
+    bool savedToLaout = false;
 
     // on button functions
-    public void OnSaveLayoutButton() => TemplateManager.instance.CreateNewTemplate("custom", beatActives);
+    public void OnSaveLayoutButton()
+    {
+        TemplateManager.instance.CreateNewTemplate("custom", beatActives);
+        savedToLaout = true;
+    }
     public void OnClearLayoutButton()
     {
         beatActives = new bool[4, 32];
@@ -304,10 +309,10 @@ public partial class Manager : Node
             () => swing > 0.1f,
 
             // saving
-            () => hassavedtowav,
-            () => swing > 0.9f, // bullshit
+            () => hassavedtofile,
+            () => savedToLaout,
             () => hasclearedlayout,
-            () => swing > 0.9f, // bullshit
+            () => false, // todo: implement
         };
 
         outcomes = new Action[]
@@ -348,7 +353,6 @@ public partial class Manager : Node
         AddChild(secondAudioPlayer);
         AddChild(thirdAudioPlayer);
         AddChild(fourthAudioPlayer);
-
         audioFilesToUse = (AudioStream[])mainAudioFiles.Clone();
         firstAudioPlayer.Stream = mainAudioFiles[0];
         secondAudioPlayer.Stream = mainAudioFiles[1];
@@ -427,13 +431,14 @@ public partial class Manager : Node
         string instruction = instructions[achievementLevel];
         Func<bool> condition = conditions[achievementLevel];
         Action outcome = outcomes[achievementLevel];
-
         InstructionLabel.Text = instruction;
         if (condition())
         {
             outcome();
             achievementLevel++;
         }
+
+        if (achievementLevel >= instructions.Length) instructionspanel.Visible = false;
 
         // deal with beat particles
         if (beat_particles_emitting && beat_particles_curtime < beat_particles_time)
@@ -651,6 +656,7 @@ public partial class Manager : Node
         GD.Print("Drum loop saved as WAV successfully!");
         ConvertWavToMp3(filename);
         GD.Print("Drum loop converted to MP3 successfully!");
+        hassavedtofile = true;
     }
 
     private void ConvertWavToMp3(string filename)
