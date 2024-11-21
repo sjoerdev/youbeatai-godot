@@ -370,7 +370,7 @@ public partial class Manager : Node
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
-        skiptutorialbutton.Pressed += () => GD.Print("todo");
+        skiptutorialbutton.Pressed += () => instructionspanel.Visible = false;
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
