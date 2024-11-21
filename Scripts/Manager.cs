@@ -227,7 +227,7 @@ public partial class Manager : Node
             "Dit is een beat ring, plaats nu 4 beats op 4 van de witte streepjes",
             "Helemaal goed! zet jij er nog 4 beats in op een plek die jij wil?",
             "Druk nu op Play om je beat te horen",
-            "Als je stompt met je voet op de grond wanneer er een rode beat klinkt krijg je punten en energie",
+            "Als je stompt met je voet op de grond precies wanneer er een rode beat is krijg je punten en energie",
 
             // oranje ring
             "Dit is nog een beat ring, plaats nu 4 beats op 4 van de witte streepjes",
@@ -273,13 +273,13 @@ public partial class Manager : Node
             () => AmountOfActives(0) >= 4, // temp
             () => AmountOfActives(0) >= 8, // temp
             () => playing == true, // temp
-            () => stompedAmount > 10, // temp
+            () => stompedAmount > 4, // temp
 
             // oranje ring
             () => AmountOfActives(1) >= 4, // temp
             () => AmountOfActives(1) >= 8, // temp
             () => playing == true, // temp
-            () => clappedAmount > 10, // temp
+            () => clappedAmount > 4, // temp
 
             // gele ring
             () => AmountOfActives(2) >= 2, // temp

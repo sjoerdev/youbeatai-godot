@@ -72,7 +72,7 @@ recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSample
 recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
 recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
 metronome_sfx_toggle_button = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ToggleMetronomeButton")
-skiptutorialbutton = NodePath("../../UserInterface/SkipTutorialButton")
+skiptutorialbutton = NodePath("../../UserInterface/InstructionPanel/SkipTutorialButton")
 progressBar = NodePath("../../UserInterface/ProgressBar")
 pointer = NodePath("../../UserInterface/Pointer")
 metronome = NodePath("../../UserInterface/metronome/metronome_point")
@@ -451,10 +451,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -243.0
-offset_top = -622.0
-offset_right = -82.0
-offset_bottom = -590.0
+offset_left = -241.0
+offset_top = -511.0
+offset_right = -80.0
+offset_bottom = -479.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -621,38 +621,41 @@ scale = Vector2(2, 0.15)
 texture = SubResource("CanvasTexture_6dn85")
 
 [node name="InstructionPanel" type="Panel" parent="UserInterface"]
-offset_left = 257.0
-offset_top = -343.0
-offset_right = 558.0
-offset_bottom = -264.0
+offset_left = 223.0
+offset_top = -340.0
+offset_right = 562.0
+offset_bottom = -162.0
 
 [node name="Title" type="Label" parent="UserInterface/InstructionPanel"]
 layout_mode = 0
-offset_right = 266.0
-offset_bottom = 40.0
+offset_right = 336.0
+offset_bottom = 43.0
 text = "Current Goal:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="InstructionLabel" type="Label" parent="UserInterface/InstructionPanel"]
 layout_mode = 0
-offset_top = 23.0
-offset_right = 301.0
-offset_bottom = 79.0
-text = "..."
+offset_left = 6.0
+offset_top = 38.0
+offset_right = 334.0
+offset_bottom = 171.0
+text = "hier komt een instructie"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="SkipTutorialButton" type="Button" parent="UserInterface"]
+[node name="SkipTutorialButton" type="Button" parent="UserInterface/InstructionPanel"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -182.0
-offset_top = -700.0
-offset_right = -86.0
-offset_bottom = -668.0
+offset_left = 66.5
+offset_top = -82.0
+offset_right = 162.5
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
