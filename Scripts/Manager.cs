@@ -239,18 +239,7 @@ public partial class Manager : Node
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
-        skiptutorialbutton.Pressed += () => 
-        {
-            instructionlevel = instructions.Count;
-            showring0 = true;
-            showring1 = true;
-            showring2 = true;
-            showring3 = true;
-            showplaypausebutton = true;
-            showleftbuttons = true;
-            showsamplebuttons = true;
-            showprogressbar = true;
-        };
+        skiptutorialbutton.Pressed += () => GD.Print("todo");
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -296,61 +285,7 @@ public partial class Manager : Node
     }
 
     [Export] Label InstructionLabel;
-    int instructionlevel = 0;
-    int previousframeinstructionlevel = 0;
-
-    // instructions
-    List<string> instructions = new()
-    {
-        "Druk op minimaal 4 van de rode beats",
-        "Druk of minimaal 4 van de orange beats",
-        "Druk of minimaal 4 van de geel beats",
-        "Druk of minimaal 4 van de blauwe beats",
-        "Druk nu een keer op de play knop",
-        "Klap 4 keer op het goede moment mee",
-        "Selecteer een beat template van de lijst",
-        "Geef de beat loop een beetje swing",
-        "Verander de snelheid van de bpm",
-        "Geef de beat loop een beetje reverb",
-        "Geef de beat loop een beetje delay",
-        "Neem een sample op met je microphoon",
-        "Maak een wav bestand van je drum loop",
-        "Reset de drum loop en begin opnieuw",
-    };
-
-    // achievement checks
-    bool RedsPlaced() => AmountOfActives(0) >= 4;
-    bool OrangesPlaced() => AmountOfActives(1) >= 4;
-    bool YellowsPlaced() => AmountOfActives(2) >= 4;
-    bool BluesPlaced() => AmountOfActives(3) >= 4;
-    bool PressedPlay() => playing;
-    bool ClappedEnough() => clappedAmount >= 4;
-    bool StompedEnough() => stompedAmount >= 4;
-    bool HasSelectedTemplate() => selectedTemplate;
-    bool HasAddedSwing() => swing > 0.1f;
-    bool HasChangedBPM() => haschangedbpm;
-    bool HasAddedReverb() => ReverbDelayManager.instance.currentReverbLevel != 0;
-    bool HasAddedDelay() => ReverbDelayManager.instance.currentDelayLevel != 0;
-    bool HasSavedToWav() => hassavedtowav;
-    bool HasClearedLayout() => hasclearedlayout;
-    bool HasRecordedSample()
-    {
-        bool zero = recordSampleButton0.recordedAudio != null;
-        bool one = recordSampleButton1.recordedAudio != null;
-        bool two = recordSampleButton2.recordedAudio != null;
-        bool three = recordSampleButton3.recordedAudio != null;
-        return zero || one || two || three;
-    }
-
-    // interface show bools
-    bool showring0 = false;
-    bool showring1 = false;
-    bool showring2 = false;
-    bool showring3 = false;
-    bool showplaypausebutton = true;
-    bool showleftbuttons = false;
-    bool showsamplebuttons = false;
-    bool showprogressbar = true;
+    int level = 0;
 
     // arrow keys
     bool up_pressed = false;
@@ -409,115 +344,7 @@ public partial class Manager : Node
         dn_pressed_lastframe = dn_pressed;
 		dn_pressed = Input.IsKeyPressed(Key.Down);
 		if (dn_pressed && dn_pressed != dn_pressed_lastframe) OnBpmDownButton();
-
-        // deal with showing parts of interface
-        {
-            // ring 0
-            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[0, beat].Visible = showring0;
-            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[0, beat].Visible = showring0;
-            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[0, beat].Visible = showring0;
-            // ring 1
-            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[1, beat].Visible = showring1;
-            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[1, beat].Visible = showring1;
-            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[1, beat].Visible = showring1;
-            // ring 2
-            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[2, beat].Visible = showring2;
-            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[2, beat].Visible = showring2;
-            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[2, beat].Visible = showring2;
-            // ring 3
-            for (int beat = 0; beat < beatsAmount; beat++) beatSprites[3, beat].Visible = showring3;
-            for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[3, beat].Visible = showring3;
-            for (int beat = 0; beat < beatsAmount; beat++) templateSprites[3, beat].Visible = showring3;
-
-            // progress bar
-            progressBar.Visible = showprogressbar;
-
-            // playpause button
-            PlayPauseButton.Visible = showplaypausebutton;
-
-            // left buttons
-            SaveLayoutButton.Visible = showleftbuttons;
-            ClearLayoutButton.Visible = showleftbuttons;
-            RecordButton.Visible = showleftbuttons;
-            ResetPlayerButton.Visible = showleftbuttons;
-            BpmUpButton.Visible = showleftbuttons;
-            BpmDownButton.Visible = showleftbuttons;
-            bpmLabel.Visible = showleftbuttons;
-            metronome.Visible = showleftbuttons;
-            metronomebg.Visible = showleftbuttons;
-            swingslider.Visible = showleftbuttons;
-            swinglabel.Visible = showleftbuttons;
-            saveToWavButton.Visible = showleftbuttons;
-            TemplateManager.instance.templateButton.Visible = showleftbuttons;
-            TemplateManager.instance.leftTemplateButton.Visible = showleftbuttons;
-            TemplateManager.instance.rightTemplateButton.Visible = showleftbuttons;
-            TemplateManager.instance.showTemplateButton.Visible = showleftbuttons;
-            TemplateManager.instance.setTemplateButton.Visible = showleftbuttons;
-            ReverbDelayManager.instance.reverbButton.Visible = showleftbuttons;
-            ReverbDelayManager.instance.delayButton.Visible = showleftbuttons;
-
-            // sample buttons
-            recordSampleButton0.Visible = showsamplebuttons;
-            recordSampleButton1.Visible = showsamplebuttons;
-            recordSampleButton2.Visible = showsamplebuttons;
-            recordSampleButton3.Visible = showsamplebuttons;
-            recordSampleCheckButton0.Visible = showsamplebuttons;
-            recordSampleCheckButton1.Visible = showsamplebuttons;
-            recordSampleCheckButton2.Visible = showsamplebuttons;
-            recordSampleCheckButton3.Visible = showsamplebuttons;
-            draganddropButton0.Visible = true;
-            draganddropButton1.Visible = true;
-            draganddropButton2.Visible = true;
-            draganddropButton3.Visible = true;
-
-            // settings menu
-            settingsPanel.Visible = showsettingsmenu;
-            metronome_sfx_toggle_button.Visible = showsettingsmenu;
-        }
-
-        // blip
-        previousframeinstructionlevel = instructionlevel;
-
-        // deal with instructions
-        if (instructionlevel < instructions.Count) InstructionLabel.Text = instructions[instructionlevel];
-        else
-        {
-            instructionspanel.Visible = false;
-            skiptutorialbutton.Visible = false;
-            settingsButton.Position = new(settingsButton.Position.X, -340);
-        }
-
-        // deal with achievements
-        if (instructionlevel == 0) showring0 = true;
-        if (instructionlevel == 1) showring1 = true;
-        if (instructionlevel == 2) showring2 = true;
-        if (instructionlevel == 3) showring3 = true;
-        if (instructionlevel == 0 && RedsPlaced()) instructionlevel++;
-        if (instructionlevel == 1 && OrangesPlaced()) instructionlevel++;
-        if (instructionlevel == 2 && YellowsPlaced()) instructionlevel++;
-        if (instructionlevel == 3 && BluesPlaced()) instructionlevel++;
-
-        if (instructionlevel == 4 && PressedPlay()) instructionlevel++;
-
-
-        if (instructionlevel == 5) showplaypausebutton = true;
-        if (instructionlevel == 5 && ClappedEnough()) instructionlevel++;
-
-        if (instructionlevel == 6) showleftbuttons = true;
-        if (instructionlevel == 6 && HasSelectedTemplate()) instructionlevel++;
-        if (instructionlevel == 7 && HasAddedSwing()) instructionlevel++;
-        if (instructionlevel == 8 && HasChangedBPM()) instructionlevel++;
-        if (instructionlevel == 9 && HasAddedReverb()) instructionlevel++;
-        if (instructionlevel == 10 && HasAddedDelay()) instructionlevel++;
         
-        if (instructionlevel == 11) showsamplebuttons = true;
-        if (instructionlevel == 11 && HasRecordedSample()) instructionlevel++;
-        if (instructionlevel == 12 && HasSavedToWav()) instructionlevel++;
-        if (instructionlevel == 13 && HasClearedLayout()) instructionlevel++;
-
-        // blip 2
-        if (instructionlevel != previousframeinstructionlevel) { PlayExtraSFX(achievement_sfx); EmitAchievementParticles(); }
-
         // update swing amount
         swing = (float)swingslider.Value;
 
