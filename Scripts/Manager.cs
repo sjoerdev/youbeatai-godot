@@ -684,7 +684,7 @@ public partial class Manager : Node
         }
         clappedAmount++;
         draganddropButton1.Scale += Vector2.One / 2;
-        ((DragAndDropButton)draganddropButton1).ActivateBeat();
+        //((DragAndDropButton)draganddropButton1).ActivateBeat();
     }
 
     public void OnStomp()
@@ -702,7 +702,7 @@ public partial class Manager : Node
         }
         stompedAmount++;
         draganddropButton0.Scale += Vector2.One / 2;
-        ((DragAndDropButton)draganddropButton0).ActivateBeat();
+        //((DragAndDropButton)draganddropButton0).ActivateBeat();
     }
 
     public void OnBeat()
