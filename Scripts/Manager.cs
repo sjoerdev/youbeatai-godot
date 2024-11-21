@@ -205,8 +205,11 @@ public partial class Manager : Node
         fourthAudioPlayer.Stream = audioFilesToUse[3];  
     }
 
+    [Export] Label InstructionLabel;
+    int achievementLevel = 0;
+
     string[] instructions = null;
-    bool[] conditions = null;
+    Func<bool>[] conditions = null;
     Action[] outcomes = null;
 
     public override void _Ready()
@@ -261,50 +264,50 @@ public partial class Manager : Node
             "Oh nee nu is alles weg! Gelukkig heb je de save files nog. Nu mag je helemaal zelf aan de slag!",
         };
 
-        conditions = new bool[]
+        conditions = new Func<bool>[]
         {
             // intro
-            clapped,
+            () => clapped,
 
             // rode ring
-            AmountOfActives(0) >= 4, // temp
-            AmountOfActives(0) >= 8, // temp
-            playing == true, // temp
-            stompedAmount > 10, // temp
+            () => AmountOfActives(0) >= 4, // temp
+            () => AmountOfActives(0) >= 8, // temp
+            () => playing == true, // temp
+            () => stompedAmount > 10, // temp
 
             // oranje ring
-            AmountOfActives(1) >= 4, // temp
-            AmountOfActives(1) >= 8, // temp
-            playing == true, // temp
-            clappedAmount > 10, // temp
+            () => AmountOfActives(1) >= 4, // temp
+            () => AmountOfActives(1) >= 8, // temp
+            () => playing == true, // temp
+            () => clappedAmount > 10, // temp
 
             // gele ring
-            AmountOfActives(2) >= 2, // temp
+            () => AmountOfActives(2) >= 2, // temp
 
             // blauwe ring
-            AmountOfActives(3) >= 2, // temp
+            () => AmountOfActives(3) >= 2, // temp
 
             // alle ringen
-            playing == true, // temp
+            () => playing == true, // temp
 
             // progressie bar
-            progressBar.Value > 50,
+            () => progressBar.Value > 50,
 
             // custom sample
-            recordSampleButton0.recordedAudio != null,
-            recordSampleCheckButton0.ButtonPressed == true,
-            playing == true, // temp
+            () => recordSampleButton0.recordedAudio != null,
+            () => recordSampleCheckButton0.ButtonPressed == true,
+            () => playing == true, // temp
 
             // effects
-            haschangedbpm,
-            ReverbDelayManager.instance?.currentReverbLevel != 0 || ReverbDelayManager.instance?.currentDelayLevel != 0,
-            swing > 0.1f,
+            () => haschangedbpm,
+            () => ReverbDelayManager.instance?.currentReverbLevel != 0 || ReverbDelayManager.instance?.currentDelayLevel != 0,
+            () => swing > 0.1f,
 
             // saving
-            hassavedtowav,
-            swing > 0.9f, // bullshit
-            hasclearedlayout,
-            swing > 0.9f, // bullshit
+            () => hassavedtowav,
+            () => swing > 0.9f, // bullshit
+            () => hasclearedlayout,
+            () => swing > 0.9f, // bullshit
         };
 
         outcomes = new Action[]
@@ -418,11 +421,20 @@ public partial class Manager : Node
     bool rt_pressed = false;
 	bool rt_pressed_lastframe = false;
 
-    [Export] Label InstructionLabel;
-    int level = 0;
-
     public override void _Process(double delta)
     {
+        // deal with achievements
+        string instruction = instructions[achievementLevel];
+        Func<bool> condition = conditions[achievementLevel];
+        Action outcome = outcomes[achievementLevel];
+
+        InstructionLabel.Text = instruction;
+        if (condition())
+        {
+            outcome();
+            achievementLevel++;
+        }
+
         // deal with beat particles
         if (beat_particles_emitting && beat_particles_curtime < beat_particles_time)
         {
@@ -494,6 +506,20 @@ public partial class Manager : Node
         float intergerFactor = (float)currentBeat / (float)beatsAmount;
         pointer.RotationDegrees = intergerFactor * 360f;
 
+        // check clap and stomp
+        var volume = MicrophoneCapture.instance.volume;
+        var frequency = MicrophoneCapture.instance.frequency;
+        if (volume > 0.1f && frequency > ClapBiasSlider.Value && clapped == false)
+        {
+            OnClap();
+            clapped = true;
+        }
+        if (volume > 0.1f && frequency < ClapBiasSlider.Value && stomped == false)
+        {
+            OnStomp();
+            stomped = true;
+        }
+
         if (playing)
         {
             timeafterplay += ((float)delta);
@@ -519,26 +545,6 @@ public partial class Manager : Node
             // update progressbar
             progressBar.Value = progressBarValue;
             if (progressBarValue > 0) progressBarValue -= 0.25f * (float)delta;
-
-            // blip
-            var volume = MicrophoneCapture.instance.volume;
-            var frequency = MicrophoneCapture.instance.frequency;
-
-            //if (volume > 0.1f) GD.Print(frequency);
-
-            // check clap
-            if (volume > 0.1f && frequency > ClapBiasSlider.Value && clapped == false)
-            {
-                OnClap();
-                clapped = true;
-            }
-
-            // check stomp
-            if (volume > 0.1f && frequency < ClapBiasSlider.Value && stomped == false)
-            {
-                OnStomp();
-                stomped = true;
-            }
         }
         else timeafterplay = 0;
 
