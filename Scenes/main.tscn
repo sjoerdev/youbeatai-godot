@@ -485,6 +485,7 @@ text = "Metronome 🫀"
 alignment = 2
 
 [node name="ClapBiasLabel" type="Label" parent="UserInterface/SettingsButton/SettingsPanel"]
+layout_mode = 0
 offset_left = 23.0
 offset_top = 78.0
 offset_right = 151.0
