@@ -42,7 +42,7 @@ public partial class TemplateManager : Node
 
     public void ReadTemplates()
     {
-        var tuple = LoadTextFilesInDirectory("Assets/Templates");
+        var tuple = LoadTextFilesInDirectory("Resources/Templates");
         names = tuple.names;
         contents = tuple.contents;
         actives = tuple.actives;
@@ -50,7 +50,7 @@ public partial class TemplateManager : Node
 
     public void CreateNewTemplate(string name, bool[,] actives)
     {
-        string folderPath = "res://Assets/Templates/";
+        string folderPath = "res://Resources/Templates/";
         string filePath = folderPath + name + ".txt";
 
         // Ensure the directory exists

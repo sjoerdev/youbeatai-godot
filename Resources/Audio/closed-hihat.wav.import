@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://h4ee87bgfoxp"
-path="res://.godot/imported/closed-hihat.wav-a8a5408712afa14cd52e6853c7d028a3.sample"
+path="res://.godot/imported/closed-hihat.wav-f62d5a838b503fbffcf9a577b1d37acd.sample"
 
 [deps]
 
-source_file="res://Assets/Audio/closed-hihat.wav"
-dest_files=["res://.godot/imported/closed-hihat.wav-a8a5408712afa14cd52e6853c7d028a3.sample"]
+source_file="res://Resources/Audio/closed-hihat.wav"
+dest_files=["res://.godot/imported/closed-hihat.wav-f62d5a838b503fbffcf9a577b1d37acd.sample"]
 
 [params]
 

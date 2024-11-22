@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://3hoatoungl5b"
-path="res://.godot/imported/metronome.wav-54a25dd6a820dc908e1962506e6ac6fb.sample"
+uid="uid://dstmu6og4sxwo"
+path="res://.godot/imported/sound.wav-8a7d19339f99e6193fcc90d273117bc1.sample"
 
 [deps]
 
-source_file="res://Assets/Audio/metronome.wav"
-dest_files=["res://.godot/imported/metronome.wav-54a25dd6a820dc908e1962506e6ac6fb.sample"]
+source_file="res://Resources/Audio/sound.wav"
+dest_files=["res://.godot/imported/sound.wav-8a7d19339f99e6193fcc90d273117bc1.sample"]
 
 [params]
 
