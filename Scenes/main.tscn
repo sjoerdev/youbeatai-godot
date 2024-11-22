@@ -705,6 +705,7 @@ z_index = 2
 position = Vector2(286, -316)
 emitting = false
 amount = 20
+lifetime = 2.0
 texture = ExtResource("20_tvghb")
 emission_shape = 2
 emission_sphere_radius = 16.0

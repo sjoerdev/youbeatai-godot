@@ -131,8 +131,9 @@ public partial class Manager : Node
     [Export] Slider swingslider;
     [Export] Label swinglabel;
     [Export] Button settingsButton;
-    bool showsettingsmenu = false;
     [Export] Panel settingsPanel;
+    [Export] Slider ClapBiasSlider;
+    [Export] Panel instructionspanel;
 
     // clapping and stomping
     bool stomped = false;
@@ -148,8 +149,6 @@ public partial class Manager : Node
     private bool spacedownlastframe = false;
     private bool enterdownlastframe = false;
     float timeafterplay = 0;
-    [Export] Slider ClapBiasSlider;
-    [Export] Panel instructionspanel;
     bool savedToLaout = false;
 
     // on button functions
@@ -226,7 +225,7 @@ public partial class Manager : Node
         instructions = new string[]
         {
             // intro
-            "Hoi ik ben Klappy, we gaan een beat maken en ik ga je daarbij helpen. klap in je handen om verder te gaan",
+            "Hoi ik ben Klappy, we gaan een beat maken en ik ga je daarbij helpen. klap 👏 in je handen om verder te gaan",
             
             // rode ring
             "Dit is een beat ring, plaats nu 4 beats op 4 van de witte streepjes",
@@ -319,9 +318,9 @@ public partial class Manager : Node
         {
             () => GD.Print("not implemented"),
             () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
+            () => PlayPauseButton.Visible = true,
+            () => progressBar.Visible = true,
+            () => GD.Print("oranje ring komt in beeld"),
             () => GD.Print("not implemented"),
             () => GD.Print("not implemented"),
             () => GD.Print("not implemented"),
@@ -360,7 +359,7 @@ public partial class Manager : Node
         fourthAudioPlayer.Stream = mainAudioFiles[3];
 
         // init buttons
-        settingsButton.Pressed += () => showsettingsmenu = !showsettingsmenu;
+        settingsButton.Pressed += () => settingsPanel.Visible = !settingsPanel.Visible;
         metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
         ClearLayoutButton.Pressed += OnClearLayoutButton;
@@ -370,7 +369,11 @@ public partial class Manager : Node
         BpmDownButton.Pressed += OnBpmDownButton;
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
-        skiptutorialbutton.Pressed += () => instructionspanel.Visible = false;
+        skiptutorialbutton.Pressed += () =>
+        {
+            instructionspanel.Visible = false;
+            settingsButton.Position = new(settingsButton.Position.X, -340);
+        };
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -413,6 +416,9 @@ public partial class Manager : Node
                 templateSprites[ring, beat] = sprite;
             }
         }
+
+        // close settings by default
+        settingsPanel.Visible = false;
     }
 
     // arrow keys
