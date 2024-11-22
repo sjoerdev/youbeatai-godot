@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://3hoatoungl5b"
-path="res://.godot/imported/metronome.wav-5d374018bdfec0831f328d31d15d41da.sample"
+uid="uid://c11jklhrlof4j"
+path="res://.godot/imported/open-hihat.wav-bbd54ba843c84bc0a22dc0e3eada40c9.sample"
 
 [deps]
 
-source_file="res://Assets/metronome.wav"
-dest_files=["res://.godot/imported/metronome.wav-5d374018bdfec0831f328d31d15d41da.sample"]
+source_file="res://Assets/Audio/open-hihat.wav"
+dest_files=["res://.godot/imported/open-hihat.wav-bbd54ba843c84bc0a22dc0e3eada40c9.sample"]
 
 [params]
 

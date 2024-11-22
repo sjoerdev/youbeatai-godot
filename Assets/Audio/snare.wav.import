@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://chgpxwxom3d12"
-path="res://.godot/imported/clap.wav-9cf89221b089bab01538ecf202296c9a.sample"
+uid="uid://cf4uqnn3iwlm"
+path="res://.godot/imported/snare.wav-3c63679d106dd97755aa25d9a3f2b007.sample"
 
 [deps]
 
-source_file="res://Assets/clap.wav"
-dest_files=["res://.godot/imported/clap.wav-9cf89221b089bab01538ecf202296c9a.sample"]
+source_file="res://Assets/Audio/snare.wav"
+dest_files=["res://.godot/imported/snare.wav-3c63679d106dd97755aa25d9a3f2b007.sample"]
 
 [params]
 
