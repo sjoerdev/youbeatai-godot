@@ -413,11 +413,11 @@ public partial class Manager : Node
             null,
             null,
             null,
-            () => GD.Print("todo"),
-            () => GD.Print("todo"),
-            () => GD.Print("todo"),
-            () => GD.Print("todo"),
-            () => GD.Print("todo"),
+            () => SetMainButtonsVisibility(true),
+            null,
+            () => SetTemplateButtonsVisibility(true),
+            null,
+            () => SetEntireInterfaceVisibility(true),
         };
     }
 
