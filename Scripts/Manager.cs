@@ -302,7 +302,7 @@ public partial class Manager : Node
         conditions = new Func<bool>[]
         {
             // intro
-            () => clapped || Input.IsKeyPressed(Key.T), // t key is debug only
+            () => clapped, // t key is debug only
 
             // rode ring
             () => AmountOfActives(0) >= 4, // temp
@@ -392,7 +392,7 @@ public partial class Manager : Node
             "Oh nee nu is alles weg! Gelukkig heb je de save files nog. Nu mag je helemaal zelf aan de slag!",
         };
 
-        outcomes = new Action[]
+        outcomes = new Action[23]
         {
             () => SetRingVisibility(0, true),
             null,
@@ -410,7 +410,6 @@ public partial class Manager : Node
             null,
             null,
             () => SetEffectButtonsVisibility(true),
-            null,
             null,
             null,
             () => SetMainButtonsVisibility(true),
@@ -636,15 +635,25 @@ public partial class Manager : Node
         // check clap and stomp
         var volume = MicrophoneCapture.instance.volume;
         var frequency = MicrophoneCapture.instance.frequency;
-        if (volume > 0.1f && frequency > ClapBiasSlider.Value && clapped == false)
+
+        var shouldclap = volume > 0.1f && frequency > ClapBiasSlider.Value;
+        if (shouldclap || Input.IsKeyPressed(Key.N))
         {
-            OnClap();
-            clapped = true;
+            if (!clapped)
+            {
+                OnClap();
+                clapped = true;
+            }
         }
-        if (volume > 0.1f && frequency < ClapBiasSlider.Value && stomped == false)
+        
+        bool shouldstomp = volume > 0.1f && frequency < ClapBiasSlider.Value;
+        if (shouldstomp || Input.IsKeyPressed(Key.M))
         {
-            OnStomp();
-            stomped = true;
+            if (!stomped)
+            {
+                OnStomp();
+                stomped = true;
+            }
         }
 
         if (playing)
