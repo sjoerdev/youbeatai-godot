@@ -39,7 +39,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "instructionspanel", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_sfx_toggle_button", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -72,7 +72,7 @@ recordSampleCheckButton1 = NodePath("../../UserInterface/SampleButtons/UseSample
 recordSampleCheckButton2 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton2")
 recordSampleCheckButton3 = NodePath("../../UserInterface/SampleButtons/UseSampleCheckButton3")
 metronome_sfx_toggle_button = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ToggleMetronomeButton")
-skiptutorialbutton = NodePath("../../UserInterface/InstructionPanel/SkipTutorialButton")
+skiptutorialbutton = NodePath("../../UserInterface/AchievementsPanel/SkipTutorialButton")
 progressBar = NodePath("../../UserInterface/ProgressBar")
 pointer = NodePath("../../UserInterface/Pointer")
 metronome = NodePath("../../UserInterface/metronome/metronome_point")
@@ -85,8 +85,8 @@ swinglabel = NodePath("../../UserInterface/SwingLabel")
 settingsButton = NodePath("../../UserInterface/SettingsButton")
 settingsPanel = NodePath("../../UserInterface/SettingsButton/SettingsPanel")
 ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ClapBiasLabel/ClapBiasSlider")
-instructionspanel = NodePath("../../UserInterface/InstructionPanel")
-InstructionLabel = NodePath("../../UserInterface/InstructionPanel/InstructionLabel")
+achievementspanel = NodePath("../../UserInterface/AchievementsPanel")
+InstructionLabel = NodePath("../../UserInterface/AchievementsPanel/InstructionLabel")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
 script = ExtResource("10_4yy8e")
@@ -620,13 +620,13 @@ position = Vector2(0, -0.4)
 scale = Vector2(2, 0.15)
 texture = SubResource("CanvasTexture_6dn85")
 
-[node name="InstructionPanel" type="Panel" parent="UserInterface"]
+[node name="AchievementsPanel" type="Panel" parent="UserInterface"]
 offset_left = 223.0
 offset_top = -340.0
 offset_right = 562.0
 offset_bottom = -162.0
 
-[node name="Title" type="Label" parent="UserInterface/InstructionPanel"]
+[node name="Title" type="Label" parent="UserInterface/AchievementsPanel"]
 layout_mode = 0
 offset_right = 336.0
 offset_bottom = 43.0
@@ -634,7 +634,7 @@ text = "Current Goal:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InstructionLabel" type="Label" parent="UserInterface/InstructionPanel"]
+[node name="InstructionLabel" type="Label" parent="UserInterface/AchievementsPanel"]
 layout_mode = 0
 offset_left = 6.0
 offset_top = 38.0
@@ -645,7 +645,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="SkipTutorialButton" type="Button" parent="UserInterface/InstructionPanel"]
+[node name="SkipTutorialButton" type="Button" parent="UserInterface/AchievementsPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

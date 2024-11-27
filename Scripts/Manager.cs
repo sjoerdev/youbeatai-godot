@@ -373,7 +373,7 @@ public partial class Manager : Node
             "Druk nog een keer op Play, luister naar alle beats bij elkaar!",
             
             // progressiebar
-            "Geef me nog meer energie, als ik genoeg heb, dan heb ik een verrassing voor je!",
+            "Geef me minimaal 50% energie om naar de volgende stap te gaan!",
             
             // custom sample
             "Je bent goed bezig! Nu gaan we onze eigen geluid sample maken, houd het microfoon icoontje boven het rode knopje onder in ingedrukt een speek iets in in je microfoon",
@@ -402,15 +402,17 @@ public partial class Manager : Node
             null,
             null,
             null,
-            () => SetRingVisibility(2, true),
-            () => SetRingVisibility(3, true),
-            null,
+            () => SetRingVisibility(2, true), // zet geel
+            () => SetRingVisibility(3, true), // zet blauw
+            null, // druk play
+            null, // geef energie
             () => { SetRecordingButtonsVisibility(true); SetDragAndDropButtonsVisibility(true); },
             null,
             null,
-            () => GD.Print("bunny"),
-            () => GD.Print("todo"),
-            () => GD.Print("todo"),
+            () => SetEffectButtonsVisibility(true),
+            null,
+            null,
+            null,
             () => GD.Print("todo"),
             () => GD.Print("todo"),
             () => GD.Print("todo"),
@@ -501,6 +503,7 @@ public partial class Manager : Node
         TemplateManager.instance.leftTemplateButton.Visible = visible;
         TemplateManager.instance.rightTemplateButton.Visible = visible;
         TemplateManager.instance.showTemplateButton.Visible = visible;
+        TemplateManager.instance.setTemplateButton.Visible = visible;
     }
 
     void SetRecordingButtonsVisibility(bool visible)
