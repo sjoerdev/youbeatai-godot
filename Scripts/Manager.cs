@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 using NAudio.Wave;
@@ -81,6 +80,8 @@ public partial class Manager : Node
     // colors
     [Export] public Color[] colors;
 
+    // userinterface
+
     // beats
     [Export] PackedScene spritePrefab;
     [Export] Texture2D texture;
@@ -133,7 +134,7 @@ public partial class Manager : Node
     [Export] Button settingsButton;
     [Export] Panel settingsPanel;
     [Export] Slider ClapBiasSlider;
-    [Export] Panel instructionspanel;
+    [Export] Panel achievementspanel;
 
     // clapping and stomping
     bool stomped = false;
@@ -221,6 +222,129 @@ public partial class Manager : Node
         // init singleton
         instance ??= this;
 
+        // init audioplayers
+        extraAudioPlayer = new AudioStreamPlayer2D();
+        firstAudioPlayer = new AudioStreamPlayer2D();
+        secondAudioPlayer = new AudioStreamPlayer2D();
+        thirdAudioPlayer = new AudioStreamPlayer2D();
+        fourthAudioPlayer = new AudioStreamPlayer2D();
+        AddChild(extraAudioPlayer);
+        AddChild(firstAudioPlayer);
+        AddChild(secondAudioPlayer);
+        AddChild(thirdAudioPlayer);
+        AddChild(fourthAudioPlayer);
+        audioFilesToUse = (AudioStream[])mainAudioFiles.Clone();
+        firstAudioPlayer.Stream = mainAudioFiles[0];
+        secondAudioPlayer.Stream = mainAudioFiles[1];
+        thirdAudioPlayer.Stream = mainAudioFiles[2];
+        fourthAudioPlayer.Stream = mainAudioFiles[3];
+
+        // init buttons
+        //settingsButton.Pressed += () => settingsPanel.Visible = !settingsPanel.Visible;
+        metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
+        SaveLayoutButton.Pressed += OnSaveLayoutButton;
+        ClearLayoutButton.Pressed += OnClearLayoutButton;
+        RecordButton.Pressed += OnRecordButton;
+        PlayPauseButton.Pressed += OnPlayPauseButton;
+        BpmUpButton.Pressed += OnBpmUpButton;
+        BpmDownButton.Pressed += OnBpmDownButton;
+        saveToWavButton.Pressed += SaveDrumLoopAsFile;
+        ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
+
+        skiptutorialbutton.Pressed += () =>
+        {
+            GD.Print("hide thing, implement in outcomes");
+            settingsButton.Position = new(settingsButton.Position.X, -340);
+        };
+
+        // checkbuttons
+        recordSampleCheckButton0.Toggled += OnToggled0;
+        recordSampleCheckButton1.Toggled += OnToggled1;
+        recordSampleCheckButton2.Toggled += OnToggled2;
+        recordSampleCheckButton3.Toggled += OnToggled3;
+
+        // spawn sprites
+        beatSprites = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < beatsAmount; beat++)
+            {
+                var sprite = CreateSprite(beat, ring);
+                AddChild(sprite);
+                beatSprites[ring, beat] = sprite;
+            }
+        }
+
+        // spawn outlines
+        beatOutlines = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < beatsAmount; beat++)
+            {
+                var outline = CreateOutline(beat, ring);
+                AddChild(outline);
+                beatOutlines[ring, beat] = outline;
+            }
+        }
+
+        // spawn template sprites
+        templateSprites = new Sprite2D[4, beatsAmount];
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < beatsAmount; beat++)
+            {
+                var sprite = CreateTemplateSprite(beat, ring);
+                AddChild(sprite);
+                templateSprites[ring, beat] = sprite;
+            }
+        }
+
+        conditions = new Func<bool>[]
+        {
+            // intro
+            () => clapped || Input.IsKeyPressed(Key.T), // t key is debug only
+
+            // rode ring
+            () => AmountOfActives(0) >= 4, // temp
+            () => AmountOfActives(0) >= 8, // temp
+            () => playing == true, // temp
+            () => stompedAmount > 4, // temp
+
+            // oranje ring
+            () => AmountOfActives(1) >= 4, // temp
+            () => AmountOfActives(1) >= 8, // temp
+            () => playing == true, // temp
+            () => clappedAmount > 4, // temp
+
+            // gele ring
+            () => AmountOfActives(2) >= 2, // temp
+
+            // blauwe ring
+            () => AmountOfActives(3) >= 2, // temp
+
+            // alle ringen
+            () => playing == true, // temp
+
+            // progressie bar
+            () => progressBar.Value > 50,
+
+            // custom sample
+            () => recordSampleButton0.recordedAudio != null,
+            () => recordSampleCheckButton0.ButtonPressed == true,
+            () => playing == true, // temp
+
+            // effects
+            () => haschangedbpm,
+            () => ReverbDelayManager.instance?.currentReverbLevel != 0 || ReverbDelayManager.instance?.currentDelayLevel != 0,
+            () => swing > 0.1f,
+
+            // saving
+            () => hassavedtofile,
+            () => savedToLaout,
+            () => hasclearedlayout,
+            () => false, // todo: implement
+        };
+
         // setup achievements
         instructions = new string[]
         {
@@ -268,158 +392,139 @@ public partial class Manager : Node
             "Oh nee nu is alles weg! Gelukkig heb je de save files nog. Nu mag je helemaal zelf aan de slag!",
         };
 
-        conditions = new Func<bool>[]
-        {
-            // intro
-            () => clapped,
-
-            // rode ring
-            () => AmountOfActives(0) >= 4, // temp
-            () => AmountOfActives(0) >= 8, // temp
-            () => playing == true, // temp
-            () => stompedAmount > 4, // temp
-
-            // oranje ring
-            () => AmountOfActives(1) >= 4, // temp
-            () => AmountOfActives(1) >= 8, // temp
-            () => playing == true, // temp
-            () => clappedAmount > 4, // temp
-
-            // gele ring
-            () => AmountOfActives(2) >= 2, // temp
-
-            // blauwe ring
-            () => AmountOfActives(3) >= 2, // temp
-
-            // alle ringen
-            () => playing == true, // temp
-
-            // progressie bar
-            () => progressBar.Value > 50,
-
-            // custom sample
-            () => recordSampleButton0.recordedAudio != null,
-            () => recordSampleCheckButton0.ButtonPressed == true,
-            () => playing == true, // temp
-
-            // effects
-            () => haschangedbpm,
-            () => ReverbDelayManager.instance?.currentReverbLevel != 0 || ReverbDelayManager.instance?.currentDelayLevel != 0,
-            () => swing > 0.1f,
-
-            // saving
-            () => hassavedtofile,
-            () => savedToLaout,
-            () => hasclearedlayout,
-            () => false, // todo: implement
-        };
-
         outcomes = new Action[]
         {
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
+            () => SetRingVisibility(0, true),
+            null,
             () => PlayPauseButton.Visible = true,
             () => progressBar.Visible = true,
-            () => GD.Print("oranje ring komt in beeld"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
-            () => GD.Print("not implemented"),
+            () => SetRingVisibility(1, true),
+            null,
+            null,
+            null,
+            () => SetRingVisibility(2, true),
+            () => SetRingVisibility(3, true),
+            null,
+            () => { SetRecordingButtonsVisibility(true); SetDragAndDropButtonsVisibility(true); },
+            null,
+            null,
+            () => GD.Print("bunny"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
+            () => GD.Print("todo"),
         };
-
-        // init audioplayers
-        extraAudioPlayer = new AudioStreamPlayer2D();
-        firstAudioPlayer = new AudioStreamPlayer2D();
-        secondAudioPlayer = new AudioStreamPlayer2D();
-        thirdAudioPlayer = new AudioStreamPlayer2D();
-        fourthAudioPlayer = new AudioStreamPlayer2D();
-        AddChild(extraAudioPlayer);
-        AddChild(firstAudioPlayer);
-        AddChild(secondAudioPlayer);
-        AddChild(thirdAudioPlayer);
-        AddChild(fourthAudioPlayer);
-        audioFilesToUse = (AudioStream[])mainAudioFiles.Clone();
-        firstAudioPlayer.Stream = mainAudioFiles[0];
-        secondAudioPlayer.Stream = mainAudioFiles[1];
-        thirdAudioPlayer.Stream = mainAudioFiles[2];
-        fourthAudioPlayer.Stream = mainAudioFiles[3];
-
-        // init buttons
-        settingsButton.Pressed += () => settingsPanel.Visible = !settingsPanel.Visible;
-        metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
-        SaveLayoutButton.Pressed += OnSaveLayoutButton;
-        ClearLayoutButton.Pressed += OnClearLayoutButton;
-        RecordButton.Pressed += OnRecordButton;
-        PlayPauseButton.Pressed += OnPlayPauseButton;
-        BpmUpButton.Pressed += OnBpmUpButton;
-        BpmDownButton.Pressed += OnBpmDownButton;
-        saveToWavButton.Pressed += SaveDrumLoopAsFile;
-        ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
-        skiptutorialbutton.Pressed += () =>
-        {
-            instructionspanel.Visible = false;
-            settingsButton.Position = new(settingsButton.Position.X, -340);
-        };
-
-        // checkbuttons
-        recordSampleCheckButton0.Toggled += OnToggled0;
-        recordSampleCheckButton1.Toggled += OnToggled1;
-        recordSampleCheckButton2.Toggled += OnToggled2;
-        recordSampleCheckButton3.Toggled += OnToggled3;
-
-        // spawn sprites
-        beatSprites = new Sprite2D[4, beatsAmount];
-        for (int ring = 0; ring < 4; ring++)
-        {
-            for (int beat = 0; beat < beatsAmount; beat++)
-            {
-                var sprite = CreateSprite(beat, ring);
-                AddChild(sprite);
-                beatSprites[ring, beat] = sprite;
-            }
-        }
-
-        // spawn outlines
-        beatOutlines = new Sprite2D[4, beatsAmount];
-        for (int ring = 0; ring < 4; ring++)
-        {
-            for (int beat = 0; beat < beatsAmount; beat++)
-            {
-                var outline = CreateOutline(beat, ring);
-                AddChild(outline);
-                beatOutlines[ring, beat] = outline;
-            }
-        }
-
-        // spawn template sprites
-        templateSprites = new Sprite2D[4, beatsAmount];
-        for (int ring = 0; ring < 4; ring++)
-        {
-            for (int beat = 0; beat < beatsAmount; beat++)
-            {
-                var sprite = CreateTemplateSprite(beat, ring);
-                AddChild(sprite);
-                templateSprites[ring, beat] = sprite;
-            }
-        }
-
-        // close settings by default
-        settingsPanel.Visible = false;
     }
+
+    void _LateReady()
+    {
+        // disable entire interface
+        SetEntireInterfaceVisibility(false);
+
+        // start with showing tutorial
+        achievementspanel.Visible = true;
+    }
+
+    public void SetEntireInterfaceVisibility(bool visible)
+    {
+        // rings
+        SetRingVisibility(0, visible);
+        SetRingVisibility(1, visible);
+        SetRingVisibility(2, visible);
+        SetRingVisibility(3, visible);
+
+        // progress bar
+        progressBar.Visible = visible;
+
+        // playpause button
+        PlayPauseButton.Visible = visible;
+
+        // main buttons
+        SetMainButtonsVisibility(visible);
+
+        // effect buttons
+        SetEffectButtonsVisibility(visible);
+
+        // idk
+        RecordButton.Visible = visible;
+
+        // template buttons
+        SetTemplateButtonsVisibility(visible);
+
+        // recording buttons
+        SetRecordingButtonsVisibility(visible);
+
+        // draganddrop buttons
+        SetDragAndDropButtonsVisibility(visible);
+
+        // settings menu
+        settingsButton.Visible = visible;
+
+        // achievements panel
+        achievementspanel.Visible = visible;
+    }
+
+    void SetRingVisibility(int ring, bool visible)
+    {
+        for (int beat = 0; beat < beatsAmount; beat++) beatSprites[ring, beat].Visible = visible;
+        for (int beat = 0; beat < beatsAmount; beat++) beatOutlines[ring, beat].Visible = visible;
+        for (int beat = 0; beat < beatsAmount; beat++) templateSprites[ring, beat].Visible = visible;
+    }
+
+    void SetMainButtonsVisibility(bool visible)
+    {
+        SaveLayoutButton.Visible = visible;
+        ClearLayoutButton.Visible = visible;
+        ResetPlayerButton.Visible = visible;
+        saveToWavButton.Visible = visible;
+    }
+
+    void SetEffectButtonsVisibility(bool visible)
+    {
+        BpmUpButton.Visible = visible;
+        BpmDownButton.Visible = visible;
+        bpmLabel.Visible = visible;
+        swingslider.Visible = visible;
+        swinglabel.Visible = visible;
+        metronome.Visible = visible;
+        metronomebg.Visible = visible;
+        ReverbDelayManager.instance.reverbButton.Visible = visible;
+        ReverbDelayManager.instance.delayButton.Visible = visible;
+    }
+
+    void SetTemplateButtonsVisibility(bool visible)
+    {
+        TemplateManager.instance.templateButton.Visible = visible;
+        TemplateManager.instance.leftTemplateButton.Visible = visible;
+        TemplateManager.instance.rightTemplateButton.Visible = visible;
+        TemplateManager.instance.showTemplateButton.Visible = visible;
+    }
+
+    void SetRecordingButtonsVisibility(bool visible)
+    {
+        recordSampleButton0.Visible = visible;
+        recordSampleButton1.Visible = visible;
+        recordSampleButton2.Visible = visible;
+        recordSampleButton3.Visible = visible;
+        recordSampleCheckButton0.Visible = visible;
+        recordSampleCheckButton1.Visible = visible;
+        recordSampleCheckButton2.Visible = visible;
+        recordSampleCheckButton3.Visible = visible;
+    }
+
+    void SetDragAndDropButtonsVisibility(bool visible)
+    {
+        draganddropButton0.Visible = visible;
+        draganddropButton1.Visible = visible;
+        draganddropButton2.Visible = visible;
+        draganddropButton3.Visible = visible;
+    }
+
+
+    // ---------------------------------------------------------------
 
     // arrow keys
     bool up_pressed = false;
@@ -431,8 +536,16 @@ public partial class Manager : Node
     bool rt_pressed = false;
 	bool rt_pressed_lastframe = false;
 
+    bool latereadydone = false;
+
     public override void _Process(double delta)
     {
+        if (!latereadydone)
+        {
+            _LateReady();
+            latereadydone = true;
+        }
+
         // deal with achievements
         string instruction = instructions[achievementLevel];
         Func<bool> condition = conditions[achievementLevel];
@@ -440,13 +553,11 @@ public partial class Manager : Node
         InstructionLabel.Text = instruction;
         if (condition())
         {
-            outcome();
+            if (outcome != null) outcome();
             achievementLevel++;
             EmitAchievementParticles();
             PlayExtraSFX(achievement_sfx);
         }
-
-        if (achievementLevel >= instructions.Length) instructionspanel.Visible = false;
 
         // deal with beat particles
         if (beat_particles_emitting && beat_particles_curtime < beat_particles_time)
