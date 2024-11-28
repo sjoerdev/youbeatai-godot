@@ -239,8 +239,8 @@ public partial class Manager : Node
         thirdAudioPlayer.Stream = mainAudioFiles[2];
         fourthAudioPlayer.Stream = mainAudioFiles[3];
 
-        // init buttons
-        //settingsButton.Pressed += () => settingsPanel.Visible = !settingsPanel.Visible;
+       
+
         metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
         ClearLayoutButton.Pressed += OnClearLayoutButton;
@@ -251,11 +251,24 @@ public partial class Manager : Node
         saveToWavButton.Pressed += SaveDrumLoopAsFile;
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
 
+        // skipping / ending the tutorial
         skiptutorialbutton.Pressed += () =>
         {
-            GD.Print("hide thing, implement in outcomes");
+            // disable achievement management
+            achievementLevel = -1;
+            
+            // first enable full ui
+            SetEntireInterfaceVisibility(true);
+
+            // disable achievements panel
+            achievementspanel.Visible = false;
+
+            // lift settigns panel
             settingsButton.Position = new(settingsButton.Position.X, -340);
         };
+
+        // settings panel
+        settingsButton.Pressed += () => settingsPanel.Visible = !settingsPanel.Visible;
 
         // checkbuttons
         recordSampleCheckButton0.Toggled += OnToggled0;
@@ -549,16 +562,19 @@ public partial class Manager : Node
         }
 
         // deal with achievements
-        string instruction = instructions[achievementLevel];
-        Func<bool> condition = conditions[achievementLevel];
-        Action outcome = outcomes[achievementLevel];
-        InstructionLabel.Text = instruction;
-        if (condition())
+        if (achievementLevel != -1)
         {
-            if (outcome != null) outcome();
-            achievementLevel++;
-            EmitAchievementParticles();
-            PlayExtraSFX(achievement_sfx);
+            string instruction = instructions[achievementLevel];
+            Func<bool> condition = conditions[achievementLevel];
+            Action outcome = outcomes[achievementLevel];
+            InstructionLabel.Text = instruction;
+            if (condition())
+            {
+                if (outcome != null) outcome();
+                achievementLevel++;
+                EmitAchievementParticles();
+                PlayExtraSFX(achievement_sfx);
+            }
         }
 
         // deal with beat particles
