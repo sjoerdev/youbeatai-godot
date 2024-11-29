@@ -359,50 +359,50 @@ public partial class Manager : Node
         };
 
         // setup achievements
-        instructions = new string[]
+        instructions = new string[23]
         {
             // intro
-            "Hoi ik ben Klappy, we gaan een beat maken en ik ga je daarbij helpen. klap 👏 in je handen om verder te gaan",
-            
-            // rode ring
-            "Dit is een beat ring, plaats nu 4 beats op 4 van de witte streepjes",
-            "Helemaal goed! zet jij er nog 4 beats in op een plek die jij wil?",
-            "Druk nu op Play om je beat te horen",
-            "Als je stompt met je voet op de grond precies wanneer er een rode beat is krijg je punten en energie",
+			"Hoi ik ben Klappy!, we gaan een beat maken en ik ga je daarbij helpen. klap 👏 in je handen om verder te gaan",
+			
+			// rode ring
+			"Dit is een 🔴 beat ring, plaats nu 4 beats op de witte streepjes",
+			"Helemaal goed! zet jij er nog 4 beats in op een plek die jij wil?",
+			"Druk nu op Play ⏯ om je beat te horen",
+			"Als je stompt 👞 met je voet op de grond precies wanneer er een rode beat is krijg je punten en energie",
 
-            // oranje ring
-            "Dit is nog een beat ring, plaats nu 4 beats op 4 van de witte streepjes",
-            "Helemaal goed! zet jij er nog 4 beats in op een plek die jij wil?",
-            "Druk nu op Play om je beat te horen",
-            "Als je klapt met je handen wanneer er een oranje beat klinkt krijg je punten en energie",
+			// oranje ring
+			"Dit is nog een 🟠 beat ring, plaats nu 4 beats in het midden van de rode beats",
+			"Helemaal goed! zet jij er nog 4 beats in op een plek die jij wil?",
+			"Druk nu op Play ⏯ om je beat te horen",
+			"Als je klapt 👏 met je handen wanneer er een oranje 🟠 beat klinkt krijgen we enerigie punten",
 
-            // gele ring
-            "Dit is nog een beat ring, plaats nu 2 beats waar je wilt op deze ring",
+			// gele ring
+			"Dit is nog een 🟡 beat ring, plaats nu 2 harde beats waar je wilt op deze ring",
 
-            // blauwe ring
-            "Dit is nog een beat ring, plaats nu 2 beats waar je wilt op deze ring",
+			// blauwe ring
+			"Dit is nog een 🔵 beat ring, plaats nu 2 beats waar je wilt op deze ring",
 
-            // alle ringen
-            "Druk nog een keer op Play, luister naar alle beats bij elkaar!",
-            
-            // progressiebar
-            "Geef me minimaal 50% energie om naar de volgende stap te gaan!",
-            
-            // custom sample
-            "Je bent goed bezig! Nu gaan we onze eigen geluid sample maken, houd het microfoon icoontje boven het rode knopje onder in ingedrukt een speek iets in in je microfoon",
-            "Druk nu op de toggle boven het microfoon icoontje om het opgenomen geluid te activeren",
-            "Druk weer eens op Play om te horen hoe je custom geluidje klinkt",
+			// alle ringen
+			"Druk nog een keer op Play ⏯, luister naar alle beats bij elkaar!",
+			
+			// progressiebar
+			"Klap 👏 en stamp 👞 op het goede moment! Geef me 50% energie om naar de volgende stap te gaan!",
+			
+			// custom sample
+			"Je hebt het ritme te pakken! Nu gaan we onze eigen geluid maken, houd het microfoon 🎤 icoontje boven het rode 🔴 knopje ingedrukt een spreek iets in je microfoon",
+			"Druk op het lampje 💡 boven het microfoon 🎤 icoontje om het opgenomen geluid te activeren",
+			"Druk op Play ⏯ om te horen hoe je eigen geluidje klinkt",
 
-            // effects
-            "Zullen we de beat wat sneller maken? Druk op de knop met het konijntje om het sneller te maken",
-            "Tijd voor wat special effects! Druk op de reverb of de delay knop.",
-            "Tijd voor wat swing in de beat. sleep het swing balkje naar rechts.",
+			// effects
+			"We gaan de Beat sneller maken? Druk op het konijntje 🐇 om het sneller te maken",
+			"Druk op de reverb 🏛 of de delay ⛰ knop. voor speciale echo's",
+			"Tijd voor wat swing 🌀 in de beat. sleep het balkje naar rechts.",
 
             // saving
-            "Je hebt echt een super beat gemaakt! Druk nu op de knop om je beat naar een mp3 te saven.",
-            "Druk nu ook op het knopje om je beats naar een template te saven, zodat je altijd terug kan.",
-            "Super gedaan! nu nog een laatste weetje en dan kan je zelf aan de slag, druk op wissen om alles te resetten.",
-            "Oh nee nu is alles weg! Gelukkig heb je de save files nog. Nu mag je helemaal zelf aan de slag!",
+			"Je hebt echt een super beat gemaakt! Druk nu op de 🎵 knop om je beat naar een mp3 te saven.",
+			"Druk op het save 📥 knopje om je beats naar een template te saven, zodat je altijd terug kan.",
+			"Super gedaan! nu nog een laatste weetje en dan kan je zelf aan de slag, druk op wissen 🚿 om alles te resetten.",
+			"Oh nee nu is alles weg! Gelukkig heb je de template nog files nog. Nu mag je helemaal zelf aan de slag! Druk op de Stop Tutorial knop om de tutorial te eindigen",
         };
 
         outcomes = new Action[23]

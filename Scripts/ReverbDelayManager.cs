@@ -17,7 +17,7 @@ public partial class ReverbDelayManager : Node
     public int currentReverbLevel = 0;
     public int currentDelayLevel = 0;
     
-    private float[] reverbLevels = { 0.0f, 0.3f, 0.6f };
+    private float[] reverbLevels = { 0.0f, 0.15f, 0.3f };
     private float[] delayLevels = { 0.0f, 0.3f, 0.6f };
 
     public override void _Ready()
