@@ -66,7 +66,7 @@ public partial class Manager : Node
     public void EmitProgressBarParticles()
     {
         pbar_particles_curtime = 0;
-        pbar_particles_time = 0.1f;
+        pbar_particles_time = 0.4f;
         pbar_particles_emitting = true;
     }
 
