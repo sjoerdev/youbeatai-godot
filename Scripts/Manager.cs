@@ -32,7 +32,7 @@ public partial class Manager : Node
     bool playing = false;
     [Export] public int bpm = 120;
     [Export] int beatsAmount = 32;
-    public int currentBeat = 0;
+    public int currentBeat = 31;
     float beatTimer = 0;
     float slowBeatTimer = 0;
 
@@ -175,7 +175,7 @@ public partial class Manager : Node
         bpm -= 10;
         haschangedbpm = true;
     }
-    public void OnResetPlayerButton() => currentBeat = 0;
+    public void OnResetPlayerButton() => currentBeat = 31;
 
     private void PlayExtraSFX(AudioStream audioStream)
     {
