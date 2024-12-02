@@ -115,8 +115,11 @@ public partial class Manager : Node
     [Export] public CheckButton recordSampleCheckButton2;
     [Export] public CheckButton recordSampleCheckButton3;
 
-    // settings menu buttons
-    [Export] Button metronome_sfx_toggle_button;
+    // settings menu
+    [Export] CheckButton metronome_toggle;
+    [Export] ProgressBar micmeter;
+    [Export] CheckButton add_beats;
+    [Export] Slider volume_treshold;
 
     // other interface
     [Export] Button skiptutorialbutton;
@@ -242,7 +245,6 @@ public partial class Manager : Node
 
        
 
-        metronome_sfx_toggle_button.Pressed += () => metronome_sfx_enabled = !metronome_sfx_enabled;
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
         ClearLayoutButton.Pressed += OnClearLayoutButton;
         RecordButton.Pressed += OnRecordButton;
@@ -568,6 +570,12 @@ public partial class Manager : Node
         var lightvalue = progressBarValue / 100;
         robotlight.Energy = lightvalue;
 
+        // update micmeter
+        micmeter.Value = MicrophoneCapture.instance.volume;
+
+        // other
+        metronome_sfx_enabled = metronome_toggle.ButtonPressed;
+
         // deal with achievements
         if (achievementLevel != -1)
         {
@@ -659,7 +667,8 @@ public partial class Manager : Node
         var volume = MicrophoneCapture.instance.volume;
         var frequency = MicrophoneCapture.instance.frequency;
 
-        var shouldclap = volume > 0.1f && frequency > ClapBiasSlider.Value;
+        var treshold = volume_treshold.Value;
+        var shouldclap = volume > treshold && frequency > ClapBiasSlider.Value;
         if (shouldclap || Input.IsKeyPressed(Key.N))
         {
             if (!clapped)
@@ -669,7 +678,7 @@ public partial class Manager : Node
             }
         }
         
-        bool shouldstomp = volume > 0.1f && frequency < ClapBiasSlider.Value;
+        bool shouldstomp = volume > treshold && frequency < ClapBiasSlider.Value;
         if (shouldstomp || Input.IsKeyPressed(Key.M))
         {
             if (!stomped)
@@ -827,7 +836,6 @@ public partial class Manager : Node
     public void OnClap()
     {
         if (timeafterplay < 0.2f) return;
-        GD.Print("clap");
         int ring = 1;
         bool active = beatActives[ring, currentBeat];
         var sprite = beatSprites[ring, currentBeat];
@@ -839,13 +847,13 @@ public partial class Manager : Node
         }
         clappedAmount++;
         draganddropButton1.Scale += Vector2.One / 2;
-        //((DragAndDropButton)draganddropButton1).ActivateBeat();
+        
+        if (add_beats.ButtonPressed) ((DragAndDropButton)draganddropButton1).ActivateBeat();
     }
 
     public void OnStomp()
     {
         if (timeafterplay < 0.2f) return;
-        GD.Print("stomp");
         int ring = 0;
         bool active = beatActives[ring, currentBeat];
         var sprite = beatSprites[ring, currentBeat];
@@ -857,7 +865,8 @@ public partial class Manager : Node
         }
         stompedAmount++;
         draganddropButton0.Scale += Vector2.One / 2;
-        //((DragAndDropButton)draganddropButton0).ActivateBeat();
+        
+        if (add_beats.ButtonPressed) ((DragAndDropButton)draganddropButton0).ActivateBeat();
     }
 
     public void OnBeat()
