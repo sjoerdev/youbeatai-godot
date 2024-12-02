@@ -441,6 +441,8 @@ public partial class Manager : Node
 
         // start with showing tutorial
         achievementspanel.Visible = true;
+        settingsButton.Visible = true;
+        settingsPanel.Visible = false;
     }
 
     public void SetEntireInterfaceVisibility(bool visible)
