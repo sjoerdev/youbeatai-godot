@@ -565,7 +565,7 @@ theme_override_constants/outline_size = 2
 theme_override_styles/background = ExtResource("9_nnqde")
 theme_override_styles/fill = ExtResource("10_t1q83")
 rounded = true
-fill_mode = 2
+fill_mode = 3
 
 [node name="Label" type="Label" parent="UserInterface/ProgressBar"]
 z_index = 4
