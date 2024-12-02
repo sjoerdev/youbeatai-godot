@@ -23,14 +23,14 @@
 [ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
 [ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_2x3a5"]
+font_size = 126
+
 [sub_resource type="CanvasTexture" id="CanvasTexture_b5jd4"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_6dn85"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_2x3a5"]
-font_size = 126
 
 [node name="scene" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-1840.0]
@@ -567,6 +567,18 @@ theme_override_styles/fill = ExtResource("10_t1q83")
 rounded = true
 fill_mode = 2
 
+[node name="Label" type="Label" parent="UserInterface/ProgressBar"]
+z_index = 4
+offset_left = -19.0
+offset_top = 620.0
+offset_right = 154.0
+offset_bottom = 792.0
+scale = Vector2(0.525, 0.525)
+text = "⚡"
+label_settings = SubResource("LabelSettings_2x3a5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BpmLabel" type="Label" parent="UserInterface"]
 offset_left = -487.0
 offset_top = 29.0
@@ -670,6 +682,19 @@ grow_vertical = 2
 focus_mode = 0
 text = "End Tutorial"
 
+[node name="Robot" type="Sprite2D" parent="UserInterface/AchievementsPanel"]
+z_index = 4
+position = Vector2(107, 243)
+scale = Vector2(0.140455, 0.140455)
+texture = ExtResource("21_qncea")
+
+[node name="PointLight2D" type="PointLight2D" parent="UserInterface/AchievementsPanel/Robot"]
+position = Vector2(-7.11987, -498.382)
+scale = Vector2(1423.95, 1423.95)
+energy = 0.0
+texture = ExtResource("22_sb4d6")
+texture_scale = 0.01
+
 [node name="BeatParticleSystem" type="CPUParticles2D" parent="."]
 z_index = 2
 emitting = false
@@ -726,28 +751,3 @@ angular_velocity_max = 8.8
 angle_min = 45.0
 angle_max = 90.0
 hue_variation_max = 0.55
-
-[node name="Robot" type="Sprite2D" parent="."]
-z_index = 4
-position = Vector2(330, -97)
-scale = Vector2(0.140455, 0.140455)
-texture = ExtResource("21_qncea")
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(329, -167)
-scale = Vector2(200, 200)
-energy = 0.0
-texture = ExtResource("22_sb4d6")
-texture_scale = 0.01
-
-[node name="Label" type="Label" parent="."]
-z_index = 4
-offset_left = 552.0
-offset_top = 277.0
-offset_right = 725.0
-offset_bottom = 449.0
-scale = Vector2(0.525, 0.525)
-text = "⚡"
-label_settings = SubResource("LabelSettings_2x3a5")
-horizontal_alignment = 1
-vertical_alignment = 1
