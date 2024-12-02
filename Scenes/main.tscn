@@ -351,6 +351,7 @@ alignment = 0
 [node name="SampleButtons" type="Node" parent="UserInterface"]
 
 [node name="DragAndDropButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
+z_index = -4
 position = Vector2(-604, 326)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
@@ -366,6 +367,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DragAndDropButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
+z_index = -4
 position = Vector2(-529, 326)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
@@ -382,6 +384,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DragAndDropButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
+z_index = -4
 position = Vector2(-454, 326)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
@@ -389,6 +392,7 @@ script = ExtResource("14_4mig3")
 ring = 2
 
 [node name="DragAndDropButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
+z_index = -4
 position = Vector2(-379, 326)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
