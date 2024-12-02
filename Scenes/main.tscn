@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=27 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -20,12 +20,17 @@
 [ext_resource type="Texture2D" uid="uid://b5gky5aods412" path="res://Resources/Textures/rawmic.png" id="15_5hbpj"]
 [ext_resource type="Script" path="res://Scripts/RecordSampleButton.cs" id="16_ngh84"]
 [ext_resource type="Texture2D" uid="uid://b80lrad4guock" path="res://Resources/Textures/star.png" id="20_tvghb"]
+[ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
+[ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_b5jd4"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bao2x"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_6dn85"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2x3a5"]
+font_size = 126
 
 [node name="scene" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-1840.0]
@@ -48,7 +53,7 @@ saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 beat_particles = NodePath("../../BeatParticleSystem")
 pbar_particles = NodePath("../../ProgressBarParticleSystem")
 achievement_particles = NodePath("../../AchievementsParticleSystem")
-colors = PackedColorArray(1, 0.5, 0.5, 1, 1, 0.791667, 0.5, 1, 1, 1, 0.6, 1, 0.51, 0.812167, 1, 1)
+colors = PackedColorArray(0.84, 0.1428, 0.1428, 1, 1, 0.433333, 0, 1, 1, 1, 0.3, 1, 0.2, 0.56, 1, 1)
 spritePrefab = ExtResource("2_1eep1")
 texture = ExtResource("2_1ig4u")
 outline = ExtResource("8_llrl4")
@@ -356,7 +361,7 @@ offset_left = -12.0
 offset_top = -12.0
 offset_right = 12.0
 offset_bottom = 13.0
-text = "🦶"
+text = "👞"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -717,3 +722,28 @@ angular_velocity_max = 8.8
 angle_min = 45.0
 angle_max = 90.0
 hue_variation_max = 0.55
+
+[node name="Robot" type="Sprite2D" parent="."]
+z_index = 4
+position = Vector2(330, -97)
+scale = Vector2(0.140455, 0.140455)
+texture = ExtResource("21_qncea")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(329, -167)
+scale = Vector2(200, 200)
+energy = 0.0
+texture = ExtResource("22_sb4d6")
+texture_scale = 0.01
+
+[node name="Label" type="Label" parent="."]
+z_index = 4
+offset_left = 552.0
+offset_top = 277.0
+offset_right = 725.0
+offset_bottom = 449.0
+scale = Vector2(0.525, 0.525)
+text = "⚡"
+label_settings = SubResource("LabelSettings_2x3a5")
+horizontal_alignment = 1
+vertical_alignment = 1
