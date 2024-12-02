@@ -80,7 +80,8 @@ public partial class Manager : Node
     // colors
     [Export] public Color[] colors;
 
-    // userinterface
+    // idk
+    [Export] PointLight2D robotlight;
 
     // beats
     [Export] PackedScene spritePrefab;
@@ -560,6 +561,10 @@ public partial class Manager : Node
             _LateReady();
             latereadydone = true;
         }
+
+        // update robot light
+        var lightvalue = progressBarValue / 100;
+        robotlight.Energy = lightvalue;
 
         // deal with achievements
         if (achievementLevel != -1)
