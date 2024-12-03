@@ -505,7 +505,7 @@ offset_bottom = 184.0
 
 [node name="ClapStompBias" type="HSlider" parent="UserInterface/SettingsButton/SettingsPanel"]
 layout_mode = 0
-offset_left = 22.0
+offset_left = 35.0
 offset_top = 64.0
 offset_right = 127.0
 offset_bottom = 81.0
@@ -519,11 +519,22 @@ value = 800.0
 
 [node name="Label" type="Label" parent="UserInterface/SettingsButton/SettingsPanel/ClapStompBias"]
 layout_mode = 0
-offset_left = 96.0
-offset_top = -6.0
-offset_right = 148.0
-offset_bottom = 26.0
-text = "➗"
+offset_left = 82.0
+offset_top = -9.0
+offset_right = 134.0
+offset_bottom = 23.0
+text = "🦶🏼"
+label_settings = SubResource("LabelSettings_x0c78")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UserInterface/SettingsButton/SettingsPanel/ClapStompBias"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = -8.0
+offset_right = 14.0
+offset_bottom = 24.0
+text = "🖐🏼"
 label_settings = SubResource("LabelSettings_x0c78")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -532,7 +543,7 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 125.0
 offset_top = 106.0
-offset_right = 228.0
+offset_right = 215.0
 offset_bottom = 123.0
 rotation = 3.14159
 focus_mode = 0
@@ -553,7 +564,7 @@ vertical_alignment = 1
 
 [node name="MicMeter" type="ProgressBar" parent="UserInterface/SettingsButton/SettingsPanel"]
 layout_mode = 0
-offset_left = 21.0
+offset_left = 35.0
 offset_top = 113.0
 offset_right = 127.0
 offset_bottom = 132.0
@@ -567,9 +578,9 @@ show_percentage = false
 
 [node name="Label" type="Label" parent="UserInterface/SettingsButton/SettingsPanel/MicMeter"]
 layout_mode = 0
-offset_left = 105.0
+offset_left = 91.0
 offset_top = -4.0
-offset_right = 142.0
+offset_right = 128.0
 offset_bottom = 28.0
 text = "🎙️"
 label_settings = SubResource("LabelSettings_5adyu")
