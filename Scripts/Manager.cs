@@ -221,6 +221,8 @@ public partial class Manager : Node
     Func<bool>[] conditions = null;
     Action[] outcomes = null;
 
+    [Export] Sprite2D robot;
+
     public override void _Ready()
     {
         // init singleton
@@ -268,6 +270,10 @@ public partial class Manager : Node
 
             // lift settigns panel
             settingsButton.Position = new(settingsButton.Position.X, -340);
+
+            // shift robot position
+            robot.Position = new(485, 225);
+
         };
 
         // settings panel

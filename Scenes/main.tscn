@@ -71,7 +71,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -81,7 +81,7 @@ beat_particles = NodePath("../../BeatParticleSystem")
 pbar_particles = NodePath("../../ProgressBarParticleSystem")
 achievement_particles = NodePath("../../AchievementsParticleSystem")
 colors = PackedColorArray(0.84, 0.1428, 0.1428, 1, 1, 0.433333, 0, 1, 1, 1, 0.3, 1, 0.2, 0.56, 1, 1)
-robotlight = NodePath("../../UserInterface/AchievementsPanel/Robot/RobotLight")
+robotlight = NodePath("../../UserInterface/Robot/RobotLight")
 spritePrefab = ExtResource("2_1eep1")
 texture = ExtResource("2_1ig4u")
 outline = ExtResource("8_llrl4")
@@ -123,6 +123,7 @@ settingsPanel = NodePath("../../UserInterface/SettingsButton/SettingsPanel")
 ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ClapStompBias")
 achievementspanel = NodePath("../../UserInterface/AchievementsPanel")
 InstructionLabel = NodePath("../../UserInterface/AchievementsPanel/InstructionLabel")
+robot = NodePath("../../UserInterface/Robot")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
 script = ExtResource("10_4yy8e")
@@ -782,6 +783,19 @@ position = Vector2(0, -0.4)
 scale = Vector2(2, 0.15)
 texture = SubResource("CanvasTexture_6dn85")
 
+[node name="Robot" type="Sprite2D" parent="UserInterface"]
+z_index = 4
+position = Vector2(310, -77)
+scale = Vector2(0.205455, 0.205455)
+texture = ExtResource("21_qncea")
+
+[node name="RobotLight" type="PointLight2D" parent="UserInterface/Robot"]
+position = Vector2(-7.11987, -498.382)
+color = Color(1, 0.918, 0.59, 1)
+energy = 0.0
+texture = ExtResource("22_sb4d6")
+texture_scale = 7.5
+
 [node name="AchievementsPanel" type="Panel" parent="UserInterface"]
 offset_left = 223.0
 offset_top = -340.0
@@ -822,19 +836,6 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "🚫 Stop"
-
-[node name="Robot" type="Sprite2D" parent="UserInterface/AchievementsPanel"]
-z_index = 4
-position = Vector2(107, 243)
-scale = Vector2(0.140455, 0.140455)
-texture = ExtResource("21_qncea")
-
-[node name="RobotLight" type="PointLight2D" parent="UserInterface/AchievementsPanel/Robot"]
-position = Vector2(-7.11987, -498.382)
-color = Color(1, 0.918, 0.59, 1)
-energy = 0.0
-texture = ExtResource("22_sb4d6")
-texture_scale = 7.5
 
 [node name="BeatParticleSystem" type="CPUParticles2D" parent="."]
 z_index = 2
