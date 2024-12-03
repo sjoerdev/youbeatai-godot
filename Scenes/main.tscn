@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=38 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://b80lrad4guock" path="res://Resources/Textures/star.png" id="20_tvghb"]
 [ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
 [ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
+[ext_resource type="Texture2D" uid="uid://cr4v0wkvt72mj" path="res://Resources/Textures/grijs.png" id="22_wax6p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y8yhq"]
 
@@ -76,16 +77,15 @@ script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
 mainAudioFiles = Array[AudioStream]([ExtResource("5_cl760"), ExtResource("6_v5052"), ExtResource("8_4xf5a"), ExtResource("6_60v1h")])
-colors = PackedColorArray(0.84, 0.1428, 0.1428, 1, 1, 0.433333, 0, 1, 1, 1, 0.3, 1, 0.2, 0.56, 1, 1)
-spritePrefab = ExtResource("2_1eep1")
-texture = ExtResource("2_1ig4u")
-outline = ExtResource("8_llrl4")
-swing = 0.0
 saveToWavButton = NodePath("../../UserInterface/MainButtons/SaveToWavButton")
 beat_particles = NodePath("../../BeatParticleSystem")
 pbar_particles = NodePath("../../ProgressBarParticleSystem")
 achievement_particles = NodePath("../../AchievementsParticleSystem")
+colors = PackedColorArray(0.84, 0.1428, 0.1428, 1, 1, 0.433333, 0, 1, 1, 1, 0.3, 1, 0.2, 0.56, 1, 1)
 robotlight = NodePath("../../UserInterface/Robot/RobotLight")
+spritePrefab = ExtResource("2_1eep1")
+texture = ExtResource("2_1ig4u")
+outline = ExtResource("8_llrl4")
 SaveLayoutButton = NodePath("../../UserInterface/MainButtons/SaveLayoutButton")
 ClearLayoutButton = NodePath("../../UserInterface/MainButtons/ClearLayoutButton")
 RecordButton = NodePath("../../UserInterface/RecordButton")
@@ -116,6 +116,7 @@ metronome = NodePath("../../UserInterface/metronome/metronome_point")
 metronomebg = NodePath("../../UserInterface/metronome")
 bpmLabel = NodePath("../../UserInterface/BpmLabel")
 draganddropthing = NodePath("../../UserInterface/draganddropthing")
+swing = 0.0
 swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
 swinglabel = NodePath("../../UserInterface/SwingLabel")
 settingsButton = NodePath("../../UserInterface/SettingsButton")
@@ -188,10 +189,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1276.0
-offset_top = -640.0
-offset_right = -1148.0
-offset_bottom = -608.0
+offset_left = -1278.0
+offset_top = -634.0
+offset_right = -1146.0
+offset_bottom = -602.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -205,9 +206,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -604.0
+offset_top = -598.0
 offset_right = -1148.0
-offset_bottom = -572.0
+offset_bottom = -566.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -220,10 +221,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1276.0
-offset_top = -568.0
-offset_right = -1148.0
-offset_bottom = -536.0
+offset_left = -1276.5
+offset_top = -562.0
+offset_right = -1147.5
+offset_bottom = -530.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -237,9 +238,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -532.0
+offset_top = -515.0
 offset_right = -1148.0
-offset_bottom = -500.0
+offset_bottom = -483.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -252,9 +253,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -497.0
+offset_top = -480.0
 offset_right = -1213.0
-offset_bottom = -465.0
+offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -267,9 +268,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1211.0
-offset_top = -497.0
+offset_top = -480.0
 offset_right = -1148.0
-offset_bottom = -465.0
+offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -282,9 +283,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1211.0
-offset_top = -463.0
+offset_top = -446.0
 offset_right = -1148.0
-offset_bottom = -431.0
+offset_bottom = -414.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -298,9 +299,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -463.0
+offset_top = -446.0
 offset_right = -1213.0
-offset_bottom = -431.0
+offset_bottom = -414.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -315,9 +316,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -415.0
+offset_top = -398.0
 offset_right = -1148.0
-offset_bottom = -383.0
+offset_bottom = -366.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -336,9 +337,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -379.0
+offset_top = -362.0
 offset_right = -1148.0
-offset_bottom = -347.0
+offset_bottom = -330.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -357,9 +358,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -331.0
+offset_top = -314.0
 offset_right = -1148.0
-offset_bottom = -299.0
+offset_bottom = -282.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -373,9 +374,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
-offset_top = -295.0
+offset_top = -278.0
 offset_right = -1148.0
-offset_bottom = -263.0
+offset_bottom = -246.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -672,18 +673,18 @@ alignment = 2
 
 [node name="SwingLabel" type="Label" parent="UserInterface"]
 offset_left = -629.0
-offset_top = 149.0
+offset_top = 155.0
 offset_right = -501.0
-offset_bottom = 172.0
+offset_bottom = 178.0
 text = "🌀 Swing"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SwingSlider" type="HSlider" parent="UserInterface/SwingLabel"]
 layout_mode = 0
-offset_top = -27.0
+offset_top = -25.0
 offset_right = 63.0
-offset_bottom = -11.0
+offset_bottom = -9.0
 scale = Vector2(2, 2)
 max_value = 1.0
 step = 0.05
@@ -722,10 +723,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BpmLabel" type="Label" parent="UserInterface"]
-offset_left = -487.0
-offset_top = 29.0
-offset_right = -442.0
-offset_bottom = 96.0
+offset_left = -491.0
+offset_top = 48.0
+offset_right = -446.0
+offset_bottom = 115.0
 text = "bpm"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -773,7 +774,7 @@ offset = Vector2(-0.5, -1)
 
 [node name="metronome" type="Sprite2D" parent="UserInterface"]
 z_index = -1
-position = Vector2(-501, 64)
+position = Vector2(-498, 80)
 scale = Vector2(4, 62)
 texture = SubResource("CanvasTexture_6dn85")
 
@@ -794,7 +795,13 @@ position = Vector2(-7.11987, -498.382)
 color = Color(1, 0.918, 0.59, 1)
 energy = 0.0
 texture = ExtResource("22_sb4d6")
-texture_scale = 7.5
+texture_scale = 20.0
+
+[node name="Grijs" type="Sprite2D" parent="UserInterface/Robot"]
+z_index = -20
+position = Vector2(-1457.08, -95.1813)
+scale = Vector2(32.0423, 50.2745)
+texture = ExtResource("22_wax6p")
 
 [node name="AchievementsPanel" type="Panel" parent="UserInterface"]
 offset_left = 223.0

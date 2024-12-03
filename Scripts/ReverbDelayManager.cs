@@ -17,8 +17,8 @@ public partial class ReverbDelayManager : Node
     public int currentReverbLevel = 0;
     public int currentDelayLevel = 0;
     
-    private float[] reverbLevels = { 0.0f, 0.15f, 0.3f };
-    private float[] delayLevels = { 0.0f, 0.15f, 0.3f };
+    private float[] reverbLevels = { 0.0f, 0.05f, 0.1f };
+    private float[] delayLevels = { 0.0f, 0.05f, 0.1f };
 
     public override void _Ready()
     {
@@ -49,7 +49,7 @@ public partial class ReverbDelayManager : Node
     {
         AudioServer.SetBusEffectEnabled(AudioServer.GetBusIndex("Master"), 0, level > 0);
         reverbEffect.RoomSize = level;
-		reverbSprite.Scale = Vector2.One * (level / 2 + 0.1f);
+		reverbSprite.Scale = Vector2.One * (level + 0.1f) * 2;
     }
 
     private void SetDelayLevel(float level)
@@ -58,6 +58,6 @@ public partial class ReverbDelayManager : Node
         delayEffect.Tap1Active = true;
         delayEffect.Tap2Active = false;
         delayEffect.Tap1DelayMs = level * 1000f;
-		delaySprite.Scale = Vector2.One * (level / 2 + 0.1f);
+		delaySprite.Scale = Vector2.One * (level + 0.1f) * 2;
     }
 }
