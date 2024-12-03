@@ -673,6 +673,7 @@ fill_mode = 3
 
 [node name="Label" type="Label" parent="UserInterface/ProgressBar"]
 z_index = 4
+layout_mode = 0
 offset_left = -19.0
 offset_top = 620.0
 offset_right = 154.0
@@ -753,7 +754,7 @@ offset_bottom = -162.0
 
 [node name="Title" type="Label" parent="UserInterface/AchievementsPanel"]
 layout_mode = 0
-offset_right = 336.0
+offset_right = 339.0
 offset_bottom = 43.0
 text = "Current Goal:"
 horizontal_alignment = 1
@@ -777,14 +778,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 59.5
+offset_left = 91.5
 offset_top = -82.0
 offset_right = 165.5
 offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "End Tutorial"
+text = "🚫 Stop"
 
 [node name="Robot" type="Sprite2D" parent="UserInterface/AchievementsPanel"]
 z_index = 4
