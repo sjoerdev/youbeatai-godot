@@ -543,7 +543,7 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 125.0
 offset_top = 106.0
-offset_right = 215.0
+offset_right = 232.0
 offset_bottom = 123.0
 rotation = 3.14159
 focus_mode = 0
@@ -553,10 +553,10 @@ value = 0.1
 
 [node name="Label" type="Label" parent="UserInterface/SettingsButton/SettingsPanel/VolumeTreshold"]
 layout_mode = 0
-offset_left = -50.0
-offset_top = -5.99999
-offset_right = 13.0
-offset_bottom = 26.0
+offset_left = -47.0
+offset_top = -4.00012
+offset_right = 16.0
+offset_bottom = 27.9999
 text = "🔊"
 label_settings = SubResource("LabelSettings_x0c78")
 horizontal_alignment = 1
@@ -564,7 +564,7 @@ vertical_alignment = 1
 
 [node name="MicMeter" type="ProgressBar" parent="UserInterface/SettingsButton/SettingsPanel"]
 layout_mode = 0
-offset_left = 35.0
+offset_left = 17.0
 offset_top = 113.0
 offset_right = 127.0
 offset_bottom = 132.0
@@ -578,9 +578,9 @@ show_percentage = false
 
 [node name="Label" type="Label" parent="UserInterface/SettingsButton/SettingsPanel/MicMeter"]
 layout_mode = 0
-offset_left = 91.0
+offset_left = 107.0
 offset_top = -4.0
-offset_right = 128.0
+offset_right = 144.0
 offset_bottom = 28.0
 text = "🎙️"
 label_settings = SubResource("LabelSettings_5adyu")
