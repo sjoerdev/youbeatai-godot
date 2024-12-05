@@ -574,6 +574,7 @@ public partial class Manager : Node
 
         // update robot light
         var lightvalue = progressBarValue / 100;
+        if (lightvalue > 1) lightvalue = 1;
         robotlight.Energy = lightvalue;
 
         // update micmeter
@@ -718,7 +719,8 @@ public partial class Manager : Node
 
             // update progressbar
             progressBar.Value = progressBarValue;
-            if (progressBarValue > 0) progressBarValue -= 0.25f * (float)delta;
+            if (progressBarValue > 0) progressBarValue -= 1 * (float)delta;
+            if (progressBarValue > 100) progressBarValue = 100;
         }
         else timeafterplay = 0;
 
