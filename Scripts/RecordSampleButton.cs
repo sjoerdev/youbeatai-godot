@@ -39,14 +39,25 @@ public partial class RecordSampleButton : Sprite2D
         }
     }
 
+    void SetVolume(float value)
+    {
+        float db = Mathf.LinearToDb(value);
+        Manager.instance.firstAudioPlayer.VolumeDb = db;
+        Manager.instance.secondAudioPlayer.VolumeDb = db;
+        Manager.instance.thirdAudioPlayer.VolumeDb = db;
+        Manager.instance.fourthAudioPlayer.VolumeDb = db;
+    }
+
     private void StartRecording()
     {
+        SetVolume(0.25f);
 		Modulate = new Color(1, 0, 0, 1);
         audioEffectRecord.SetRecordingActive(true);
     }
 
     private void StopRecording()
     {
+        SetVolume(1);
 		Modulate = new Color(1, 1, 1, 1);
         audioEffectRecord.SetRecordingActive(false);
 		var audioData = audioEffectRecord.GetRecording();
