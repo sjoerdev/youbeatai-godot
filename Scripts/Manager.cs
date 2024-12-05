@@ -564,8 +564,12 @@ public partial class Manager : Node
 
     bool latereadydone = false;
 
+    float time = 0;
+
     public override void _Process(double delta)
     {
+        time += (float)delta;
+
         if (!latereadydone)
         {
             _LateReady();
@@ -575,7 +579,8 @@ public partial class Manager : Node
         // update robot light
         var lightvalue = progressBarValue / 100;
         if (lightvalue > 1) lightvalue = 1;
-        robotlight.Energy = lightvalue;
+        float pulsed = ((((Mathf.Sin(time * 4) + 1) / 2) / 2) + 0.5f);
+        robotlight.Energy = lightvalue * pulsed;
 
         // update micmeter
         micmeter.Value = MicrophoneCapture.instance.volume;
