@@ -376,14 +376,14 @@ public partial class Manager : Node
 			// rode ring
 			"Dit is een 🔴 beat ring, plaats nu 4 beats op de witte streepjes",
 			"Helemaal goed! zet 4 🔴 beats op een plek die jij wil",
-			"Druk nu op Play ⏯ om je beat te horen",
+			"Druk nu op Start ⏯ om je beat te horen",
 			"Als je stompt 👞 met je voet op de grond precies wanneer er een rode beat is krijg ik energie ⚡",
 
 			// oranje ring
 			"Dit is nog een 🟠 beat ring, plaats nu 4 beats in het midden van de rode beats",
 			"Helemaal goed! zet 4 🟠 beats op een plek die jij wil!",
-			"Druk nu op Play ⏯ om je beat te horen",
-			"Als je klapt 👏 met je handen wanneer er een oranje 🟠 beat klinkt krijgen ik energie ⚡ punten",
+			"Druk nu op Start ⏯ om je beat te horen",
+			"Als je klapt 👏 met je handen wanneer er een oranje 🟠 beat klinkt krijgen ik energie ⚡",
 
 			// gele ring
 			"Dit is nog een 🟡 beat ring, plaats nu 2 harde beats waar je wilt op deze ring",
@@ -392,7 +392,7 @@ public partial class Manager : Node
 			"Dit is nog een 🔵 beat ring, plaats nu 2 beats waar je wilt op deze ring",
 
 			// alle ringen
-			"Druk nog een keer op Play ⏯, luister naar alle beats bij elkaar!",
+			"Druk nog een keer op Start ⏯, luister naar alle beats bij elkaar!",
 			
 			// progressiebar
 			"Klap 👏 en stamp 👞 op het goede moment! Geef me 50% energie ⚡ om naar de volgende stap te gaan!",
@@ -400,20 +400,20 @@ public partial class Manager : Node
 			// custom sample
 			"Je hebt het ritme te pakken! Nu gaan we onze eigen geluid maken, houd het microfoon 🎤 icoontje boven het rode 🔴 knopje ingedrukt een spreek iets in je microfoon",
 			"Druk op de toggle boven het microfoon 🎤 icoontje om het opgenomen geluid te activeren",
-			"Druk op Play ⏯ om te horen hoe je eigen geluidje klinkt",
+			"Druk op Start ⏯ om te horen hoe je eigen geluidje klinkt",
 
 			// effects
-			"We gaan de beat sneller maken. Druk op het konijntje 🐇 om het sneller te maken",
+			"We gaan de beat sneller maken. Druk op 'Bpm Omhoog' 🐇 om de beat het sneller te maken",
 			"Druk op de reverb 🏛 of de delay ⛰ knop. voor speciale echo's",
-			"Tijd voor wat swing 🌀 in de beat. sleep het balkje naar rechts.",
+			"Tijd voor wat swing 🌀 in de beat. sleep het swing balkje naar rechts.",
 
             // saving
 			"Je hebt echt een super beat gemaakt! Druk nu op de 📥 knop om je beat naar een muziek bestand te saven.",
-			"Druk op het save 💾 knopje om je beats naar een template te saven, zodat je altijd terug kan.",
-			"Super gedaan! nu nog een laatste weetje en dan kan je zelf aan de slag, druk op wissen 🗑️ om alles te resetten.",
+			"Druk op het 'Opslaam Template' 💾 knopje om je beats naar een template te saven, zodat je altijd terug kan vinden.",
+			"Super gedaan! nu nog een laatste weetje en dan kan je zelf aan de slag, druk op 'Leeg Template' 🗑️ om alles te resetten.",
 			"Oh nee nu is alles weg! Gelukkig heb je de template nog files nog. Nu mag je helemaal zelf aan de slag! Druk op de Stop Tutorial knop om de tutorial te eindigen",
         };
-
+        
         outcomes = new Action[23]
         {
             () => SetRingVisibility(0, true),

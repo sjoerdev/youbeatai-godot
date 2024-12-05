@@ -159,12 +159,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -716.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -684.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "⏯️ Play/Pause"
+text = "⏯️ Start / Pauze"
 alignment = 0
 
 [node name="ResetPlayerButton" type="Button" parent="UserInterface/MainButtons"]
@@ -173,14 +173,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1276.0
+offset_left = -1277.0
 offset_top = -680.0
-offset_right = -1148.0
+offset_right = -1097.0
 offset_bottom = -648.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "⏮️ Reset Player"
+text = "⏮️ Terug naar begin"
 alignment = 0
 
 [node name="ClearLayoutButton" type="Button" parent="UserInterface/MainButtons"]
@@ -191,12 +191,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1278.0
 offset_top = -634.0
-offset_right = -1146.0
+offset_right = -1098.0
 offset_bottom = -602.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🗑️ Clear Layout"
+text = "🗑️ Leeg Template"
 alignment = 0
 
 [node name="SaveLayoutButton" type="Button" parent="UserInterface/MainButtons"]
@@ -207,12 +207,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -598.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -566.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "💾 Save Layout"
+text = "💾 Opslaan Template"
 alignment = 0
 
 [node name="SaveToWavButton" type="Button" parent="UserInterface/MainButtons"]
@@ -223,12 +223,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.5
 offset_top = -562.0
-offset_right = -1147.5
+offset_right = -1096.5
 offset_bottom = -530.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "📥 Save to mp3"
+text = "📥 Opslaan naar mp3"
 alignment = 0
 
 [node name="TemplateButton" type="Button" parent="UserInterface/MainButtons"]
@@ -239,7 +239,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -515.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -483.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -254,7 +254,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -480.0
-offset_right = -1213.0
+offset_right = -1190.0
 offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -267,10 +267,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1211.0
+offset_left = -1185.0
 offset_top = -480.0
-offset_right = -1148.0
-offset_bottom = -448.0
+offset_right = -1096.0
+offset_bottom = -449.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -282,15 +282,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1211.0
+offset_left = -1185.0
 offset_top = -446.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -414.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 14
-text = "show🔮"
+text = "Show🔮"
 
 [node name="SetTemplateButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8
@@ -300,13 +299,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -446.0
-offset_right = -1213.0
+offset_right = -1190.0
 offset_bottom = -414.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 14
-text = "Set🤖
+text = "Set 🤖
 "
 
 [node name="ReverbButton" type="Button" parent="UserInterface/MainButtons"]
@@ -317,7 +315,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -398.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -366.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -326,7 +324,7 @@ text = "🏛️ Reverb"
 alignment = 0
 
 [node name="ReverbSprite" type="Sprite2D" parent="UserInterface/MainButtons/ReverbButton"]
-position = Vector2(143, 16)
+position = Vector2(200, 16)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_1ig4u")
 
@@ -338,7 +336,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -362.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -330.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -347,7 +345,7 @@ text = "⛰️ Delay"
 alignment = 0
 
 [node name="DelaySprite" type="Sprite2D" parent="UserInterface/MainButtons/DelayButton"]
-position = Vector2(143, 16)
+position = Vector2(200, 15)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_1ig4u")
 
@@ -359,12 +357,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -314.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -282.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🐇 Bpm Up"
+text = "🐇 Bpm Omhoog"
 alignment = 0
 
 [node name="BpmDownButton" type="Button" parent="UserInterface/MainButtons"]
@@ -375,12 +373,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1276.0
 offset_top = -278.0
-offset_right = -1148.0
+offset_right = -1096.0
 offset_bottom = -246.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🐢 Bpm Down "
+text = "🐢 Bpm Omlaag"
 alignment = 0
 
 [node name="SampleButtons" type="Node" parent="UserInterface"]
@@ -502,7 +500,7 @@ offset_bottom = -479.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "Settings ⚙️"
+text = "Instellingen ⚙️"
 alignment = 2
 
 [node name="SettingsPanel" type="Panel" parent="UserInterface/SettingsButton"]
@@ -651,7 +649,7 @@ offset_left = 43.0
 offset_top = 1.0
 offset_right = 130.0
 offset_bottom = 24.0
-text = "add beats"
+text = "voeg beat toe"
 label_settings = SubResource("LabelSettings_x8qo7")
 vertical_alignment = 1
 
@@ -674,7 +672,7 @@ alignment = 2
 [node name="SwingLabel" type="Label" parent="UserInterface"]
 offset_left = -629.0
 offset_top = 155.0
-offset_right = -501.0
+offset_right = -456.0
 offset_bottom = 178.0
 text = "🌀 Swing"
 horizontal_alignment = 1
@@ -683,7 +681,7 @@ vertical_alignment = 1
 [node name="SwingSlider" type="HSlider" parent="UserInterface/SwingLabel"]
 layout_mode = 0
 offset_top = -25.0
-offset_right = 63.0
+offset_right = 87.0
 offset_bottom = -9.0
 scale = Vector2(2, 2)
 max_value = 1.0
@@ -723,10 +721,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BpmLabel" type="Label" parent="UserInterface"]
-offset_left = -491.0
-offset_top = 48.0
-offset_right = -446.0
-offset_bottom = 115.0
+offset_left = -434.0
+offset_top = 47.0
+offset_right = -389.0
+offset_bottom = 114.0
 text = "bpm"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -774,7 +772,7 @@ offset = Vector2(-0.5, -1)
 
 [node name="metronome" type="Sprite2D" parent="UserInterface"]
 z_index = -1
-position = Vector2(-498, 80)
+position = Vector2(-445.89, 80)
 scale = Vector2(4, 62)
 texture = SubResource("CanvasTexture_6dn85")
 
@@ -796,6 +794,7 @@ color = Color(1, 0.918, 0.59, 1)
 energy = 0.0
 texture = ExtResource("22_sb4d6")
 texture_scale = 20.0
+metadata/_edit_lock_ = true
 
 [node name="Grijs" type="Sprite2D" parent="UserInterface/Robot"]
 z_index = -20
@@ -814,7 +813,7 @@ offset_bottom = -162.0
 layout_mode = 0
 offset_right = 339.0
 offset_bottom = 43.0
-text = "Current Goal:"
+text = "Huidig Doel:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
