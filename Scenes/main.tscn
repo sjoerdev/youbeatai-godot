@@ -158,6 +158,87 @@ script = ExtResource("11_iqwjw")
 
 [node name="UserInterface" type="Node" parent="."]
 
+[node name="SwitchLayerButtons" type="Node" parent="UserInterface"]
+
+[node name="Layer1" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -320.0
+offset_top = -356.0
+offset_right = -288.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "1"
+
+[node name="Layer2" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -284.0
+offset_top = -356.0
+offset_right = -252.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "2"
+
+[node name="Layer3" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -248.0
+offset_top = -356.0
+offset_right = -216.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "3"
+
+[node name="Layer4" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -212.0
+offset_top = -356.0
+offset_right = -180.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "4"
+
+[node name="Layer5" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -176.0
+offset_top = -356.0
+offset_right = -144.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "5"
+
+[node name="Layer6" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -140.0
+offset_top = -356.0
+offset_right = -108.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "6"
+
+[node name="Layer7" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -104.0
+offset_top = -356.0
+offset_right = -72.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "7"
+
+[node name="Layer8" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -68.0
+offset_top = -356.0
+offset_right = -36.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "8"
+
+[node name="Layer9" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -32.0
+offset_top = -356.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "9"
+
+[node name="Layer10" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = 4.0
+offset_top = -356.0
+offset_right = 36.0
+offset_bottom = -324.0
+focus_mode = 0
+text = "10"
+
 [node name="MainButtons" type="Node" parent="UserInterface"]
 
 [node name="PlayPauseButton" type="Button" parent="UserInterface/MainButtons"]
@@ -852,77 +933,6 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "🚫 Stop"
-
-[node name="SwitchLayerButtons" type="Node" parent="UserInterface"]
-
-[node name="Layer1" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -320.0
-offset_top = -356.0
-offset_right = -288.0
-offset_bottom = -324.0
-text = "1"
-
-[node name="Layer2" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -288.0
-offset_top = -356.0
-offset_right = -256.0
-offset_bottom = -324.0
-text = "2"
-
-[node name="Layer3" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -256.0
-offset_top = -356.0
-offset_right = -224.0
-offset_bottom = -324.0
-text = "3"
-
-[node name="Layer4" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -224.0
-offset_top = -356.0
-offset_right = -192.0
-offset_bottom = -324.0
-text = "4"
-
-[node name="Layer5" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -192.0
-offset_top = -356.0
-offset_right = -160.0
-offset_bottom = -324.0
-text = "5"
-
-[node name="Layer6" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -160.0
-offset_top = -356.0
-offset_right = -128.0
-offset_bottom = -324.0
-text = "6"
-
-[node name="Layer7" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -128.0
-offset_top = -356.0
-offset_right = -96.0
-offset_bottom = -324.0
-text = "7"
-
-[node name="Layer8" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -96.0
-offset_top = -356.0
-offset_right = -64.0
-offset_bottom = -324.0
-text = "8"
-
-[node name="Layer9" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -64.0
-offset_top = -356.0
-offset_right = -32.0
-offset_bottom = -324.0
-text = "9"
-
-[node name="Layer10" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -32.0
-offset_top = -356.0
-offset_bottom = -324.0
-text = "10"
 
 [node name="BeatParticleSystem" type="CPUParticles2D" parent="."]
 z_index = 2
