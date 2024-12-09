@@ -723,9 +723,8 @@ public partial class Manager : Node
             metronome.Position = new Vector2(metronome.Position.X, Mathf.Lerp(-0.4f, 0.4f, beatprogress));
 
             // update progressbar
-            progressBar.Value = progressBarValue;
-            if (progressBarValue > 0) progressBarValue -= 1 * (float)delta;
             if (progressBarValue > 100) progressBarValue = 100;
+            progressBar.Value = progressBarValue;
         }
         else timeafterplay = 0;
 
@@ -891,6 +890,8 @@ public partial class Manager : Node
         if (beatActives[3, currentBeat]) fourthAudioPlayer.Play();
         clapped = false;
         stomped = false;
+
+        if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 10;
     }
 
     private Sprite2D CreateOutline(int beat, int ring)
