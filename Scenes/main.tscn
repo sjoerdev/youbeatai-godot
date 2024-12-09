@@ -61,8 +61,6 @@ font_size = 80
 [sub_resource type="CanvasTexture" id="CanvasTexture_6dn85"]
 
 [node name="scene" type="Node2D"]
-metadata/_edit_vertical_guides_ = [-1840.0]
-metadata/_edit_horizontal_guides_ = [-1000.0]
 
 [node name="Camera" type="Camera2D" parent="."]
 scale = Vector2(4.12, 1)
@@ -72,7 +70,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -82,6 +80,16 @@ bpm = 80
 beat_particles = NodePath("../../BeatParticleSystem")
 pbar_particles = NodePath("../../ProgressBarParticleSystem")
 achievement_particles = NodePath("../../AchievementsParticleSystem")
+layerButton1 = NodePath("../../UserInterface/SwitchLayerButtons/Layer1")
+layerButton2 = NodePath("../../UserInterface/SwitchLayerButtons/Layer2")
+layerButton3 = NodePath("../../UserInterface/SwitchLayerButtons/Layer3")
+layerButton4 = NodePath("../../UserInterface/SwitchLayerButtons/Layer4")
+layerButton5 = NodePath("../../UserInterface/SwitchLayerButtons/Layer5")
+layerButton6 = NodePath("../../UserInterface/SwitchLayerButtons/Layer6")
+layerButton7 = NodePath("../../UserInterface/SwitchLayerButtons/Layer7")
+layerButton8 = NodePath("../../UserInterface/SwitchLayerButtons/Layer8")
+layerButton9 = NodePath("../../UserInterface/SwitchLayerButtons/Layer9")
+layerButton10 = NodePath("../../UserInterface/SwitchLayerButtons/Layer10")
 colors = PackedColorArray(0.84, 0.1428, 0.1428, 1, 1, 0.433333, 0, 1, 1, 1, 0.3, 1, 0.2, 0.56, 1, 1)
 robotlight = NodePath("../../UserInterface/Robot/RobotLight")
 spritePrefab = ExtResource("2_1eep1")
@@ -844,6 +852,77 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "🚫 Stop"
+
+[node name="SwitchLayerButtons" type="Node" parent="UserInterface"]
+
+[node name="Layer1" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -320.0
+offset_top = -356.0
+offset_right = -288.0
+offset_bottom = -324.0
+text = "1"
+
+[node name="Layer2" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -288.0
+offset_top = -356.0
+offset_right = -256.0
+offset_bottom = -324.0
+text = "2"
+
+[node name="Layer3" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -256.0
+offset_top = -356.0
+offset_right = -224.0
+offset_bottom = -324.0
+text = "3"
+
+[node name="Layer4" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -224.0
+offset_top = -356.0
+offset_right = -192.0
+offset_bottom = -324.0
+text = "4"
+
+[node name="Layer5" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -192.0
+offset_top = -356.0
+offset_right = -160.0
+offset_bottom = -324.0
+text = "5"
+
+[node name="Layer6" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -160.0
+offset_top = -356.0
+offset_right = -128.0
+offset_bottom = -324.0
+text = "6"
+
+[node name="Layer7" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -128.0
+offset_top = -356.0
+offset_right = -96.0
+offset_bottom = -324.0
+text = "7"
+
+[node name="Layer8" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -96.0
+offset_top = -356.0
+offset_right = -64.0
+offset_bottom = -324.0
+text = "8"
+
+[node name="Layer9" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -64.0
+offset_top = -356.0
+offset_right = -32.0
+offset_bottom = -324.0
+text = "9"
+
+[node name="Layer10" type="Button" parent="UserInterface/SwitchLayerButtons"]
+offset_left = -32.0
+offset_top = -356.0
+offset_bottom = -324.0
+text = "10"
 
 [node name="BeatParticleSystem" type="CPUParticles2D" parent="."]
 z_index = 2

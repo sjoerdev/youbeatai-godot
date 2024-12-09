@@ -54,6 +54,18 @@ public partial class Manager : Node
     private float achievement_particles_curtime;
     private bool achievement_particles_emitting = false;
 
+    // switch layer buttons
+    [Export] Button layerButton1;
+    [Export] Button layerButton2;
+    [Export] Button layerButton3;
+    [Export] Button layerButton4;
+    [Export] Button layerButton5;
+    [Export] Button layerButton6;
+    [Export] Button layerButton7;
+    [Export] Button layerButton8;
+    [Export] Button layerButton9;
+    [Export] Button layerButton10;
+
     public void EmitBeatParticles(Vector2 position, Color color)
     {
         beat_particles_curtime = 0;
@@ -223,6 +235,11 @@ public partial class Manager : Node
 
     [Export] Sprite2D robot;
 
+    public void SwitchLayer(int layerToUse)
+    {
+        GD.Print("switch to " + layerToUse + "th layer");
+    }
+
     public override void _Ready()
     {
         // init singleton
@@ -244,6 +261,17 @@ public partial class Manager : Node
         secondAudioPlayer.Stream = mainAudioFiles[1];
         thirdAudioPlayer.Stream = mainAudioFiles[2];
         fourthAudioPlayer.Stream = mainAudioFiles[3];
+
+        layerButton1.Pressed += () => SwitchLayer(1);
+        layerButton2.Pressed += () => SwitchLayer(2);
+        layerButton3.Pressed += () => SwitchLayer(3);
+        layerButton4.Pressed += () => SwitchLayer(4);
+        layerButton5.Pressed += () => SwitchLayer(5);
+        layerButton6.Pressed += () => SwitchLayer(6);
+        layerButton7.Pressed += () => SwitchLayer(7);
+        layerButton8.Pressed += () => SwitchLayer(8);
+        layerButton9.Pressed += () => SwitchLayer(9);
+        layerButton10.Pressed += () => SwitchLayer(10);
 
        
 
