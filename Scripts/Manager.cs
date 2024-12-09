@@ -801,7 +801,17 @@ public partial class Manager : Node
             {
                 if (beatActives[ring, beat])
                 {
-                    var audioByteData = ((AudioStreamWav)audioFilesToUse[ring]).GetData();
+                    AudioStreamWav audioStreamWav = (AudioStreamWav)audioFilesToUse[ring];
+
+                    int dataSampleRate = ((AudioStreamWav)audioFilesToUse[ring]).GetMixRate();
+                    if (dataSampleRate != sampleRate)
+                    {
+                        GD.Print("samplerates doesnt match");
+                        // handle it
+                    }
+
+                    var audioByteData = audioStreamWav.GetData();
+                    
                     float[] sampleData = new float[audioByteData.Length / 2];
                     for (int i = 0; i < sampleData.Length; i++) sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
                     for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
@@ -843,6 +853,65 @@ public partial class Manager : Node
         reader.Close();
         writer.Close();
         File.Delete(filename + ".wav");
+    }
+
+    public static AudioStreamWav ChangeSampleRate(AudioStreamWav audioStream, int newSampleRate)
+    {
+        // get original audio data
+        var originalData = audioStream.Data;
+        var originalSampleRate = audioStream.MixRate;
+        var stereo = audioStream.Stereo;
+        var originalFormat = audioStream.Format;
+
+        // no resampling or conversion needed
+        if (originalSampleRate == newSampleRate && !stereo) return audioStream; 
+
+        // convert data to float for processing
+        var sampleCount = originalData.Length / sizeof(float);
+        var originalSamples = new float[sampleCount];
+        Buffer.BlockCopy(originalData, 0, originalSamples, 0, originalData.Length);
+
+        // if stereo convert to mono
+        float[] monoSamples;
+        if (stereo)
+        {
+            monoSamples = new float[sampleCount / 2];
+            for (int i = 0; i < monoSamples.Length; i++) monoSamples[i] = (originalSamples[i * 2] + originalSamples[i * 2 + 1]) / 2.0f;
+        }
+        else monoSamples = originalSamples;
+
+        // calc ratio
+        float ratio = (float)newSampleRate / originalSampleRate;
+
+        // create buffer
+        int newSampleCount = (int)(monoSamples.Length * ratio);
+        var resampledSamples = new float[newSampleCount];
+
+        // linear interpolation to resample
+        for (int i = 0; i < newSampleCount; i++)
+        {
+            float originalPosition = i / ratio;
+            int originalIndex = (int)Math.Floor(originalPosition);
+            float frac = originalPosition - originalIndex;
+
+            if (originalIndex < monoSamples.Length - 1) resampledSamples[i] = monoSamples[originalIndex] * (1 - frac) + monoSamples[originalIndex + 1] * frac;
+            else resampledSamples[i] = monoSamples[originalIndex];
+        }
+
+        // resampled data back to byte array
+        var newData = new byte[resampledSamples.Length * sizeof(float)];
+        Buffer.BlockCopy(resampledSamples, 0, newData, 0, newData.Length);
+
+        // create new audiostreamwav with updated sample rate
+        var newAudioStream = new AudioStreamWav
+        {
+            Data = newData,
+            MixRate = newSampleRate,
+            Format = originalFormat,
+            Stereo = false
+        };
+
+        return newAudioStream;
     }
 
     public void OnClap()
