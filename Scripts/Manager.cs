@@ -299,7 +299,7 @@ public partial class Manager : Node
     public void SaveDrumLoopsAsFile(List<bool[,]> loops)
     {
         string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "_");
-        string filename = "all_layers_" + bpm.ToString() + "bpm_" + sanitizedTime;
+        string filename = (loops.Count == 1 ? "beat_" : "liedje_") + bpm.ToString() + "bpm_" + sanitizedTime;
 
         int sampleRate = 44100;
         float secondsPerBeat = (60f / bpm) / 2;
@@ -416,7 +416,7 @@ public partial class Manager : Node
         PlayPauseButton.Pressed += OnPlayPauseButton;
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
-        saveToWavButton.Pressed += SaveDrumLoopAsFile;
+        saveToWavButton.Pressed += () => SaveDrumLoopsAsFile(new List<bool[,]>() { beatActives });
         ResetPlayerButton.Pressed += () => { OnResetPlayerButton(); playing = true; };
 
         // skipping / ending the tutorial
@@ -945,67 +945,6 @@ public partial class Manager : Node
 
         // update bpm label
         bpmLabel.Text = bpm.ToString();
-    }
-
-    public void SaveDrumLoopAsFile()
-    {
-        string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "-");
-        string filename = "savedloop_" + bpm.ToString() + "bpm_" + sanitizedTime;
-
-        int sampleRate = 44100;
-        float secondsPerBeat = (60f / bpm) / 2;
-        int totalSamples = (int)(beatsAmount * secondsPerBeat * sampleRate);
-        float[] audioData = new float[totalSamples];
-
-        // audiodata
-        for (int ring = 0; ring < beatActives.GetLength(0); ring++)
-        {
-            for (int beat = 0; beat < beatActives.GetLength(1); beat++)
-            {
-                if (beatActives[ring, beat])
-                {
-                    AudioStreamWav audioStreamWav = (AudioStreamWav)audioFilesToUse[ring];
-
-                    int dataSampleRate = ((AudioStreamWav)audioFilesToUse[ring]).GetMixRate();
-                    if (dataSampleRate != sampleRate)
-                    {
-                        GD.Print("samplerates doesnt match");
-                        // handle it
-                    }
-
-                    var audioByteData = audioStreamWav.GetData();
-                    
-                    float[] sampleData = new float[audioByteData.Length / 2];
-                    for (int i = 0; i < sampleData.Length; i++) sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
-                    for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
-                    {
-                        int samplePos = (int)(beat * secondsPerBeat * sampleRate) + sampleIndex;
-                        if (samplePos < totalSamples) audioData[samplePos] += sampleData[sampleIndex];
-                    }
-                }
-            }
-        }
-
-        // normalize
-        float maxAmplitude = 0;
-        foreach (var sample in audioData) if (Math.Abs(sample) > maxAmplitude) maxAmplitude = Math.Abs(sample);
-        if (maxAmplitude > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= maxAmplitude;
-
-        // write wave
-        using (var writer = new WaveFileWriter(filename + ".wav", new WaveFormat(sampleRate, 1)))
-        {
-            foreach (var sample in audioData)
-            {
-                short intSample = (short)(sample * short.MaxValue);
-                writer.WriteSample(intSample / (float)short.MaxValue);
-            }
-            writer.Close();
-        }
-
-        GD.Print("Drum loop saved as WAV successfully!");
-        ConvertWavToMp3(filename);
-        GD.Print("Drum loop converted to MP3 successfully!");
-        hassavedtofile = true;
     }
 
     private void ConvertWavToMp3(string filename)
