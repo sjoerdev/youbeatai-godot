@@ -353,7 +353,7 @@ offset_bottom = -492.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "📥 All layers to mp3"
+text = "📥 Liedje naar mp3"
 alignment = 0
 
 [node name="TemplateButton" type="Button" parent="UserInterface/MainButtons"]
@@ -445,7 +445,7 @@ offset_bottom = -330.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🏛️ Reverb"
+text = "🏛️ Galm"
 alignment = 0
 
 [node name="ReverbSprite" type="Sprite2D" parent="UserInterface/MainButtons/ReverbButton"]
@@ -466,7 +466,7 @@ offset_bottom = -294.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "⛰️ Delay"
+text = "⛰️ Echo"
 alignment = 0
 
 [node name="DelaySprite" type="Sprite2D" parent="UserInterface/MainButtons/DelayButton"]
@@ -487,7 +487,7 @@ offset_bottom = -246.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🐇 Bpm Omhoog"
+text = "🐇 Sneller"
 alignment = 0
 
 [node name="BpmDownButton" type="Button" parent="UserInterface/MainButtons"]
@@ -503,7 +503,7 @@ offset_bottom = -210.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🐢 Bpm Omlaag"
+text = "🐢 Langzamer"
 alignment = 0
 
 [node name="SampleButtons" type="Node" parent="UserInterface"]
@@ -654,7 +654,7 @@ offset_left = 82.0
 offset_top = -9.0
 offset_right = 134.0
 offset_bottom = 23.0
-text = "🦶🏼"
+text = "👞"
 label_settings = SubResource("LabelSettings_x0c78")
 horizontal_alignment = 1
 vertical_alignment = 1

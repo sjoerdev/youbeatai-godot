@@ -567,8 +567,8 @@ public partial class Manager : Node
 			"Druk op Start ⏯ om te horen hoe je eigen geluidje klinkt",
 
 			// effects
-			"We gaan de beat sneller maken. Druk op 'Bpm Omhoog' 🐇 om de beat het sneller te maken",
-			"Druk op de reverb 🏛 of de delay ⛰ knop. voor speciale echo's",
+			"We gaan de beat sneller maken. Druk op 'Sneller' 🐇 om de beat het sneller te maken",
+			"Druk op de Chalm 🏛 of de Echo ⛰ knop. voor speciale echo's",
 			"Tijd voor wat swing 🌀 in de beat. sleep het swing balkje naar rechts.",
 
             // saving
