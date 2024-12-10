@@ -4,6 +4,7 @@ using System.IO;
 
 using NAudio.Wave;
 using NAudio.Lame;
+using System.Collections.Generic;
 
 public partial class Manager : Node
 {
@@ -102,7 +103,7 @@ public partial class Manager : Node
     Sprite2D[,] beatOutlines;
     public Sprite2D[,] beatSprites;
     Sprite2D[,] templateSprites;
-    public bool[,] beatActives = new bool[4, 32];
+    
 
     // left buttons
     [Export] Button SaveLayoutButton;
@@ -235,10 +236,41 @@ public partial class Manager : Node
 
     [Export] Sprite2D robot;
 
+    // ---------------------------
+
+    public bool[,] beatActives = new bool[4, 32];
+
+    public int currentLayerIndex = 0;
+
+    public List<bool[,]> layers = new()
+    {
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32],
+        new bool[4, 32]
+    };
+
+    public bool[,] GetCurrentLayer() => layers[currentLayerIndex];
+    public bool[,] SetCurrentLayer(bool[,] value) => layers[currentLayerIndex] = value;
+
     public void SwitchLayer(int layerToUse)
     {
-        GD.Print("switch to " + layerToUse + "th layer");
+        // save current layer
+        SetCurrentLayer(beatActives);
+
+        // switch to next layer
+        GD.Print("switch to the " + layerToUse + "th layer");
+        currentLayerIndex = layerToUse - 1;
+        beatActives = GetCurrentLayer();
     }
+
+    // --------------------------------
 
     public override void _Ready()
     {
