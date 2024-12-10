@@ -280,6 +280,7 @@ public partial class Manager : Node
     {
         // save current layer
         SetCurrentLayer(beatActives);
+        GD.Print(LayerHasBeats(beatActives));
 
         // switch to next layer
         GD.Print("switch to the " + layerToUse + "th layer");
@@ -288,6 +289,19 @@ public partial class Manager : Node
 
         // update outline
         layerOutline.Position = new Vector2(-600, 317) - new Vector2(0, 1) * (71f * currentLayerIndex);
+    }
+
+    public bool LayerHasBeats(bool[,] layer)
+    {
+        for (int ring = 0; ring < 4; ring++)
+        {
+            for (int beat = 0; beat < 32; beat++)
+            {
+                bool active = layer[ring, beat];
+                if (active) return true;
+            }
+        }
+        return false;
     }
 
     public void AllLayersToMp3()
@@ -758,6 +772,29 @@ public partial class Manager : Node
             _LateReady();
             latereadydone = true;
         }
+
+        // switch layer buttons
+        layerButton1.Modulate = new Color(1, 1, 1, 1);
+        layerButton2.Modulate = new Color(1, 1, 1, 1);
+        layerButton3.Modulate = new Color(1, 1, 1, 1);
+        layerButton4.Modulate = new Color(1, 1, 1, 1);
+        layerButton5.Modulate = new Color(1, 1, 1, 1);
+        layerButton6.Modulate = new Color(1, 1, 1, 1);
+        layerButton7.Modulate = new Color(1, 1, 1, 1);
+        layerButton8.Modulate = new Color(1, 1, 1, 1);
+        layerButton9.Modulate = new Color(1, 1, 1, 1);
+        layerButton10.Modulate = new Color(1, 1, 1, 1);
+        if (!LayerHasBeats(layers[0])) layerButton1.Modulate = layerButton1.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[1])) layerButton2.Modulate = layerButton2.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[2])) layerButton3.Modulate = layerButton3.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[3])) layerButton4.Modulate = layerButton4.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[4])) layerButton5.Modulate = layerButton5.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[5])) layerButton6.Modulate = layerButton6.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[6])) layerButton7.Modulate = layerButton7.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[7])) layerButton8.Modulate = layerButton8.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[8])) layerButton9.Modulate = layerButton9.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[9])) layerButton10.Modulate = layerButton10.Modulate.Darkened(0.3f);
+
 
         // update robot light
         var lightvalue = progressBarValue / 100;
