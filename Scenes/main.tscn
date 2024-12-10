@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=39 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
 [ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
 [ext_resource type="Texture2D" uid="uid://cr4v0wkvt72mj" path="res://Resources/Textures/grijs.png" id="22_wax6p"]
+[ext_resource type="Texture2D" uid="uid://cx0bpjp8y6sel" path="res://Resources/Textures/square-outline.png" id="23_vsgbq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y8yhq"]
 
@@ -70,7 +71,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot", "layerOutline")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -134,6 +135,7 @@ ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/Clap
 achievementspanel = NodePath("../../UserInterface/AchievementsPanel")
 InstructionLabel = NodePath("../../UserInterface/AchievementsPanel/InstructionLabel")
 robot = NodePath("../../UserInterface/Robot")
+layerOutline = NodePath("../../UserInterface/SwitchLayerButtons/Outline")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
 script = ExtResource("10_4yy8e")
@@ -248,6 +250,11 @@ offset_bottom = -291.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🏁"
+
+[node name="Outline" type="Sprite2D" parent="UserInterface/SwitchLayerButtons"]
+position = Vector2(-600, 317)
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("23_vsgbq")
 
 [node name="MainButtons" type="Node" parent="UserInterface"]
 
@@ -485,7 +492,7 @@ alignment = 0
 
 [node name="DragAndDropButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-525, 328)
+position = Vector2(-525, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -501,7 +508,7 @@ vertical_alignment = 1
 
 [node name="DragAndDropButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-450, 328)
+position = Vector2(-450, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -518,7 +525,7 @@ vertical_alignment = 1
 
 [node name="DragAndDropButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-375, 328)
+position = Vector2(-375, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -526,34 +533,34 @@ ring = 2
 
 [node name="DragAndDropButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-300, 328)
+position = Vector2(-300, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
 ring = 3
 
 [node name="SampleRecordingButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-525, 272)
+position = Vector2(-525, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 
 [node name="SampleRecordingButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-451, 272)
+position = Vector2(-451, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 ring = 1
 
 [node name="SampleRecordingButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-376, 272)
+position = Vector2(-376, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 ring = 2
 
 [node name="SampleRecordingButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-300, 272)
+position = Vector2(-300, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
@@ -561,30 +568,30 @@ ring = 3
 
 [node name="UseSampleCheckButton0" type="CheckButton" parent="UserInterface/SampleButtons"]
 offset_left = -550.0
-offset_top = 226.0
+offset_top = 221.0
 offset_right = -506.0
-offset_bottom = 250.0
+offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton1" type="CheckButton" parent="UserInterface/SampleButtons"]
 offset_left = -475.0
-offset_top = 226.0
+offset_top = 221.0
 offset_right = -431.0
-offset_bottom = 250.0
+offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton2" type="CheckButton" parent="UserInterface/SampleButtons"]
 offset_left = -400.0
-offset_top = 226.0
+offset_top = 221.0
 offset_right = -356.0
-offset_bottom = 250.0
+offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton3" type="CheckButton" parent="UserInterface/SampleButtons"]
 offset_left = -325.0
-offset_top = 226.0
+offset_top = 221.0
 offset_right = -281.0
-offset_bottom = 250.0
+offset_bottom = 245.0
 focus_mode = 0
 
 [node name="SettingsButton" type="Button" parent="UserInterface"]

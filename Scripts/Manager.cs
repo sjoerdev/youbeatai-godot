@@ -238,6 +238,8 @@ public partial class Manager : Node
 
     // ---------------------------
 
+    [Export] Sprite2D layerOutline;
+
     public bool[,] beatActives = new bool[4, 32];
 
     public int currentLayerIndex = 0;
@@ -280,6 +282,9 @@ public partial class Manager : Node
         GD.Print("switch to the " + layerToUse + "th layer");
         currentLayerIndex = layerToUse - 1;
         beatActives = GetCurrentLayer();
+
+        // update outline
+        layerOutline.Position = new Vector2(-600, 317) - new Vector2(0, 1) * (71f * currentLayerIndex);
     }
 
     // --------------------------------
