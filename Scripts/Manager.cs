@@ -238,6 +238,8 @@ public partial class Manager : Node
 
     // ---------------------------
 
+    [Export] Button allLayersToMp3;
+
     [Export] Sprite2D layerOutline;
 
     public bool[,] beatActives = new bool[4, 32];
@@ -287,6 +289,88 @@ public partial class Manager : Node
         layerOutline.Position = new Vector2(-600, 317) - new Vector2(0, 1) * (71f * currentLayerIndex);
     }
 
+    public void AllLayersToMp3()
+    {
+        GD.Print("saving all layers to an mp3 file");
+        SetCurrentLayer(beatActives);
+        SaveDrumLoopsAsFile(layers);
+    }
+
+    public void SaveDrumLoopsAsFile(List<bool[,]> loops)
+    {
+        string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "_");
+        string filename = "all_layers_" + bpm.ToString() + "bpm_" + sanitizedTime;
+
+        int sampleRate = 44100;
+        float secondsPerBeat = (60f / bpm) / 2;
+        int beatsPerLoop = 32; // Assuming each loop has 32 beats
+        int totalBeats = beatsPerLoop * loops.Count;
+        int totalSamples = (int)(totalBeats * secondsPerBeat * sampleRate);
+        float[] audioData = new float[totalSamples];
+
+        // Process each loop
+        for (int loopIndex = 0; loopIndex < loops.Count; loopIndex++)
+        {
+            bool[,] currentLoop = loops[loopIndex];
+
+            for (int ring = 0; ring < currentLoop.GetLength(0); ring++)
+            {
+                for (int beat = 0; beat < currentLoop.GetLength(1); beat++)
+                {
+                    if (currentLoop[ring, beat])
+                    {
+                        AudioStreamWav audioStreamWav = (AudioStreamWav)audioFilesToUse[ring];
+
+                        int dataSampleRate = audioStreamWav.GetMixRate();
+                        if (dataSampleRate != sampleRate)
+                        {
+                            GD.Print("Sample rates don't match");
+                            // Handle sample rate mismatch if necessary
+                        }
+
+                        var audioByteData = audioStreamWav.GetData();
+                        float[] sampleData = new float[audioByteData.Length / 2];
+                        for (int i = 0; i < sampleData.Length; i++) 
+                            sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
+
+                        for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
+                        {
+                            int samplePos = (int)((loopIndex * beatsPerLoop + beat) * secondsPerBeat * sampleRate) + sampleIndex;
+                            if (samplePos < totalSamples) 
+                                audioData[samplePos] += sampleData[sampleIndex];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Normalize audio
+        float maxAmplitude = 0;
+        foreach (var sample in audioData) 
+            if (Math.Abs(sample) > maxAmplitude) 
+                maxAmplitude = Math.Abs(sample);
+
+        if (maxAmplitude > 1.0f) 
+            for (int i = 0; i < audioData.Length; i++) 
+                audioData[i] /= maxAmplitude;
+
+        // Write wave file
+        using (var writer = new WaveFileWriter(filename + ".wav", new WaveFormat(sampleRate, 1)))
+        {
+            foreach (var sample in audioData)
+            {
+                short intSample = (short)(sample * short.MaxValue);
+                writer.WriteSample(intSample / (float)short.MaxValue);
+            }
+            writer.Close();
+        }
+
+        GD.Print("Drum loops saved as WAV successfully!");
+        ConvertWavToMp3(filename);
+        GD.Print("Drum loops converted to MP3 successfully!");
+        hassavedtofile = true;
+    }
+
     // --------------------------------
 
     public override void _Ready()
@@ -321,6 +405,8 @@ public partial class Manager : Node
         layerButton8.Pressed += () => SwitchLayer(8);
         layerButton9.Pressed += () => SwitchLayer(9);
         layerButton10.Pressed += () => SwitchLayer(10);
+
+        allLayersToMp3.Pressed += AllLayersToMp3;
 
        
 

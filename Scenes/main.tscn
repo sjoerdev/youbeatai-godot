@@ -71,7 +71,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot", "layerOutline")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "InstructionLabel", "robot", "allLayersToMp3", "layerOutline")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -135,6 +135,7 @@ ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/Clap
 achievementspanel = NodePath("../../UserInterface/AchievementsPanel")
 InstructionLabel = NodePath("../../UserInterface/AchievementsPanel/InstructionLabel")
 robot = NodePath("../../UserInterface/Robot")
+allLayersToMp3 = NodePath("../../UserInterface/MainButtons/SaveLayersToMp3")
 layerOutline = NodePath("../../UserInterface/SwitchLayerButtons/Outline")
 
 [node name="MicrophoneCapture" type="Node" parent="Managers"]
@@ -336,6 +337,22 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "📥 Opslaan naar mp3"
+alignment = 0
+
+[node name="SaveLayersToMp3" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -981.0
+offset_top = -672.0
+offset_right = -801.0
+offset_bottom = -640.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "📥 All layers to mp3"
 alignment = 0
 
 [node name="TemplateButton" type="Button" parent="UserInterface/MainButtons"]
