@@ -23,18 +23,12 @@ public partial class RecordSampleButton : Sprite2D
     {
         if (inputEvent is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
         {
-            // On press
-            if (mouseEvent.IsPressed())
+            // On Mouse Down
+            if (mouseEvent.IsPressed() && inside)
             {
-                pressing = true;
-                if (inside) StartRecording();
-            }
-
-            // On release
-            if (mouseEvent.IsReleased())
-            {
-                pressing = false;
-                if (inside) StopRecording();
+                pressing = !pressing;
+                if (pressing) StartRecording();
+                else StopRecording();
             }
         }
     }
