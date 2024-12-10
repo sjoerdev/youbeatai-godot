@@ -259,6 +259,18 @@ public partial class Manager : Node
     public bool[,] GetCurrentLayer() => layers[currentLayerIndex];
     public bool[,] SetCurrentLayer(bool[,] value) => layers[currentLayerIndex] = value;
 
+    public void NextLayer()
+    {
+        if (currentLayerIndex == 9) SwitchLayer(1);
+        else SwitchLayer(currentLayerIndex + 2);
+    }
+
+    public void PreviousLayer()
+    {
+        if (currentLayerIndex == 0) SwitchLayer(10);
+        else SwitchLayer(currentLayerIndex);
+    }
+
     public void SwitchLayer(int layerToUse)
     {
         // save current layer
@@ -1021,6 +1033,8 @@ public partial class Manager : Node
         stomped = false;
 
         if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 10;
+
+        if (currentBeat == 31) NextLayer();
     }
 
     private Sprite2D CreateOutline(int beat, int ring)
