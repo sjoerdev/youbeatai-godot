@@ -152,6 +152,7 @@ public partial class Manager : Node
     [Export] Panel settingsPanel;
     [Export] Slider ClapBiasSlider;
     [Export] Panel achievementspanel;
+    [Export] CheckButton layerLoopToggle;
 
     // clapping and stomping
     bool stomped = false;
@@ -648,6 +649,9 @@ public partial class Manager : Node
         // draganddrop buttons
         SetDragAndDropButtonsVisibility(visible);
 
+        // layer switch buttons
+        SetLayerSwitchButtonsVisibility(visible);
+
         // settings menu
         settingsButton.Visible = visible;
 
@@ -668,6 +672,7 @@ public partial class Manager : Node
         ClearLayoutButton.Visible = visible;
         ResetPlayerButton.Visible = visible;
         saveToWavButton.Visible = visible;
+        allLayersToMp3.Visible = visible;
     }
 
     void SetEffectButtonsVisibility(bool visible)
@@ -710,6 +715,21 @@ public partial class Manager : Node
         draganddropButton1.Visible = visible;
         draganddropButton2.Visible = visible;
         draganddropButton3.Visible = visible;
+    }
+
+    void SetLayerSwitchButtonsVisibility(bool visible)
+    {
+        layerButton1.Visible = visible;
+        layerButton2.Visible = visible;
+        layerButton3.Visible = visible;
+        layerButton4.Visible = visible;
+        layerButton5.Visible = visible;
+        layerButton6.Visible = visible;
+        layerButton7.Visible = visible;
+        layerButton8.Visible = visible;
+        layerButton9.Visible = visible;
+        layerButton10.Visible = visible;
+        layerOutline.Visible = visible;
     }
 
 
@@ -1064,7 +1084,8 @@ public partial class Manager : Node
 
         if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 10;
 
-        if (currentBeat == 31) NextLayer();
+        // if layer looping
+        if (layerLoopToggle.ButtonPressed) if (currentBeat == 31) NextLayer();
     }
 
     private Sprite2D CreateOutline(int beat, int ring)
