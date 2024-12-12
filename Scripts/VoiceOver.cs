@@ -64,7 +64,11 @@ public partial class VoiceOver : Node
 		float secondsPerRotation = secondsPerBeat * 32;
 		float bpmfactor = 32 / secondsPerRotation;
 		if (recording) textureProgressBar.Value = recordingTimer * bpmfactor;
-		else if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength() * bpmfactor;
+		else
+		{
+			if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength() * bpmfactor;
+			else textureProgressBar.Value = 0;
+		}
 	}
 
 	public void OnTop()
