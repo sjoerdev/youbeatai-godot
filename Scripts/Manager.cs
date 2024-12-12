@@ -349,22 +349,28 @@ public partial class Manager : Node
         {
             bool[,] currentLoop = loops[loopIndex];
 
+            // for each ring
             for (int ring = 0; ring < currentLoop.GetLength(0); ring++)
             {
+                // for each beat
                 for (int beat = 0; beat < currentLoop.GetLength(1); beat++)
                 {
+                    // if beat active
                     if (currentLoop[ring, beat])
                     {
+                        // get audio sample of beat
                         AudioStreamWav audioStreamWav = (AudioStreamWav)audioFilesToUse[ring];
+                        var audioBytes = audioStreamWav.GetData();
 
-                        var audioByteData = audioStreamWav.GetData();
-                        float[] sampleData = new float[audioByteData.Length / 2];
-                        for (int i = 0; i < sampleData.Length; i++) sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
+                        // Convert byte[] to float[] (each pcm sample is a 16 bit integer also known as a short)
+                        float[] samples = new float[audioBytes.Length / 2];
+                        for (int i = 0; i < samples.Length; i++) samples[i] = BitConverter.ToInt16(audioBytes, i * 2) / 32768f;
 
-                        for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
+                        // write audiodata at position
+                        for (int i = 0; i < samples.Length; i++)
                         {
-                            int samplePos = (int)((loopIndex * beatsPerLoop + beat) * secondsPerBeat * sampleRate) + sampleIndex;
-                            if (samplePos < totalSamples) audioData[samplePos] += sampleData[sampleIndex];
+                            int position = (int)((loopIndex * beatsPerLoop + beat) * secondsPerBeat * sampleRate) + i;
+                            if (position < totalSamples) audioData[position] += samples[i];
                         }
                     }
                 }
@@ -372,22 +378,17 @@ public partial class Manager : Node
         }
 
         // normalize
-        float maxAmplitude = 0;
-        foreach (var sample in audioData) if (Math.Abs(sample) > maxAmplitude) maxAmplitude = Math.Abs(sample);
-        if (maxAmplitude > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= maxAmplitude;
+        float max = 0;
+        foreach (var sample in audioData) if (Math.Abs(sample) > max) max = Math.Abs(sample);
+        if (max > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= max;
 
         // write file
         using (var writer = new WaveFileWriter(filename + ".wav", new WaveFormat(sampleRate, 1)))
         {
-            foreach (var sample in audioData)
-            {
-                short intSample = (short)(sample * short.MaxValue);
-                writer.WriteSample(intSample / (float)short.MaxValue);
-            }
+            foreach (var sample in audioData) writer.WriteSample(sample);
             writer.Close();
         }
 
-        // change pitch
         // ChangePitch(filename + ".wav", 2f);
 
         // convert to mp3
