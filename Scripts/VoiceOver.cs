@@ -66,7 +66,7 @@ public partial class VoiceOver : Node
 		if (recording) textureProgressBar.Value = recordingTimer * bpmfactor;
 		else
 		{
-			if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength() * bpmfactor;
+			if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = 32f;
 			else textureProgressBar.Value = 0;
 		}
 	}
