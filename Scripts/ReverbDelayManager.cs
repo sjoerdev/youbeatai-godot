@@ -5,51 +5,31 @@ public partial class ReverbDelayManager : Node
 {
     public static ReverbDelayManager instance = null;
 
-	[Export] public Button reverbButton;
-	[Export] public Button delayButton;
-
-	[Export] Sprite2D reverbSprite;
-	[Export] Sprite2D delaySprite;
+	[Export] public Slider reverbSlider;
+	[Export] public Slider delaySlider;
 
 	AudioEffectReverb reverbEffect;
     AudioEffectDelay delayEffect;
 
-    public int currentReverbLevel = 0;
-    public int currentDelayLevel = 0;
-    
-    private float[] reverbLevels = { 0.0f, 0.05f, 0.1f };
-    private float[] delayLevels = { 0.0f, 0.05f, 0.1f };
-
     public override void _Ready()
     {
         instance ??= this;
-        reverbButton.Pressed += OnReverbButtonPressed;
-        delayButton.Pressed += OnDelayButtonPressed;
         reverbEffect = new AudioEffectReverb();
         delayEffect = new AudioEffectDelay();
         AudioServer.AddBusEffect(AudioServer.GetBusIndex("Master"), reverbEffect);
         AudioServer.AddBusEffect(AudioServer.GetBusIndex("Master"), delayEffect);
-        SetReverbLevel(reverbLevels[currentReverbLevel]);
-        SetDelayLevel(delayLevels[currentDelayLevel]);
     }
 
-    private void OnReverbButtonPressed()
+    public override void _Process(double delta)
     {
-        currentReverbLevel = (currentReverbLevel + 1) % reverbLevels.Length;
-        SetReverbLevel(reverbLevels[currentReverbLevel]);
-    }
-
-	private void OnDelayButtonPressed()
-    {
-        currentDelayLevel = (currentDelayLevel + 1) % delayLevels.Length;
-        SetDelayLevel(delayLevels[currentDelayLevel]);
+        SetReverbLevel((float)reverbSlider.Value);
+        SetDelayLevel((float)delaySlider.Value);
     }
 
     private void SetReverbLevel(float level)
     {
         AudioServer.SetBusEffectEnabled(AudioServer.GetBusIndex("Master"), 0, level > 0);
         reverbEffect.RoomSize = level;
-		reverbSprite.Scale = Vector2.One * (level + 0.1f) * 2;
     }
 
     private void SetDelayLevel(float level)
@@ -58,6 +38,5 @@ public partial class ReverbDelayManager : Node
         delayEffect.Tap1Active = true;
         delayEffect.Tap2Active = false;
         delayEffect.Tap1DelayMs = level * 1000f;
-		delaySprite.Scale = Vector2.One * (level + 0.1f) * 2;
     }
 }

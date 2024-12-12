@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
 [ext_resource type="Texture2D" uid="uid://dlteab6232hoa" path="res://Resources/Textures/white.png" id="2_1ig4u"]
-[ext_resource type="AudioStream" uid="uid://3hoatoungl5b" path="res://Resources/Audio/metronome.wav" id="2_c85ny"]
-[ext_resource type="AudioStream" uid="uid://ck2sni76orwxh" path="res://Resources/Audio/achievement.wav" id="3_p4kny"]
-[ext_resource type="AudioStream" uid="uid://mfga1xf5g5ds" path="res://Resources/Audio/kick.wav" id="5_cl760"]
-[ext_resource type="AudioStream" uid="uid://h4ee87bgfoxp" path="res://Resources/Audio/closed-hihat.wav" id="6_60v1h"]
-[ext_resource type="AudioStream" uid="uid://chgpxwxom3d12" path="res://Resources/Audio/clap.wav" id="6_v5052"]
-[ext_resource type="AudioStream" uid="uid://cf4uqnn3iwlm" path="res://Resources/Audio/snare.wav" id="8_4xf5a"]
+[ext_resource type="AudioStream" uid="uid://drcptrr3wmmra" path="res://Resources/Audio/metronome.wav" id="2_c85ny"]
+[ext_resource type="AudioStream" uid="uid://cph5mjckc1htb" path="res://Resources/Audio/achievement.wav" id="3_p4kny"]
+[ext_resource type="AudioStream" uid="uid://68v8ks153pak" path="res://Resources/Audio/kick.wav" id="5_cl760"]
+[ext_resource type="AudioStream" uid="uid://dcgdta2ra65si" path="res://Resources/Audio/closed-hihat.wav" id="6_60v1h"]
+[ext_resource type="AudioStream" uid="uid://cnyej43x46lnm" path="res://Resources/Audio/clap.wav" id="6_v5052"]
+[ext_resource type="AudioStream" uid="uid://ccq2xyx050tvt" path="res://Resources/Audio/snare.wav" id="8_4xf5a"]
 [ext_resource type="Texture2D" uid="uid://ddx3ttnpgkple" path="res://Resources/Textures/ring.png" id="8_llrl4"]
 [ext_resource type="StyleBox" uid="uid://hlnwgujjqktu" path="res://Other/background.tres" id="9_nnqde"]
 [ext_resource type="Script" path="res://Scripts/TemplateManager.cs" id="9_t3vou"]
@@ -71,7 +71,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "layerLoopToggle", "InstructionLabel", "robot", "allLayersToMp3", "layerOutline")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "LoadLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "layerLoopToggle", "SavingLabel", "InstructionLabel", "robot", "allLayersToMp3", "layerOutline")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -97,6 +97,7 @@ spritePrefab = ExtResource("2_1eep1")
 texture = ExtResource("2_1ig4u")
 outline = ExtResource("8_llrl4")
 SaveLayoutButton = NodePath("../../UserInterface/MainButtons/SaveLayoutButton")
+LoadLayoutButton = NodePath("../../UserInterface/MainButtons/LoadLayoutButton")
 ClearLayoutButton = NodePath("../../UserInterface/MainButtons/ClearLayoutButton")
 RecordButton = NodePath("../../UserInterface/RecordButton")
 PlayPauseButton = NodePath("../../UserInterface/MainButtons/PlayPauseButton")
@@ -127,13 +128,14 @@ metronomebg = NodePath("../../UserInterface/metronome")
 bpmLabel = NodePath("../../UserInterface/BpmLabel")
 draganddropthing = NodePath("../../UserInterface/draganddropthing")
 swing = 0.0
-swingslider = NodePath("../../UserInterface/SwingLabel/SwingSlider")
-swinglabel = NodePath("../../UserInterface/SwingLabel")
+swingslider = NodePath("../../UserInterface/SwingSlider")
+swinglabel = NodePath("../../UserInterface/SwingSlider/SwingLabel")
 settingsButton = NodePath("../../UserInterface/SettingsButton")
 settingsPanel = NodePath("../../UserInterface/SettingsButton/SettingsPanel")
 ClapBiasSlider = NodePath("../../UserInterface/SettingsButton/SettingsPanel/ClapStompBias")
 achievementspanel = NodePath("../../UserInterface/AchievementsPanel")
 layerLoopToggle = NodePath("../../UserInterface/SettingsButton/SettingsPanel/LayerLoopToggle")
+SavingLabel = NodePath("../../SavingLabel")
 InstructionLabel = NodePath("../../UserInterface/AchievementsPanel/InstructionLabel")
 robot = NodePath("../../UserInterface/Robot")
 allLayersToMp3 = NodePath("../../UserInterface/MainButtons/AllLayersToMp3")
@@ -150,12 +152,10 @@ rightTemplateButton = NodePath("../../UserInterface/MainButtons/TemplateRightBut
 showTemplateButton = NodePath("../../UserInterface/MainButtons/ShowTemplateButton")
 setTemplateButton = NodePath("../../UserInterface/MainButtons/SetTemplateButton")
 
-[node name="ReverbDelayManager" type="Node" parent="Managers" node_paths=PackedStringArray("reverbButton", "delayButton", "reverbSprite", "delaySprite")]
+[node name="ReverbDelayManager" type="Node" parent="Managers" node_paths=PackedStringArray("reverbSlider", "delaySlider")]
 script = ExtResource("10_jykfx")
-reverbButton = NodePath("../../UserInterface/MainButtons/ReverbButton")
-delayButton = NodePath("../../UserInterface/MainButtons/DelayButton")
-reverbSprite = NodePath("../../UserInterface/MainButtons/ReverbButton/ReverbSprite")
-delaySprite = NodePath("../../UserInterface/MainButtons/DelayButton/DelaySprite")
+reverbSlider = NodePath("../../UserInterface/ReverbSlider")
+delaySlider = NodePath("../../UserInterface/DelaySlider")
 
 [node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
@@ -324,6 +324,22 @@ focus_mode = 0
 text = "💾 Opslaan Template"
 alignment = 0
 
+[node name="LoadLayoutButton" type="Button" parent="UserInterface/MainButtons"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1197.0
+offset_top = -560.0
+offset_right = -1017.0
+offset_bottom = -528.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "♻️ Laad Template"
+alignment = 0
+
 [node name="SaveToWavButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8
 anchor_left = 0.5
@@ -331,13 +347,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.5
-offset_top = -560.0
+offset_top = -524.0
 offset_right = -1017.5
-offset_bottom = -528.0
+offset_bottom = -492.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "📥 Opslaan naar mp3"
+text = "📥 Beat naar mp3"
 alignment = 0
 
 [node name="AllLayersToMp3" type="Button" parent="UserInterface/MainButtons"]
@@ -347,9 +363,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -524.0
+offset_top = -488.0
 offset_right = -1017.0
-offset_bottom = -492.0
+offset_bottom = -456.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -363,9 +379,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -479.0
+offset_top = -445.0
 offset_right = -1017.0
-offset_bottom = -447.0
+offset_bottom = -413.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -378,9 +394,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -444.0
+offset_top = -410.0
 offset_right = -1111.0
-offset_bottom = -412.0
+offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -393,9 +409,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1106.0
-offset_top = -444.0
+offset_top = -410.0
 offset_right = -1017.0
-offset_bottom = -413.0
+offset_bottom = -379.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -408,9 +424,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -408.0
+offset_top = -374.0
 offset_right = -1110.0
-offset_bottom = -376.0
+offset_bottom = -342.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -423,56 +439,14 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1106.0
-offset_top = -408.0
+offset_top = -374.0
 offset_right = -1016.0
-offset_bottom = -376.0
+offset_bottom = -342.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 text = "Doe 🤖
 "
-
-[node name="ReverbButton" type="Button" parent="UserInterface/MainButtons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1197.0
-offset_top = -362.0
-offset_right = -1017.0
-offset_bottom = -330.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_mode = 0
-text = "🏛️ Galm"
-alignment = 0
-
-[node name="ReverbSprite" type="Sprite2D" parent="UserInterface/MainButtons/ReverbButton"]
-position = Vector2(200, 16)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_1ig4u")
-
-[node name="DelayButton" type="Button" parent="UserInterface/MainButtons"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1197.0
-offset_top = -326.0
-offset_right = -1017.0
-offset_bottom = -294.0
-grow_horizontal = 2
-grow_vertical = 2
-focus_mode = 0
-text = "⛰️ Echo"
-alignment = 0
-
-[node name="DelaySprite" type="Sprite2D" parent="UserInterface/MainButtons/DelayButton"]
-position = Vector2(200, 15)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_1ig4u")
 
 [node name="BpmUpButton" type="Button" parent="UserInterface/MainButtons"]
 anchors_preset = 8
@@ -481,9 +455,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -278.0
+offset_top = -329.0
 offset_right = -1017.0
-offset_bottom = -246.0
+offset_bottom = -297.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -497,9 +471,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -1197.0
-offset_top = -242.0
+offset_top = -293.0
 offset_right = -1017.0
-offset_bottom = -210.0
+offset_bottom = -261.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
@@ -805,7 +779,7 @@ offset_left = 43.0
 offset_top = 1.0
 offset_right = 130.0
 offset_bottom = 24.0
-text = "loop layers"
+text = "liedje modus"
 label_settings = SubResource("LabelSettings_x8qo7")
 vertical_alignment = 1
 
@@ -825,23 +799,56 @@ focus_mode = 0
 text = "Record ⏺️"
 alignment = 2
 
-[node name="SwingLabel" type="Label" parent="UserInterface"]
-offset_left = -550.0
-offset_top = 183.0
-offset_right = -377.0
-offset_bottom = 206.0
-text = "🌀 Swing"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SwingSlider" type="HSlider" parent="UserInterface/SwingLabel"]
-layout_mode = 0
-offset_top = -25.0
-offset_right = 87.0
-offset_bottom = -9.0
+[node name="SwingSlider" type="HSlider" parent="UserInterface"]
+offset_left = -557.0
+offset_top = 179.0
+offset_right = -470.0
+offset_bottom = 195.0
 scale = Vector2(2, 2)
 max_value = 0.4
 step = 0.01
+
+[node name="SwingLabel" type="Label" parent="UserInterface/SwingSlider"]
+offset_left = 90.5
+offset_right = 237.5
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+text = "🌀Swing"
+vertical_alignment = 1
+
+[node name="ReverbSlider" type="HSlider" parent="UserInterface"]
+offset_left = -557.0
+offset_top = 109.0
+offset_right = -470.0
+offset_bottom = 125.0
+scale = Vector2(2, 2)
+max_value = 0.5
+step = 0.01
+
+[node name="Label" type="Label" parent="UserInterface/ReverbSlider"]
+offset_left = 90.5
+offset_right = 237.5
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+text = "🏛️ Galm"
+vertical_alignment = 1
+
+[node name="DelaySlider" type="HSlider" parent="UserInterface"]
+offset_left = -557.0
+offset_top = 144.0
+offset_right = -470.0
+offset_bottom = 160.0
+scale = Vector2(2, 2)
+max_value = 0.5
+step = 0.01
+
+[node name="Label" type="Label" parent="UserInterface/DelaySlider"]
+offset_left = 90.5
+offset_right = 237.5
+offset_bottom = 32.0
+scale = Vector2(0.5, 0.5)
+text = "⛰️ Echo"
+vertical_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="UserInterface"]
 anchors_preset = 8
@@ -878,9 +885,9 @@ vertical_alignment = 1
 
 [node name="BpmLabel" type="Label" parent="UserInterface"]
 offset_left = -355.0
-offset_top = 83.0
+offset_top = 32.0
 offset_right = -310.0
-offset_bottom = 150.0
+offset_bottom = 99.0
 text = "bpm"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -928,7 +935,7 @@ offset = Vector2(-0.5, -1)
 
 [node name="metronome" type="Sprite2D" parent="UserInterface"]
 z_index = -1
-position = Vector2(-366.89, 116)
+position = Vector2(-366.89, 65)
 scale = Vector2(4, 62)
 texture = SubResource("CanvasTexture_6dn85")
 
@@ -1008,7 +1015,7 @@ emission_shape = 2
 emission_sphere_radius = 16.0
 direction = Vector2(0, 0)
 spread = 90.0
-gravity = Vector2(0, 200)
+gravity = Vector2(0, 100)
 initial_velocity_min = 67.42
 initial_velocity_max = 67.42
 angular_velocity_max = 8.8
@@ -1058,3 +1065,16 @@ angular_velocity_max = 8.8
 angle_min = 45.0
 angle_max = 90.0
 hue_variation_max = 0.55
+
+[node name="SavingLabel" type="Label" parent="."]
+visible = false
+offset_left = -116.0
+offset_top = -355.0
+offset_right = 110.0
+offset_bottom = -282.0
+theme_override_colors/font_color = Color(0.588235, 1, 0.603922, 1)
+theme_override_font_sizes/font_size = 18
+text = "Opgeslagen naar:
+\"muziekbestand.mp3\""
+horizontal_alignment = 1
+vertical_alignment = 1

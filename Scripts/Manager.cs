@@ -107,6 +107,7 @@ public partial class Manager : Node
 
     // left buttons
     [Export] Button SaveLayoutButton;
+    [Export] Button LoadLayoutButton;
     [Export] Button ClearLayoutButton;
     [Export] Button RecordButton;
     [Export] Button PlayPauseButton;
@@ -153,6 +154,9 @@ public partial class Manager : Node
     [Export] Slider ClapBiasSlider;
     [Export] Panel achievementspanel;
     [Export] CheckButton layerLoopToggle;
+    [Export] Label SavingLabel;
+    bool savingLabelActive = false;
+    float savingLabelTimer = 0;
 
     // clapping and stomping
     bool stomped = false;
@@ -171,11 +175,20 @@ public partial class Manager : Node
     bool savedToLaout = false;
 
     // on button functions
+    bool[,] savedTemplate = new bool[4, 32];
+
     public void OnSaveLayoutButton()
     {
-        TemplateManager.instance.CreateNewTemplate("custom", beatActives);
+        GD.Print("save");
+        savedTemplate = (bool[,])beatActives.Clone();
         savedToLaout = true;
     }
+    public void OnLoadLayoutButton()
+    {
+        GD.Print("load");
+        beatActives = (bool[,])savedTemplate.Clone();
+    }
+
     public void OnClearLayoutButton()
     {
         beatActives = new bool[4, 32];
@@ -194,6 +207,13 @@ public partial class Manager : Node
         haschangedbpm = true;
     }
     public void OnResetPlayerButton() => currentBeat = 31;
+
+    public void ShowSavingLabel(string name)
+    {
+        savingLabelActive = true;
+        savingLabelTimer = 0;
+        SavingLabel.Text = "Opgeslagen naar:" + "\n" + name;
+    }
 
     private void PlayExtraSFX(AudioStream audioStream)
     {
@@ -316,7 +336,7 @@ public partial class Manager : Node
         string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "_");
         string filename = (loops.Count == 1 ? "beat_" : "liedje_") + bpm.ToString() + "bpm_" + sanitizedTime;
 
-        int sampleRate = 44100;
+        int sampleRate = 48000;
         float secondsPerBeat = (60f / bpm) / 2;
         int beatsPerLoop = 32; // Assuming each loop has 32 beats
         int totalBeats = beatsPerLoop * loops.Count;
@@ -384,6 +404,7 @@ public partial class Manager : Node
         ConvertWavToMp3(filename);
         GD.Print("Drum loops converted to MP3 successfully!");
         hassavedtofile = true;
+        ShowSavingLabel(filename);
     }
 
     // --------------------------------
@@ -426,6 +447,8 @@ public partial class Manager : Node
        
 
         SaveLayoutButton.Pressed += OnSaveLayoutButton;
+        LoadLayoutButton.Pressed += OnLoadLayoutButton;
+
         ClearLayoutButton.Pressed += OnClearLayoutButton;
         RecordButton.Pressed += OnRecordButton;
         PlayPauseButton.Pressed += OnPlayPauseButton;
@@ -535,7 +558,7 @@ public partial class Manager : Node
 
             // effects
             () => haschangedbpm,
-            () => ReverbDelayManager.instance?.currentReverbLevel != 0 || ReverbDelayManager.instance?.currentDelayLevel != 0,
+            () => ReverbDelayManager.instance?.reverbSlider.Value != 0 || ReverbDelayManager.instance?.delaySlider.Value != 0,
             () => swing > 0.1f,
 
             // saving
@@ -683,6 +706,7 @@ public partial class Manager : Node
     void SetMainButtonsVisibility(bool visible)
     {
         SaveLayoutButton.Visible = visible;
+        LoadLayoutButton.Visible = visible;
         ClearLayoutButton.Visible = visible;
         ResetPlayerButton.Visible = visible;
         saveToWavButton.Visible = visible;
@@ -698,8 +722,8 @@ public partial class Manager : Node
         swinglabel.Visible = visible;
         metronome.Visible = visible;
         metronomebg.Visible = visible;
-        ReverbDelayManager.instance.reverbButton.Visible = visible;
-        ReverbDelayManager.instance.delayButton.Visible = visible;
+        ReverbDelayManager.instance.reverbSlider.Visible = visible;
+        ReverbDelayManager.instance.delaySlider.Visible = visible;
     }
 
     void SetTemplateButtonsVisibility(bool visible)
@@ -773,6 +797,15 @@ public partial class Manager : Node
             latereadydone = true;
         }
 
+        // saving label
+        if (savingLabelActive && savingLabelTimer < 4)
+        {
+            savingLabelTimer += (float)delta;
+        }
+        else savingLabelActive = false;
+
+        SavingLabel.Visible = savingLabelActive;
+
         // switch layer buttons
         layerButton1.Modulate = new Color(1, 1, 1, 1);
         layerButton2.Modulate = new Color(1, 1, 1, 1);
@@ -784,16 +817,16 @@ public partial class Manager : Node
         layerButton8.Modulate = new Color(1, 1, 1, 1);
         layerButton9.Modulate = new Color(1, 1, 1, 1);
         layerButton10.Modulate = new Color(1, 1, 1, 1);
-        if (!LayerHasBeats(layers[0])) layerButton1.Modulate = layerButton1.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[1])) layerButton2.Modulate = layerButton2.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[2])) layerButton3.Modulate = layerButton3.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[3])) layerButton4.Modulate = layerButton4.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[4])) layerButton5.Modulate = layerButton5.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[5])) layerButton6.Modulate = layerButton6.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[6])) layerButton7.Modulate = layerButton7.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[7])) layerButton8.Modulate = layerButton8.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[8])) layerButton9.Modulate = layerButton9.Modulate.Darkened(0.3f);
-        if (!LayerHasBeats(layers[9])) layerButton10.Modulate = layerButton10.Modulate.Darkened(0.3f);
+        if (!LayerHasBeats(layers[0])) layerButton1.Modulate = layerButton1.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[1])) layerButton2.Modulate = layerButton2.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[2])) layerButton3.Modulate = layerButton3.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[3])) layerButton4.Modulate = layerButton4.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[4])) layerButton5.Modulate = layerButton5.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[5])) layerButton6.Modulate = layerButton6.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[6])) layerButton7.Modulate = layerButton7.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[7])) layerButton8.Modulate = layerButton8.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[8])) layerButton9.Modulate = layerButton9.Modulate.Darkened(0.5f);
+        if (!LayerHasBeats(layers[9])) layerButton10.Modulate = layerButton10.Modulate.Darkened(0.5f);
 
 
         // update robot light
@@ -1119,7 +1152,7 @@ public partial class Manager : Node
         clapped = false;
         stomped = false;
 
-        if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 10;
+        if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 5;
 
         // if layer looping
         if (layerLoopToggle.ButtonPressed) if (currentBeat == 31) NextLayer();
