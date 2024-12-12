@@ -633,8 +633,8 @@ public partial class Manager : Node
 
 			// effects
 			"We gaan de beat sneller maken. Druk op 'Sneller' 🐇 om de beat het sneller te maken",
-			"Druk op de Chalm 🏛 of de Echo ⛰ knop. voor speciale echo's",
-			"Tijd voor wat swing 🌀 in de beat. sleep het swing balkje naar rechts.",
+			"Druk op de Galm 🏛 of de Echo ⛰ knop. voor speciale echo's",
+			"Tijd voor wat Swing 🌀 in de beat. sleep het swing balkje naar rechts.",
 
             // saving
 			"Je hebt echt een super beat gemaakt! Druk nu op de 📥 knop om je beat naar een muziek bestand te saven.",
