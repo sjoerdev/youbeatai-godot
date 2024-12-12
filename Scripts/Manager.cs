@@ -338,7 +338,7 @@ public partial class Manager : Node
         string filename = (loops.Count == 1 ? "beat_" : "liedje_") + bpm.ToString() + "bpm_" + sanitizedTime;
 
         int sampleRate = 48000;
-        float secondsPerBeat = (60f / bpm) / 2;
+        float secondsPerBeat = 60f / bpm;
         int beatsPerLoop = 32;
         int totalBeats = beatsPerLoop * loops.Count;
         int totalSamples = (int)(totalBeats * secondsPerBeat * sampleRate);
@@ -389,7 +389,7 @@ public partial class Manager : Node
             writer.Close();
         }
 
-        // ChangePitch(filename + ".wav", 2f);
+        ChangePitch(filename + ".wav", 2f);
 
         // convert to mp3
         ConvertWavToMp3(filename);
