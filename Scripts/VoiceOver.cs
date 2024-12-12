@@ -69,11 +69,15 @@ public partial class VoiceOver : Node
 
 	public void OnTop()
 	{
-		// make sure to stop or start recording when at top
-		if (Manager.instance.currentBeat == 0)
+		if (audioPlayer.Playing) audioPlayer.Stop();
+
+		if (shouldRecord && !recording) StartRecording();
+		else if (recording) StopRecording();
+
+		if (!recording)
 		{
-			if (shouldRecord && !recording) StartRecording();
-			else if (recording) StopRecording();
+			audioPlayer.Stream = GetCurrentLayerVoiceOver();
+			audioPlayer.Play();
 		}
 	}
 
