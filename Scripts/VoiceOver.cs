@@ -9,6 +9,9 @@ public partial class VoiceOver : Node
 	[Export] Button recordButton;
 	bool shouldRecord = false;
 
+	[Export] Button snellerButton;
+	[Export] Button langzamerButton;
+
 	[Export] TextureProgressBar textureProgressBar;
 
     AudioEffectRecord audioEffectRecord;
@@ -43,6 +46,10 @@ public partial class VoiceOver : Node
 	{
 		// set color of record button
 		recordButton.Modulate = shouldRecord ? new(1, 0.5f, 0.5f) : new(1, 1, 1);
+
+		// disable bpm buttons during recording
+		snellerButton.Disabled = recording;
+		langzamerButton.Disabled = recording;
 
 		// update recording timer
 		if (recording) recordingTimer += (float)delta;
@@ -82,6 +89,7 @@ public partial class VoiceOver : Node
         audioEffectRecord.SetRecordingActive(false);
 		GD.Print("recording stopped");
 		recording = false;
+		shouldRecord = false;
 		SetCurrentLayerVoiceOver(audioEffectRecord.GetRecording());
     }
 }

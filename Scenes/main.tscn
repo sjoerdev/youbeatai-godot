@@ -161,9 +161,11 @@ delaySlider = NodePath("../../UserInterface/DelaySlider")
 [node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
 
-[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("recordButton", "textureProgressBar")]
+[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("recordButton", "snellerButton", "langzamerButton", "textureProgressBar")]
 script = ExtResource("15_rr357")
 recordButton = NodePath("../../UserInterface/RecordButton")
+snellerButton = NodePath("../../UserInterface/MainButtons/BpmUpButton")
+langzamerButton = NodePath("../../UserInterface/MainButtons/BpmDownButton")
 textureProgressBar = NodePath("TextureProgressBar")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Managers/VoiceOver"]
