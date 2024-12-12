@@ -3,11 +3,20 @@ using System;
 
 public partial class VoiceOver : Node
 {
+	[Export] TextureProgressBar textureProgressBar;
+
     AudioEffectRecord audioEffectRecord;
 	AudioStreamPlayer2D audioPlayer;
-	AudioStream currentVoiceOver = null;
 	bool recording = false;
-	
+	float recordingTimer = 0;
+
+	AudioStream[] voiceOvers = new AudioStream[10];
+
+	int currentLayer => Manager.instance.currentLayerIndex;
+
+	public void SetCurrentLayerVoiceOver(AudioStream voiceOver) => voiceOvers[currentLayer] = voiceOver;
+	public AudioStream GetCurrentLayerVoiceOver() => voiceOvers[currentLayer];
+
 	public override void _Ready()
     {
 		// create audioplayer
@@ -20,9 +29,18 @@ public partial class VoiceOver : Node
 
     public override void _Process(double delta)
 	{
+		// update recording timer
+		if (recording) recordingTimer += (float)delta;
+		else recordingTimer = 0;
+
+
 		// debug record keys
 		if (Input.IsKeyPressed(Key.Left) && !recording) StartRecording();
-		if (Input.IsKeyPressed(Key.Right) && recording) StopRecording();
+		if (Input.IsKeyPressed(Key.Right) && recording) SetCurrentLayerVoiceOver(StopRecording());
+
+		// set progress bar value
+		if (recording) textureProgressBar.Value = recordingTimer;
+		else if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength();
 	}
 
     private void StartRecording()

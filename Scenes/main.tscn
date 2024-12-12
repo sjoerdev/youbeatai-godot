@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=41 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://b5gky5aods412" path="res://Resources/Textures/rawmic.png" id="15_5hbpj"]
 [ext_resource type="Script" path="res://Scripts/VoiceOver.cs" id="15_rr357"]
 [ext_resource type="Script" path="res://Scripts/RecordSampleButton.cs" id="16_ngh84"]
+[ext_resource type="Texture2D" uid="uid://cxs76icuutmpb" path="res://Resources/Textures/default.png" id="16_tr3l4"]
 [ext_resource type="Texture2D" uid="uid://b80lrad4guock" path="res://Resources/Textures/star.png" id="20_tvghb"]
 [ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
 [ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
@@ -161,8 +162,22 @@ delaySlider = NodePath("../../UserInterface/DelaySlider")
 [node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
 
-[node name="VoiceOver" type="Node" parent="Managers"]
+[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("textureProgressBar")]
 script = ExtResource("15_rr357")
+textureProgressBar = NodePath("TextureProgressBar")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Managers/VoiceOver"]
+modulate = Color(0.47, 0.7615, 1, 1)
+offset_left = -266.0
+offset_top = -266.0
+offset_right = 266.0
+offset_bottom = 266.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 32.0
+step = 0.5
+fill_mode = 4
+texture_progress = ExtResource("16_tr3l4")
 
 [node name="UserInterface" type="Node" parent="."]
 
