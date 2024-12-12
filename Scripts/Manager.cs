@@ -5,6 +5,7 @@ using System.IO;
 using NAudio.Wave;
 using NAudio.Lame;
 using System.Collections.Generic;
+using NAudio.Wave.SampleProviders;
 
 public partial class Manager : Node
 {
@@ -338,12 +339,12 @@ public partial class Manager : Node
 
         int sampleRate = 48000;
         float secondsPerBeat = (60f / bpm) / 2;
-        int beatsPerLoop = 32; // Assuming each loop has 32 beats
+        int beatsPerLoop = 32;
         int totalBeats = beatsPerLoop * loops.Count;
         int totalSamples = (int)(totalBeats * secondsPerBeat * sampleRate);
         float[] audioData = new float[totalSamples];
 
-        // Process each loop
+        // process each loop
         for (int loopIndex = 0; loopIndex < loops.Count; loopIndex++)
         {
             bool[,] currentLoop = loops[loopIndex];
@@ -356,40 +357,26 @@ public partial class Manager : Node
                     {
                         AudioStreamWav audioStreamWav = (AudioStreamWav)audioFilesToUse[ring];
 
-                        int dataSampleRate = audioStreamWav.GetMixRate();
-                        if (dataSampleRate != sampleRate)
-                        {
-                            GD.Print("Sample rates don't match");
-                            // Handle sample rate mismatch if necessary
-                        }
-
                         var audioByteData = audioStreamWav.GetData();
                         float[] sampleData = new float[audioByteData.Length / 2];
-                        for (int i = 0; i < sampleData.Length; i++) 
-                            sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
+                        for (int i = 0; i < sampleData.Length; i++) sampleData[i] = (short)((audioByteData[i * 2 + 1] << 8) | (audioByteData[i * 2] & 0xFF)) / (float)short.MaxValue;
 
                         for (int sampleIndex = 0; sampleIndex < sampleData.Length; sampleIndex++)
                         {
                             int samplePos = (int)((loopIndex * beatsPerLoop + beat) * secondsPerBeat * sampleRate) + sampleIndex;
-                            if (samplePos < totalSamples) 
-                                audioData[samplePos] += sampleData[sampleIndex];
+                            if (samplePos < totalSamples) audioData[samplePos] += sampleData[sampleIndex];
                         }
                     }
                 }
             }
         }
 
-        // Normalize audio
+        // normalize
         float maxAmplitude = 0;
-        foreach (var sample in audioData) 
-            if (Math.Abs(sample) > maxAmplitude) 
-                maxAmplitude = Math.Abs(sample);
+        foreach (var sample in audioData) if (Math.Abs(sample) > maxAmplitude) maxAmplitude = Math.Abs(sample);
+        if (maxAmplitude > 1.0f) for (int i = 0; i < audioData.Length; i++) audioData[i] /= maxAmplitude;
 
-        if (maxAmplitude > 1.0f) 
-            for (int i = 0; i < audioData.Length; i++) 
-                audioData[i] /= maxAmplitude;
-
-        // Write wave file
+        // write file
         using (var writer = new WaveFileWriter(filename + ".wav", new WaveFormat(sampleRate, 1)))
         {
             foreach (var sample in audioData)
@@ -400,11 +387,53 @@ public partial class Manager : Node
             writer.Close();
         }
 
-        GD.Print("Drum loops saved as WAV successfully!");
+        // change pitch
+        // ChangePitch(filename + ".wav", 2f);
+
+        // convert to mp3
         ConvertWavToMp3(filename);
-        GD.Print("Drum loops converted to MP3 successfully!");
-        hassavedtofile = true;
+
+        // set finish flags
         ShowSavingLabel(filename);
+        hassavedtofile = true;
+    }
+
+    public void ChangePitch(string filePath, float pitchFactor)
+    {
+        List<float> outputBuffer = new List<float>();
+        WaveFormat waveFormat;
+
+        // read and process
+        using (var reader = new AudioFileReader(filePath))
+        {
+            waveFormat = reader.WaveFormat;
+            var sampleRate = waveFormat.SampleRate;
+            var channels = waveFormat.Channels;
+
+            var buffer = new float[sampleRate * channels];
+            int bytesRead;
+
+            while ((bytesRead = reader.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                int newSampleCount = (int)(bytesRead / pitchFactor);
+                var resampled = new float[newSampleCount];
+
+                for (int i = 0; i < newSampleCount; i++)
+                {
+                    float sourceIndex = i * pitchFactor;
+                    int index = (int)sourceIndex;
+                    float frac = sourceIndex - index;
+
+                    if (index + 1 < bytesRead) resampled[i] = buffer[index] * (1 - frac) + buffer[index + 1] * frac;
+                    else resampled[i] = buffer[index];
+                }
+
+                outputBuffer.AddRange(resampled);
+            }
+        }
+
+        // overwrite
+        using (var writer = new WaveFileWriter(filePath, waveFormat)) writer.WriteSamples(outputBuffer.ToArray(), 0, outputBuffer.Count);
     }
 
     // --------------------------------
