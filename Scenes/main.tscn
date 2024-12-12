@@ -73,7 +73,7 @@ current = true
 
 [node name="Managers" type="Node" parent="."]
 
-[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "LoadLayoutButton", "ClearLayoutButton", "RecordButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "layerLoopToggle", "SavingLabel", "InstructionLabel", "robot", "allLayersToMp3", "layerOutline")]
+[node name="Manager" type="Node" parent="Managers" node_paths=PackedStringArray("saveToWavButton", "beat_particles", "pbar_particles", "achievement_particles", "layerButton1", "layerButton2", "layerButton3", "layerButton4", "layerButton5", "layerButton6", "layerButton7", "layerButton8", "layerButton9", "layerButton10", "robotlight", "SaveLayoutButton", "LoadLayoutButton", "ClearLayoutButton", "PlayPauseButton", "ResetPlayerButton", "BpmUpButton", "BpmDownButton", "draganddropButton0", "draganddropButton1", "draganddropButton2", "draganddropButton3", "recordSampleButton0", "recordSampleButton1", "recordSampleButton2", "recordSampleButton3", "recordSampleCheckButton0", "recordSampleCheckButton1", "recordSampleCheckButton2", "recordSampleCheckButton3", "metronome_toggle", "micmeter", "add_beats", "volume_treshold", "skiptutorialbutton", "progressBar", "pointer", "metronome", "metronomebg", "bpmLabel", "draganddropthing", "swingslider", "swinglabel", "settingsButton", "settingsPanel", "ClapBiasSlider", "achievementspanel", "layerLoopToggle", "SavingLabel", "InstructionLabel", "robot", "allLayersToMp3", "layerOutline")]
 script = ExtResource("1_rfd7i")
 metronome_sfx = ExtResource("2_c85ny")
 achievement_sfx = ExtResource("3_p4kny")
@@ -101,7 +101,6 @@ outline = ExtResource("8_llrl4")
 SaveLayoutButton = NodePath("../../UserInterface/MainButtons/SaveLayoutButton")
 LoadLayoutButton = NodePath("../../UserInterface/MainButtons/LoadLayoutButton")
 ClearLayoutButton = NodePath("../../UserInterface/MainButtons/ClearLayoutButton")
-RecordButton = NodePath("../../UserInterface/RecordButton")
 PlayPauseButton = NodePath("../../UserInterface/MainButtons/PlayPauseButton")
 ResetPlayerButton = NodePath("../../UserInterface/MainButtons/ResetPlayerButton")
 BpmUpButton = NodePath("../../UserInterface/MainButtons/BpmUpButton")
@@ -162,8 +161,9 @@ delaySlider = NodePath("../../UserInterface/DelaySlider")
 [node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
 
-[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("textureProgressBar")]
+[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("recordButton", "textureProgressBar")]
 script = ExtResource("15_rr357")
+recordButton = NodePath("../../UserInterface/RecordButton")
 textureProgressBar = NodePath("TextureProgressBar")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Managers/VoiceOver"]
@@ -180,6 +180,22 @@ fill_mode = 4
 texture_progress = ExtResource("16_tr3l4")
 
 [node name="UserInterface" type="Node" parent="."]
+
+[node name="RecordButton" type="Button" parent="UserInterface"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -730.0
+offset_top = -50.0
+offset_right = -550.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+text = "🎥 Record"
+alignment = 0
 
 [node name="SwitchLayerButtons" type="Node" parent="UserInterface"]
 
@@ -802,16 +818,16 @@ text = "liedje modus"
 label_settings = SubResource("LabelSettings_x8qo7")
 vertical_alignment = 1
 
-[node name="RecordButton" type="Button" parent="UserInterface"]
+[node name="RecordButton_old" type="Button" parent="UserInterface"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -805.0
-offset_top = -884.0
-offset_right = -662.0
-offset_bottom = -852.0
+offset_left = -2290.0
+offset_top = -5600.0
+offset_right = -2147.0
+offset_bottom = -5568.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0

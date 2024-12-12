@@ -3,6 +3,12 @@ using System;
 
 public partial class VoiceOver : Node
 {
+	// singleton
+    public static VoiceOver instance = null;
+
+	[Export] Button recordButton;
+	bool shouldRecord = false;
+
 	[Export] TextureProgressBar textureProgressBar;
 
     AudioEffectRecord audioEffectRecord;
@@ -19,6 +25,12 @@ public partial class VoiceOver : Node
 
 	public override void _Ready()
     {
+		// init singleton
+        instance ??= this;
+
+		// init record button
+		recordButton.Pressed += () => shouldRecord = !shouldRecord;
+
 		// create audioplayer
 		audioPlayer = new AudioStreamPlayer2D();
 		AddChild(audioPlayer);
@@ -29,18 +41,33 @@ public partial class VoiceOver : Node
 
     public override void _Process(double delta)
 	{
+		// set color of record button
+		recordButton.Modulate = shouldRecord ? new(1, 0.5f, 0.5f) : new(1, 1, 1);
+
 		// update recording timer
 		if (recording) recordingTimer += (float)delta;
 		else recordingTimer = 0;
 
-
 		// debug record keys
 		if (Input.IsKeyPressed(Key.Left) && !recording) StartRecording();
-		if (Input.IsKeyPressed(Key.Right) && recording) SetCurrentLayerVoiceOver(StopRecording());
+		if (Input.IsKeyPressed(Key.Right) && recording) StopRecording();
 
 		// set progress bar value
-		if (recording) textureProgressBar.Value = recordingTimer;
-		else if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength();
+		float secondsPerBeat = (60f / Manager.instance.bpm) / 2;
+		float secondsPerRotation = secondsPerBeat * 32;
+		float bpmfactor = 32 / secondsPerRotation;
+		if (recording) textureProgressBar.Value = recordingTimer * bpmfactor;
+		else if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = GetCurrentLayerVoiceOver().GetLength() * bpmfactor;
+	}
+
+	public void OnTop()
+	{
+		// make sure to stop or start recording when at top
+		if (Manager.instance.currentBeat == 0)
+		{
+			if (shouldRecord && !recording) StartRecording();
+			else if (recording) StopRecording();
+		}
 	}
 
     private void StartRecording()
@@ -50,11 +77,11 @@ public partial class VoiceOver : Node
 		GD.Print("recording started");
     }
 
-    private AudioStream StopRecording()
+    private void StopRecording()
     {
         audioEffectRecord.SetRecordingActive(false);
 		GD.Print("recording stopped");
 		recording = false;
-		return audioEffectRecord.GetRecording();
+		SetCurrentLayerVoiceOver(audioEffectRecord.GetRecording());
     }
 }

@@ -110,7 +110,6 @@ public partial class Manager : Node
     [Export] Button SaveLayoutButton;
     [Export] Button LoadLayoutButton;
     [Export] Button ClearLayoutButton;
-    [Export] Button RecordButton;
     [Export] Button PlayPauseButton;
     [Export] Button ResetPlayerButton;
     [Export] Button BpmUpButton;
@@ -480,7 +479,6 @@ public partial class Manager : Node
         LoadLayoutButton.Pressed += OnLoadLayoutButton;
 
         ClearLayoutButton.Pressed += OnClearLayoutButton;
-        RecordButton.Pressed += OnRecordButton;
         PlayPauseButton.Pressed += OnPlayPauseButton;
         BpmUpButton.Pressed += OnBpmUpButton;
         BpmDownButton.Pressed += OnBpmDownButton;
@@ -703,9 +701,6 @@ public partial class Manager : Node
 
         // effect buttons
         SetEffectButtonsVisibility(visible);
-
-        // idk
-        RecordButton.Visible = visible;
 
         // template buttons
         SetTemplateButtonsVisibility(visible);
@@ -1186,6 +1181,8 @@ public partial class Manager : Node
 
         // if layer looping
         if (layerLoopToggle.ButtonPressed) if (currentBeat == 31) NextLayer();
+
+        if (currentBeat == 0) VoiceOver.instance.OnTop();
     }
 
     private Sprite2D CreateOutline(int beat, int ring)
