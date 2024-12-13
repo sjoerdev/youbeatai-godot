@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://c78m8ijn10kwh"]
+[gd_scene load_steps=42 format=3 uid="uid://c78m8ijn10kwh"]
 
 [ext_resource type="Script" path="res://Scripts/Manager.cs" id="1_rfd7i"]
 [ext_resource type="PackedScene" uid="uid://cqsvcw13b83yp" path="res://Scenes/beat.tscn" id="2_1eep1"]
@@ -18,14 +18,27 @@
 [ext_resource type="Script" path="res://Scripts/MidiManager.cs" id="11_iqwjw"]
 [ext_resource type="Script" path="res://Scripts/DragAndDropButton.cs" id="14_4mig3"]
 [ext_resource type="Texture2D" uid="uid://b5gky5aods412" path="res://Resources/Textures/rawmic.png" id="15_5hbpj"]
-[ext_resource type="Script" path="res://Scripts/VoiceOver.cs" id="15_rr357"]
 [ext_resource type="Script" path="res://Scripts/RecordSampleButton.cs" id="16_ngh84"]
-[ext_resource type="Texture2D" uid="uid://cxs76icuutmpb" path="res://Resources/Textures/default.png" id="16_tr3l4"]
+[ext_resource type="Script" path="res://Scripts/SongVoiceOver.cs" id="17_l7jd2"]
 [ext_resource type="Texture2D" uid="uid://b80lrad4guock" path="res://Resources/Textures/star.png" id="20_tvghb"]
 [ext_resource type="Texture2D" uid="uid://fgq18msakepv" path="res://Resources/Textures/robot.png" id="21_qncea"]
 [ext_resource type="Texture2D" uid="uid://c8ur7csxddwk8" path="res://Resources/Textures/brush.png" id="22_sb4d6"]
 [ext_resource type="Texture2D" uid="uid://cr4v0wkvt72mj" path="res://Resources/Textures/grijs.png" id="22_wax6p"]
 [ext_resource type="Texture2D" uid="uid://cx0bpjp8y6sel" path="res://Resources/Textures/square-outline.png" id="23_vsgbq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xng46"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_acarb"]
+bg_color = Color(0.18, 0.18, 0.18, 0.913725)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y8yhq"]
 
@@ -161,137 +174,149 @@ delaySlider = NodePath("../../UserInterface/DelaySlider")
 [node name="MidiManager" type="Node" parent="Managers"]
 script = ExtResource("11_iqwjw")
 
-[node name="VoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("recordButton", "snellerButton", "langzamerButton", "textureProgressBar")]
-script = ExtResource("15_rr357")
-recordButton = NodePath("../../UserInterface/RecordButton")
+[node name="SongVoiceOver" type="Node" parent="Managers" node_paths=PackedStringArray("progressbar", "recordButton", "snellerButton", "langzamerButton")]
+script = ExtResource("17_l7jd2")
+progressbar = NodePath("SongVoiceOverProgressBar")
+recordButton = NodePath("../../UserInterface/RecordSongButton")
 snellerButton = NodePath("../../UserInterface/MainButtons/BpmUpButton")
 langzamerButton = NodePath("../../UserInterface/MainButtons/BpmDownButton")
-textureProgressBar = NodePath("TextureProgressBar")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Managers/VoiceOver"]
-modulate = Color(0.47, 0.7615, 1, 1)
-offset_left = -266.0
-offset_top = -266.0
-offset_right = 266.0
-offset_bottom = 266.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-max_value = 32.0
-step = 0.5
-fill_mode = 4
-texture_progress = ExtResource("16_tr3l4")
-
-[node name="UserInterface" type="Node" parent="."]
-
-[node name="RecordButton" type="Button" parent="UserInterface"]
+[node name="SongVoiceOverProgressBar" type="ProgressBar" parent="Managers/SongVoiceOver"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -730.0
-offset_top = -50.0
-offset_right = -550.0
-offset_bottom = -18.0
+offset_left = -1273.0
+offset_top = -714.0
+offset_right = -1255.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_styles/background = ExtResource("9_nnqde")
+theme_override_styles/fill = ExtResource("10_t1q83")
+max_value = 1.0
+fill_mode = 3
+show_percentage = false
+
+[node name="UserInterface" type="Node" parent="."]
+
+[node name="RecordSongButton" type="Button" parent="UserInterface"]
+z_index = 40
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -680.0
+offset_top = -400.0
+offset_right = -600.0
+offset_bottom = -320.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-text = "🎥 Record"
-alignment = 0
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xng46")
+theme_override_styles/hover = SubResource("StyleBoxFlat_acarb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xng46")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xng46")
+text = "Record"
 
 [node name="SwitchLayerButtons" type="Node" parent="UserInterface"]
 
 [node name="Layer1" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = 285.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = 349.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🌱"
 
 [node name="Layer2" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = 213.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = 277.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "📜"
 
 [node name="Layer3" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = 142.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = 206.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "📜"
 
 [node name="Layer4" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = 71.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = 135.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🤩"
 
 [node name="Layer5" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
-offset_right = -568.0
+offset_left = -606.0
+offset_right = -542.0
 offset_bottom = 64.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🤩"
 
 [node name="Layer6" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = -71.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = -7.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "📜"
 
 [node name="Layer7" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = -142.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = -78.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "📜"
 
 [node name="Layer8" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = -213.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = -149.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🤩"
 
 [node name="Layer9" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = -284.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = -220.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🤩"
 
 [node name="Layer10" type="Button" parent="UserInterface/SwitchLayerButtons"]
-offset_left = -632.0
+offset_left = -606.0
 offset_top = -355.0
-offset_right = -568.0
+offset_right = -542.0
 offset_bottom = -291.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
 text = "🏁"
 
 [node name="Outline" type="Sprite2D" parent="UserInterface/SwitchLayerButtons"]
-position = Vector2(-600, 317)
+position = Vector2(-574, 317)
 scale = Vector2(2.25, 2.25)
 texture = ExtResource("23_vsgbq")
 
@@ -303,9 +328,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -714.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -682.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -319,9 +344,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1198.0
+offset_left = -1172.0
 offset_top = -678.0
-offset_right = -1018.0
+offset_right = -992.0
 offset_bottom = -646.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -335,9 +360,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1199.0
+offset_left = -1173.0
 offset_top = -632.0
-offset_right = -1019.0
+offset_right = -993.0
 offset_bottom = -600.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -351,9 +376,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -596.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -564.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -367,9 +392,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -560.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -528.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -383,9 +408,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.5
+offset_left = -1171.5
 offset_top = -524.0
-offset_right = -1017.5
+offset_right = -991.5
 offset_bottom = -492.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -399,9 +424,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -488.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -456.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -415,9 +440,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -445.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -413.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -430,9 +455,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -410.0
-offset_right = -1111.0
+offset_right = -1085.0
 offset_bottom = -378.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -445,9 +470,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1106.0
+offset_left = -1080.0
 offset_top = -410.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -379.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -460,9 +485,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -374.0
-offset_right = -1110.0
+offset_right = -1084.0
 offset_bottom = -342.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -475,9 +500,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1106.0
+offset_left = -1080.0
 offset_top = -374.0
-offset_right = -1016.0
+offset_right = -990.0
 offset_bottom = -342.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -491,9 +516,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -329.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -297.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -507,9 +532,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -1197.0
+offset_left = -1171.0
 offset_top = -293.0
-offset_right = -1017.0
+offset_right = -991.0
 offset_bottom = -261.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -521,7 +546,7 @@ alignment = 0
 
 [node name="DragAndDropButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-525, 323)
+position = Vector2(-499, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -537,7 +562,7 @@ vertical_alignment = 1
 
 [node name="DragAndDropButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-450, 323)
+position = Vector2(-424, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -554,7 +579,7 @@ vertical_alignment = 1
 
 [node name="DragAndDropButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-375, 323)
+position = Vector2(-349, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
@@ -562,64 +587,64 @@ ring = 2
 
 [node name="DragAndDropButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
 z_index = -4
-position = Vector2(-300, 323)
+position = Vector2(-274, 323)
 scale = Vector2(2, 2)
 texture = ExtResource("2_1ig4u")
 script = ExtResource("14_4mig3")
 ring = 3
 
 [node name="SampleRecordingButton0" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-525, 267)
+position = Vector2(-499, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 
 [node name="SampleRecordingButton1" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-451, 267)
+position = Vector2(-425, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 ring = 1
 
 [node name="SampleRecordingButton2" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-376, 267)
+position = Vector2(-350, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 ring = 2
 
 [node name="SampleRecordingButton3" type="Sprite2D" parent="UserInterface/SampleButtons"]
-position = Vector2(-300, 267)
+position = Vector2(-274, 267)
 scale = Vector2(0.75, 0.78)
 texture = ExtResource("15_5hbpj")
 script = ExtResource("16_ngh84")
 ring = 3
 
 [node name="UseSampleCheckButton0" type="CheckButton" parent="UserInterface/SampleButtons"]
-offset_left = -550.0
+offset_left = -524.0
 offset_top = 221.0
-offset_right = -506.0
+offset_right = -480.0
 offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton1" type="CheckButton" parent="UserInterface/SampleButtons"]
-offset_left = -475.0
+offset_left = -449.0
 offset_top = 221.0
-offset_right = -431.0
+offset_right = -405.0
 offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton2" type="CheckButton" parent="UserInterface/SampleButtons"]
-offset_left = -400.0
+offset_left = -374.0
 offset_top = 221.0
-offset_right = -356.0
+offset_right = -330.0
 offset_bottom = 245.0
 focus_mode = 0
 
 [node name="UseSampleCheckButton3" type="CheckButton" parent="UserInterface/SampleButtons"]
-offset_left = -325.0
+offset_left = -299.0
 offset_top = 221.0
-offset_right = -281.0
+offset_right = -255.0
 offset_bottom = 245.0
 focus_mode = 0
 
@@ -837,9 +862,9 @@ text = "Record ⏺️"
 alignment = 2
 
 [node name="SwingSlider" type="HSlider" parent="UserInterface"]
-offset_left = -557.0
+offset_left = -531.0
 offset_top = 179.0
-offset_right = -470.0
+offset_right = -444.0
 offset_bottom = 195.0
 scale = Vector2(2, 2)
 max_value = 0.4
@@ -855,9 +880,9 @@ text = "🌀Swing"
 vertical_alignment = 1
 
 [node name="ReverbSlider" type="HSlider" parent="UserInterface"]
-offset_left = -557.0
+offset_left = -531.0
 offset_top = 109.0
-offset_right = -470.0
+offset_right = -444.0
 offset_bottom = 125.0
 scale = Vector2(2, 2)
 max_value = 0.5
@@ -873,9 +898,9 @@ text = "🏛️ Galm"
 vertical_alignment = 1
 
 [node name="DelaySlider" type="HSlider" parent="UserInterface"]
-offset_left = -557.0
+offset_left = -531.0
 offset_top = 144.0
-offset_right = -470.0
+offset_right = -444.0
 offset_bottom = 160.0
 scale = Vector2(2, 2)
 max_value = 0.5
@@ -924,9 +949,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BpmLabel" type="Label" parent="UserInterface"]
-offset_left = -355.0
+offset_left = -329.0
 offset_top = 32.0
-offset_right = -310.0
+offset_right = -284.0
 offset_bottom = 99.0
 text = "bpm"
 horizontal_alignment = 1
@@ -968,14 +993,14 @@ texture = SubResource("CanvasTexture_b5jd4")
 [node name="Pointer" type="Sprite2D" parent="UserInterface"]
 modulate = Color(0.78, 0.78, 0.78, 1)
 z_index = -1
-scale = Vector2(4, 80)
+scale = Vector2(4, 100)
 texture = SubResource("CanvasTexture_bao2x")
 centered = false
 offset = Vector2(-0.5, -1)
 
 [node name="metronome" type="Sprite2D" parent="UserInterface"]
 z_index = -1
-position = Vector2(-366.89, 65)
+position = Vector2(-340.89, 65)
 scale = Vector2(4, 62)
 texture = SubResource("CanvasTexture_6dn85")
 

@@ -110,8 +110,8 @@ public partial class Manager : Node
     [Export] Button SaveLayoutButton;
     [Export] Button LoadLayoutButton;
     [Export] Button ClearLayoutButton;
-    [Export] Button PlayPauseButton;
-    [Export] Button ResetPlayerButton;
+    [Export] public Button PlayPauseButton;
+    [Export] public Button ResetPlayerButton;
     [Export] Button BpmUpButton;
     [Export] Button BpmDownButton;
 
@@ -308,7 +308,7 @@ public partial class Manager : Node
         beatActives = GetCurrentLayer();
 
         // update outline
-        layerOutline.Position = new Vector2(-600, 317) - new Vector2(0, 1) * (71f * currentLayerIndex);
+        layerOutline.Position = new Vector2(-574, 317) - new Vector2(0, 1) * (71f * currentLayerIndex);
     }
 
     public bool LayerHasBeats(bool[,] layer)
@@ -780,7 +780,7 @@ public partial class Manager : Node
         draganddropButton3.Visible = visible;
     }
 
-    void SetLayerSwitchButtonsVisibility(bool visible)
+    public void SetLayerSwitchButtonsVisibility(bool visible)
     {
         layerButton1.Visible = visible;
         layerButton2.Visible = visible;
@@ -795,6 +795,19 @@ public partial class Manager : Node
         layerOutline.Visible = visible;
     }
 
+    public void SetLayerSwitchButtonsEnabled(bool enabled)
+    {
+        layerButton1.Disabled = !enabled;
+        layerButton2.Disabled = !enabled;
+        layerButton3.Disabled = !enabled;
+        layerButton4.Disabled = !enabled;
+        layerButton5.Disabled = !enabled;
+        layerButton6.Disabled = !enabled;
+        layerButton7.Disabled = !enabled;
+        layerButton8.Disabled = !enabled;
+        layerButton9.Disabled = !enabled;
+        layerButton10.Disabled = !enabled;
+    }
 
     // ---------------------------------------------------------------
 
@@ -1180,9 +1193,11 @@ public partial class Manager : Node
         if (currentBeat == 1) if (progressBarValue > 10) progressBarValue -= 5;
 
         // if layer looping
-        if (layerLoopToggle.ButtonPressed) if (currentBeat == 31) NextLayer();
+        if (layerLoopToggle.ButtonPressed || SongVoiceOver.instance.recording) if (currentBeat == 31) NextLayer();
 
-        if (currentBeat == 0) VoiceOver.instance.OnTop();
+        // if (currentBeat == 0) VoiceOver.instance.OnTop();
+
+        if (currentLayerIndex == 0 && currentBeat == 0) SongVoiceOver.instance.OnBeginning();
     }
 
     private Sprite2D CreateOutline(int beat, int ring)

@@ -1,30 +1,26 @@
 using Godot;
 using System;
 
-public partial class VoiceOver : Node
+public partial class SongVoiceOver : Node
 {
 	// singleton
-    public static VoiceOver instance = null;
+    public static SongVoiceOver instance = null;
 
+	// user interface
+	[Export] ProgressBar progressbar;
 	[Export] public Button recordButton;
-	bool shouldRecord = false;
 
-	[Export] Button snellerButton;
-	[Export] Button langzamerButton;
-
-	[Export] TextureProgressBar textureProgressBar;
-
+	// recording
+	AudioStream voiceOver;
     AudioEffectRecord audioEffectRecord;
 	AudioStreamPlayer2D audioPlayer;
-	bool recording = false;
+	bool shouldRecord = false;
+	public bool recording = false;
 	float recordingTimer = 0;
 
-	AudioStream[] voiceOvers = new AudioStream[10];
-
-	int currentLayer => Manager.instance.currentLayerIndex;
-
-	public void SetCurrentLayerVoiceOver(AudioStream voiceOver) => voiceOvers[currentLayer] = voiceOver;
-	public AudioStream GetCurrentLayerVoiceOver() => voiceOvers[currentLayer];
+	// other
+	[Export] Button snellerButton;
+	[Export] Button langzamerButton;
 
 	public override void _Ready()
     {
@@ -58,32 +54,23 @@ public partial class VoiceOver : Node
 		Manager.instance.PlayPauseButton.Disabled = recording;
 		Manager.instance.ResetPlayerButton.Disabled = recording;
 		recordButton.Disabled = recording;
-		SongVoiceOver.instance.recordButton.Disabled = recording;
-		GD.Print(recording);
 
 		// set progress bar value
-		float secondsPerBeat = (60f / Manager.instance.bpm) / 2;
-		float secondsPerRotation = secondsPerBeat * 32;
-		float bpmfactor = 32 / secondsPerRotation;
-		if (recording) textureProgressBar.Value = recordingTimer * bpmfactor;
-		else
-		{
-			if (GetCurrentLayerVoiceOver() != null) textureProgressBar.Value = 32f;
-			else textureProgressBar.Value = 0;
-		}
+		if (recording) progressbar.Value = (recordingTimer / (10f * (32f * (60f / (float)Manager.instance.bpm)))) * 2f;
 	}
 
-	public void OnTop()
+	public void OnBeginning()
 	{
-		if (audioPlayer.Playing) audioPlayer.Stop();
-
-		if (shouldRecord && !recording) StartRecording();
-		else if (recording) StopRecording();
-
-		if (!recording)
+		if (recording)
 		{
-			audioPlayer.Stream = GetCurrentLayerVoiceOver();
-			audioPlayer.Play();
+			StopRecording();
+		}
+		else
+		{
+			if (shouldRecord)
+			{
+				StartRecording();
+			}
 		}
 	}
 
@@ -100,6 +87,6 @@ public partial class VoiceOver : Node
 		GD.Print("recording stopped");
 		recording = false;
 		shouldRecord = false;
-		SetCurrentLayerVoiceOver(audioEffectRecord.GetRecording());
+		voiceOver = audioEffectRecord.GetRecording();
     }
 }
