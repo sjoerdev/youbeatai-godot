@@ -11,7 +11,7 @@ public partial class SongVoiceOver : Node
 	[Export] public Button recordButton;
 
 	// recording
-	AudioStream voiceOver;
+	public AudioStream voiceOver = null;
     AudioEffectRecord audioEffectRecord;
 	AudioStreamPlayer2D audioPlayer;
 	bool shouldRecord = false;

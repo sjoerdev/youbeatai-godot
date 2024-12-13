@@ -390,12 +390,51 @@ public partial class Manager : Node
 
         ChangePitch(filename + ".wav", 2f);
 
+        // layer voice over wav
+        LayerAudioStreamOverWav(filename + ".wav", SongVoiceOver.instance.voiceOver);
+
         // convert to mp3
         ConvertWavToMp3(filename);
 
         // set finish flags
         ShowSavingLabel(filename);
         hassavedtofile = true;
+    }
+
+    public void LayerAudioStreamOverWav(string wavPath, AudioStream audioStream)
+    {
+        byte[] audioStreamBytes = ((AudioStreamWav)audioStream).GetData();
+
+        using (var fileStream = new FileStream(wavPath, FileMode.Open, System.IO.FileAccess.ReadWrite, FileShare.None))
+        {
+            using (var wavReader = new WaveFileReader(fileStream))
+            {
+                using (var audioStreamReader = new RawSourceWaveStream(new MemoryStream(audioStreamBytes), new WaveFormat(wavReader.WaveFormat.SampleRate, wavReader.WaveFormat.Channels)))
+                {
+                    var mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(wavReader.WaveFormat.SampleRate, wavReader.WaveFormat.Channels)) { ReadFully = true };
+                    mixer.AddMixerInput(wavReader.ToSampleProvider());
+                    mixer.AddMixerInput(audioStreamReader.ToSampleProvider());
+
+                    using (var tempStream = new MemoryStream())
+                    {
+                        using (var waveFileWriter = new WaveFileWriter(tempStream, mixer.WaveFormat))
+                        {
+                            var buffer = new float[mixer.WaveFormat.SampleRate * mixer.WaveFormat.Channels];
+                            int samplesRead;
+
+                            while ((samplesRead = mixer.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                waveFileWriter.WriteSamples(buffer, 0, samplesRead);
+                            }
+                        }
+
+                        fileStream.SetLength(0);
+                        tempStream.Position = 0;
+                        tempStream.CopyTo(fileStream);
+                    }
+                }
+            }
+        }
     }
 
     public void ChangePitch(string filePath, float pitchFactor)
