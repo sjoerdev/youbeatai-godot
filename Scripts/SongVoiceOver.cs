@@ -36,6 +36,15 @@ public partial class SongVoiceOver : Node
 
 		// setup record effect
         audioEffectRecord = (AudioEffectRecord)AudioServer.GetBusEffect(AudioServer.GetBusIndex("Microphone"), 1);
+
+		Manager.instance.PlayPauseButton.Pressed += () =>
+		{
+			if (voiceOver != null)
+			{
+				if (audioPlayer.Playing) audioPlayer.Stop();
+				else audioPlayer.Play();
+			}
+		};
     }
 
     public override void _Process(double delta)
@@ -64,6 +73,7 @@ public partial class SongVoiceOver : Node
 		if (recording)
 		{
 			StopRecording();
+			if (voiceOver != null) audioPlayer.Play();
 		}
 		else
 		{
@@ -88,5 +98,6 @@ public partial class SongVoiceOver : Node
 		recording = false;
 		shouldRecord = false;
 		voiceOver = audioEffectRecord.GetRecording();
+		audioPlayer.Stream = voiceOver;
     }
 }
