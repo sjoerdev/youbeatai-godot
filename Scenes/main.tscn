@@ -304,7 +304,7 @@ offset_right = -542.0
 offset_bottom = -220.0
 focus_mode = 0
 theme_override_font_sizes/font_size = 20
-text = "🤩"
+text = "😃"
 
 [node name="Layer10" type="Button" parent="UserInterface/SwitchLayerButtons"]
 offset_left = -606.0
