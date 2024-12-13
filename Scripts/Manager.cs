@@ -722,6 +722,10 @@ public partial class Manager : Node
 
         // achievements panel
         achievementspanel.Visible = visible;
+
+        // recording
+        SongVoiceOver.instance.recordButton.Visible = visible;
+        SongVoiceOver.instance.progressbar.Visible = visible;
     }
 
     void SetRingVisibility(int ring, bool visible)

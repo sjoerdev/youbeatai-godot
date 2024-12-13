@@ -7,7 +7,7 @@ public partial class SongVoiceOver : Node
     public static SongVoiceOver instance = null;
 
 	// user interface
-	[Export] ProgressBar progressbar;
+	[Export] public ProgressBar progressbar;
 	[Export] public Button recordButton;
 
 	// recording
