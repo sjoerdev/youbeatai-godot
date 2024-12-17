@@ -329,6 +329,16 @@ public partial class Manager : Node
         GD.Print("saving all layers to an mp3 file");
         SetCurrentLayer(beatActives);
         SaveDrumLoopsAsFile(layers);
+
+        // voiceover to wav
+
+    }
+
+    public void ConvertAudioStreamWavToWav(AudioStreamWav audioStreamWav, string filePath)
+    {
+        byte[] pcmData = audioStreamWav.Data;
+        using (var waveFile = new WaveFileWriter(filePath, new WaveFormat(audioStreamWav.MixRate, 16, audioStreamWav.Stereo ? 2 : 1))) waveFile.Write(pcmData, 0, pcmData.Length);
+        GD.Print($"WAV file successfully created at: {filePath}");
     }
 
     public void SaveDrumLoopsAsFile(List<bool[,]> loops)
