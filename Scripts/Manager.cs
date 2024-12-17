@@ -341,6 +341,43 @@ public partial class Manager : Node
         GD.Print($"WAV file successfully created at: {filePath}");
     }
 
+    void MixAudioFiles(string file1, string file2, string outputFile)
+    {
+        using (var reader1 = new AudioFileReader(file1))
+        using (var reader2 = new AudioFileReader(file2))
+        {
+            // Get the longer duration
+            var maxDurationSeconds = Math.Max(reader1.TotalTime.TotalSeconds, reader2.TotalTime.TotalSeconds);
+            TimeSpan maxDuration = TimeSpan.FromSeconds(maxDurationSeconds);
+
+            // Create mixing wave provider
+            var mixer = new MixingSampleProvider(new[] { reader1, reader2 })
+            {
+                // Ensure mixing works even if files are of different lengths
+                ReadFully = true
+            };
+
+            // Set the length of the mix to match the longest file
+            var outputWaveFormat = mixer.WaveFormat;
+
+            // Write the mixed audio to a new WAV file
+            using (var writer = new WaveFileWriter(outputFile, outputWaveFormat))
+            {
+                // Buffer for mixed samples
+                float[] buffer = new float[mixer.WaveFormat.SampleRate * mixer.WaveFormat.Channels];
+                int samplesRead;
+
+                // Read samples from the mixer and write to the output file
+                while ((samplesRead = mixer.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    writer.WriteSamples(buffer, 0, samplesRead);
+                }
+            }
+
+            Console.WriteLine($"Mixed audio saved to {outputFile}");
+        }
+    }
+
     public void SaveDrumLoopsAsFile(List<bool[,]> loops)
     {
         string sanitizedTime = Time.GetTimeStringFromSystem().Replace(":", "_");
