@@ -331,7 +331,7 @@ public partial class Manager : Node
         SaveDrumLoopsAsFile(layers);
 
         // voiceover to wav
-
+        ConvertAudioStreamWavToWav((AudioStreamWav)SongVoiceOver.instance.voiceOver, "voiceover.wav");
     }
 
     public void ConvertAudioStreamWavToWav(AudioStreamWav audioStreamWav, string filePath)
