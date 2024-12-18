@@ -329,52 +329,89 @@ public partial class Manager : Node
         GD.Print("saving all layers to an mp3 file");
         SetCurrentLayer(beatActives);
         SaveDrumLoopsAsFile(layers);
-
-        // voiceover to wav
-        ConvertAudioStreamWavToWav((AudioStreamWav)SongVoiceOver.instance.voiceOver, "voiceover.wav");
     }
 
     public void ConvertAudioStreamWavToWav(AudioStreamWav audioStreamWav, string filePath)
     {
+        if (audioStreamWav.Stereo) audioStreamWav = ConvertStereoToMono(audioStreamWav);
         byte[] pcmData = audioStreamWav.Data;
         using (var waveFile = new WaveFileWriter(filePath, new WaveFormat(audioStreamWav.MixRate, 16, audioStreamWav.Stereo ? 2 : 1))) waveFile.Write(pcmData, 0, pcmData.Length);
         GD.Print($"WAV file successfully created at: {filePath}");
     }
 
+    public AudioStreamWav ConvertStereoToMono(AudioStreamWav stereoStream)
+    {
+        AudioStreamWav monoStream = (AudioStreamWav)stereoStream.Duplicate();
+        var audioData = stereoStream.Data;
+        int bytesPerSample = stereoStream.Format == AudioStreamWav.FormatEnum.Format8Bits ? 1 : 2;
+        byte[] monoData = new byte[audioData.Length / 2];
+
+        for (int i = 0; i < audioData.Length; i += bytesPerSample * (stereoStream.Stereo ? 2 : 1))
+        {
+            // get left and right samples
+            float leftSample = 0, rightSample = 0;
+            if (stereoStream.Format == AudioStreamWav.FormatEnum.Format16Bits)
+            {
+                leftSample = BitConverter.ToInt16(audioData, i) / 32768f;
+                rightSample = BitConverter.ToInt16(audioData, i + bytesPerSample) / 32768f;
+            }
+            else if (stereoStream.Format == AudioStreamWav.FormatEnum.Format8Bits)
+            {
+                leftSample = (audioData[i] - 128) / 128f;
+                rightSample = (audioData[i + bytesPerSample] - 128) / 128f;
+            }
+
+            // write to averages mono sample
+            float monoSample = (leftSample + rightSample) / 2.0f;
+            if (stereoStream.Format == AudioStreamWav.FormatEnum.Format16Bits)
+            {
+                short monoShort = (short)(monoSample * 32768);
+                byte[] monoBytes = BitConverter.GetBytes(monoShort);
+                Array.Copy(monoBytes, 0, monoData, (i / 2), bytesPerSample);
+            }
+            else if (stereoStream.Format == AudioStreamWav.FormatEnum.Format8Bits)
+            {
+                byte monoByte = (byte)((monoSample * 128) + 128);
+                monoData[i / 2] = monoByte;
+            }
+        }
+
+        monoStream.Data = monoData;
+        monoStream.Stereo = false;
+        return monoStream;
+    }
+
     void MixAudioFiles(string file1, string file2, string outputFile)
     {
         using (var reader1 = new AudioFileReader(file1))
-        using (var reader2 = new AudioFileReader(file2))
         {
-            // Get the longer duration
-            var maxDurationSeconds = Math.Max(reader1.TotalTime.TotalSeconds, reader2.TotalTime.TotalSeconds);
-            TimeSpan maxDuration = TimeSpan.FromSeconds(maxDurationSeconds);
-
-            // Create mixing wave provider
-            var mixer = new MixingSampleProvider(new[] { reader1, reader2 })
+            using (var reader2 = new AudioFileReader(file2))
             {
-                // Ensure mixing works even if files are of different lengths
-                ReadFully = true
-            };
+                // find which wav is the longest and use that time as the output wav duration
+                var maxDurationSeconds = Math.Max(reader1.TotalTime.TotalSeconds, reader2.TotalTime.TotalSeconds);
+                TimeSpan maxDuration = TimeSpan.FromSeconds(maxDurationSeconds);
 
-            // Set the length of the mix to match the longest file
-            var outputWaveFormat = mixer.WaveFormat;
+                // create mixer
+                var sources = new AudioFileReader[] { reader1, reader2 };
+                var mixer = new MixingSampleProvider(sources);
+                mixer.ReadFully = true;
 
-            // Write the mixed audio to a new WAV file
-            using (var writer = new WaveFileWriter(outputFile, outputWaveFormat))
-            {
-                // Buffer for mixed samples
-                float[] buffer = new float[mixer.WaveFormat.SampleRate * mixer.WaveFormat.Channels];
-                int samplesRead;
+                // set the length of the mix to match the longest file
+                var outputWaveFormat = mixer.WaveFormat;
 
-                // Read samples from the mixer and write to the output file
-                while ((samplesRead = mixer.Read(buffer, 0, buffer.Length)) > 0)
+                // write the mixed audio to a new wav file
+                using (var writer = new WaveFileWriter(outputFile, outputWaveFormat))
                 {
-                    writer.WriteSamples(buffer, 0, samplesRead);
-                }
-            }
+                    // buffer for mixed samples
+                    float[] buffer = new float[mixer.WaveFormat.SampleRate * mixer.WaveFormat.Channels];
+                    int samplesRead;
 
-            Console.WriteLine($"Mixed audio saved to {outputFile}");
+                    // read samples from the mixer and write to the output file
+                    while ((samplesRead = mixer.Read(buffer, 0, buffer.Length)) > 0) writer.WriteSamples(buffer, 0, samplesRead);
+                }
+
+                Console.WriteLine($"Mixed audio saved to {outputFile}");
+            }
         }
     }
 
@@ -437,13 +474,12 @@ public partial class Manager : Node
 
         ChangePitch(filename + ".wav", 2f);
 
-        // layer voice over wav
-        // LayerAudioStreamOverWav(filename + ".wav", SongVoiceOver.instance.voiceOver);
+        // layer voiceover
+        ConvertAudioStreamWavToWav((AudioStreamWav)SongVoiceOver.instance.voiceOver, "voiceover.wav");
+        // MixAudioFiles(filename + ".wav", "voiceover.wav", "combined.wav");
 
-        // convert to mp3
-        ConvertWavToMp3(filename);
-
-        // set finish flags
+        // convert and finish
+        ConvertWavToMp3("combined.wav");
         ShowSavingLabel(filename);
         hassavedtofile = true;
     }
