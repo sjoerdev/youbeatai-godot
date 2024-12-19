@@ -1,4 +1,4 @@
-# YouBeatAi
+## YouBeatAi
 This is a game aimed at dutch children around 10 years old for making drum loops.
 
 ## Showcase
